@@ -31,7 +31,7 @@ def main():
 		post_result = api.PostUpdate(tweet_text)
 		print(post_result)
 	else:
-		print("Error: Failed to generate tweet (most likely exceeded size limit.")
+		print("Error: Failed to generate tweet (most likely exceeded size limit).")
 		ret_status = 1
 
 	return ret_status
