@@ -174,6 +174,12 @@ URLS_BY_STATE = {
 					 "polls": "https://www.pavoterservices.pa.gov/Pages/PollingPlaceInfo.aspx",
 					 "cities": ['Philadelphia', 'Pittsburgh', 'Scranton', 'Harrisburg',
 								'Allentown', 'Johnstown', 'Altoona']},
+	"Puerto Rico": {"code": "PR",
+					"reg": "http://consulta.ceepur.org/",
+					"regdl": "http://ww2.ceepur.org/Home/EducacionElectoral",
+					"abs": "http://ww2.ceepur.org/Home/SolicituddeVoto#VotoAusente",
+					"polls": "http://www.ceepur.org/directorio.htm",
+					"cities": ['San Juan', 'Mayaguez', 'Arecibo', 'Ponce']},
 	"Rhode Island": {"code": "RI",
 					 "reg": "https://vote.sos.ri.gov/Home/UpdateVoterRecord?ActiveFlag=0",
 					 "polls": "https://vote.sos.ri.gov/Home/PollingPlaces?ActiveFlag=2",
@@ -227,5 +233,7 @@ URLS_BY_STATE = {
 
 # Now do some dynamic setup in the table
 for k, v in URLS_BY_STATE.items():
-	v['abs'] = absentee_ballot(k)
-	v['regdl'] = reg_deadline(k)
+	if 'abs' not in v:
+		v['abs'] = absentee_ballot(k)
+	if 'regdl' not in v:
+		v['regdl'] = reg_deadline(k)

@@ -43,7 +43,7 @@ class TestVoterInfo(unittest.TestCase):
 	# @mock.patch("twitter.Api", autospec=True)
 	def test_build_tweet(self):
 		random.seed(0)
-		for state in ("California", "Idaho", "West Virginia"):
+		for state in ("California", "Idaho", "West Virginia", "Puerto Rico"):
 			effective_len, tweet = build_tweet(state)
 			print(effective_len, tweet)
 			assert len(tweet) > 0  # XXX This could flap
