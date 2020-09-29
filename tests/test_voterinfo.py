@@ -1,6 +1,7 @@
 import unittest
 import mock
 import random
+import sys
 
 import voterinfo
 from render import hashtag, build_tweet
@@ -11,7 +12,15 @@ from urlsbystate import URLS_BY_STATE
 class TestVoterInfo(unittest.TestCase):
 	@mock.patch("twitter.Api", autospec=True)
 	def test_main(self, _mock_api):
-		voterinfo.main()
+		arg0 = sys.argv[0]
+		sys.argv = [arg0, 'Puerto Rico']
+		self.assertEqual(voterinfo.main(), 0)
+
+		sys.argv = [arg0, 'Arcadier']
+		self.assertEqual(voterinfo.main(), 1)
+
+		sys.argv = [arg0]
+		self.assertEqual(voterinfo.main(), 0)
 		# XXX Set & check a fake JSON return value for _mock_api.return_value.PostUpdate.return_value
 
 	def test_hashtag(self):
