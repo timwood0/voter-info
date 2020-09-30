@@ -29,7 +29,6 @@ def build_tweet(state):
 	"""Render a tweet of voting info for a state"""
 	state_info = URLS_BY_STATE[state]
 	num_cities = len(state_info['cities'])
-	city_set = set(state_info['cities'])
 	city_ct = random.randint(1, 3)
 	effective_length = 0
 	tweet_text = ""
@@ -37,6 +36,7 @@ def build_tweet(state):
 	while city_ct > 0:
 		# Iterate on building a tweet until it fits within the limit.
 		# Return none if unsuccessful
+		city_set = set(state_info['cities'])
 		try:
 			# Select up to city_ct cities
 			cities = []
