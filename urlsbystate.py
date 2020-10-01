@@ -13,6 +13,10 @@ def reg_deadline(state):
 	return VO + f"/voter-registration-deadlines/#{url_encode_state(state)}"
 
 
+def abroad(state):
+	return f"https://www.votefromabroad.org/states/{URLS_BY_STATE[state]['code']}"
+
+
 # Static info, extended with initializers below
 URLS_BY_STATE = {
 	"Alabama": {"code": "AL",
@@ -60,6 +64,12 @@ URLS_BY_STATE = {
 				"reg": "http://www.mvp.sos.ga.gov/",
 				"polls": "https://www.mvp.sos.ga.gov/MVP/mvp.do",
 				"cities": ['Atlanta', 'Savannah', 'Athens', 'Macon', 'Augusta']},
+	"Guam": {"code": "GU",
+				"abs": "https://gec.guam.gov/index.php/in-office/in-office-absentee-voting",
+				"reg": "https://gec.guam.gov/validate",
+				"regdl": "https://gec.guam.gov/index.php/gec-2018-election-important-dates",
+				"polls": "https://drive.google.com/file/d/1w6pdGRrjwqVMa8cRbx_-9zObMCVQQ3aR/view",
+				"cities": ['Tamuning', 'Santa Rita', 'Piti', 'Dededo']},
 	"Hawaii": {"code": "HI",
 			   "reg": "https://olvr.hawaii.gov/register.aspx",
 			   "polls": "https://olvr.hawaii.gov/altpollingplacesearch.aspx",
@@ -185,8 +195,10 @@ URLS_BY_STATE = {
 					 "polls": "https://vote.sos.ri.gov/Home/PollingPlaces?ActiveFlag=2",
 					 "cities": ['Providence', 'Cranston', 'Metunuck', 'Warwick', 'Newport']},
 	"South Carolina": {"code": "SC",
-					   "reg": "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx?PagMode=VoterInfo",
-					   "polls": "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx?PageMode=VoterInfo",
+					   "reg": "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx"
+							  "?PagMode=VoterInfo",
+					   "polls": "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx"
+								"?PageMode=VoterInfo",
 					   "cities": ['Charleston', 'Columbia', 'Greenville', 'Augusta']},
 	"South Dakota": {"code": "SD",
 					 "reg": "https://vip.sdsos.gov/viplogin.aspx",
@@ -237,3 +249,5 @@ for k, v in URLS_BY_STATE.items():
 		v['abs'] = absentee_ballot(k)
 	if 'regdl' not in v:
 		v['regdl'] = reg_deadline(k)
+	if 'abroad' not in v:
+		v['abroad'] = abroad(k)

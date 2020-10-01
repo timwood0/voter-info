@@ -63,7 +63,8 @@ def render_tweet(cities, state, state_info):
 				Reg. deadline: {state_info['regdl']}
 				Check registration: {state_info['reg']}
 				Polling places: {state_info['polls']}
-				For mail-in ballot: {state_info['abs']}
+				Vote by mail: {state_info['abs']}
+				Out of U.S.A.: {state_info['abroad']}
 	"""
 
 	# Clean up multi-line string
@@ -74,6 +75,7 @@ def render_tweet(cities, state, state_info):
 	effective_length = (len(tweet_text)
 						- len(state_info['regdl']) - len(state_info['reg'])
 						- len(state_info['polls']) - len(state_info['abs'])
-						+ 4 * TWITTER_SHORT_URL_LENGTH)
+						- len(state_info['abroad'])
+						+ 5 * TWITTER_SHORT_URL_LENGTH)
 	assert effective_length <= twitter.api.CHARACTER_LIMIT
 	return effective_length, tweet_text
