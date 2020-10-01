@@ -63,8 +63,8 @@ def render_tweet(cities, state, state_info):
 				Reg. deadline: {state_info['regdl']}
 				Check registration: {state_info['reg']}
 				Polling places: {state_info['polls']}
-				Vote by mail: {state_info['abs']}
 				Out of U.S.A.: {state_info['abroad']}
+				Vote by mail: {state_info['abs']}
 	"""
 
 	# Clean up multi-line string
