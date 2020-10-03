@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Q&D script to tweet voter info to a random sequence of all the states, separated
+# by random intervals.  The cycle fits into ~24hrs.  Meant to run in the background over
+# the course of a day.
+
+# Be careful to quote multi-word names into the array
+eval state_seq=( `shuf -e 'Alabama' 'Alaska' 'Arizona' 'Arkansas' 'California' 'Colorado' 'Connecticut' \
+'Delaware' '"District of Columbia"' 'Florida' 'Georgia' 'Guam' 'Hawaii' 'Idaho' 'Illinois' \
+'Indiana' 'Iowa' 'Kansas' 'Kentucky' 'Louisiana' 'Maine' 'Maryland' 'Massachusetts' \
+'Michigan' 'Minnesota' 'Mississippi' 'Missouri' 'Montana' 'Nebraska' 'Nevada' '"New Hampshire"' \
+'"New Jersey"' '"New Mexico"' '"New York"' '"North Carolina"' '"North Dakota"' 'Ohio' \
+'Oklahoma' 'Oregon' 'Pennsylvania' '"Puerto Rico"' '"Rhode Island"' '"South Carolina"' '"South Dakota"' \
+'Tennessee' 'Texas' 'Utah' 'Vermont' 'Virginia' 'Washington' '"West Virginia"' \
+'Wisconsin' 'Wyoming'` )
+
+# Calibration: minimum 10 min. interval.  Set of len(state_seq) intervals adds to ~24 hrs,
+# so all states will be tweeted in about a day.  Set by experiment.
+interval_seq=( `count=1; time=600; incr=42; len=${#state_seq[@]};
+		while [ $count -lt $len ]; do
+			echo $time; time=$(($time + $incr)); count=$(($count + 1));
+		done | shuf` )
+echo "Elapsed:" $(((`echo ${interval_seq[*]} | sed 's/ /+/g'`) / 60)) "min."
+
+i=0
+echo "Intervals: " ${interval_seq[@]}
+echo "States: " ${state_seq[@]}
+while [ -n "${state_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
+	echo ${state_seq[$i]}
+	python voterinfo.py "${state_seq[$i]}"
+	sleep ${interval_seq[$i]}
+	i=$(($i + 1))
+done
+
