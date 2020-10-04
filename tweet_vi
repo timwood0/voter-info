@@ -20,13 +20,21 @@ interval_seq=( `count=1; time=600; incr=42; len=${#state_seq[@]};
 		while [ $count -lt $len ]; do
 			echo $time; time=$(($time + $incr)); count=$(($count + 1));
 		done | shuf` )
+interval_seq=( ${interval_seq[@]} 0 )	# Terminate interval list
 echo "Elapsed:" $(((`echo ${interval_seq[*]} | sed 's/ /+/g'`) / 60)) "min."
 
+# Print schedule of tweets
 i=0
-echo "Intervals: " ${interval_seq[@]}
-echo "States: " ${state_seq[@]}
+echo -n "States & intervals: "
 while [ -n "${state_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
-	echo ${state_seq[$i]}
+	echo -n ${state_seq[$i]} ${interval_seq[$i]} " "
+	i=$(($i + 1))
+done
+
+# Enter tweeting loop
+i=0
+while [ -n "${state_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
+	echo "State $(($i + 1)): ${state_seq[$i]}, interval ${interval_seq[$i]}"
 	python voterinfo.py "${state_seq[$i]}"
 	sleep ${interval_seq[$i]}
 	i=$(($i + 1))
