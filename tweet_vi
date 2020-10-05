@@ -14,9 +14,9 @@ eval state_seq=( `shuf -e 'Alabama' 'Alaska' 'Arizona' 'Arkansas' 'California' '
 'Tennessee' 'Texas' 'Utah' 'Vermont' 'Virginia' 'Washington' '"West Virginia"' \
 'Wisconsin' 'Wyoming'` )
 
-# Calibration: minimum 10 min. interval.  Set of len(state_seq) intervals adds to ~24 hrs,
-# so all states will be tweeted in about a day.  Set by experiment.
-interval_seq=( `count=1; time=600; incr=42; len=${#state_seq[@]};
+# Calibration: minimum 10 min. interval.  Set of len(state_seq) intervals adds to "Elapsed:"
+# hours, so all states will be tweeted within about a day.  Set by experiment.
+interval_seq=( `count=1; time=600; incr=20; len=${#state_seq[@]};
 		while [ $count -lt $len ]; do
 			echo $time; time=$(($time + $incr)); count=$(($count + 1));
 		done | shuf` )
@@ -34,6 +34,7 @@ done
 # Enter tweeting loop
 i=0
 while [ -n "${state_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
+	echo
 	echo "State $(($i + 1)): ${state_seq[$i]}, interval ${interval_seq[$i]}"
 	python voterinfo.py "${state_seq[$i]}"
 	sleep ${interval_seq[$i]}
