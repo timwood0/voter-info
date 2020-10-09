@@ -5,14 +5,17 @@
 # the course of a day.
 
 # Be careful to quote multi-word names into the array
-eval state_seq=( `shuf -e 'Alabama' 'Alaska' 'Arizona' 'Arkansas' 'California' 'Colorado' 'Connecticut' \
-'Delaware' '"District of Columbia"' 'Florida' 'Georgia' 'Guam' 'Hawaii' 'Idaho' 'Illinois' \
-'Indiana' 'Iowa' 'Kansas' 'Kentucky' 'Louisiana' 'Maine' 'Maryland' 'Massachusetts' \
-'Michigan' 'Minnesota' 'Mississippi' 'Missouri' 'Montana' 'Nebraska' 'Nevada' '"New Hampshire"' \
-'"New Jersey"' '"New Mexico"' '"New York"' '"North Carolina"' '"North Dakota"' 'Ohio' \
-'Oklahoma' 'Oregon' 'Pennsylvania' '"Puerto Rico"' '"Rhode Island"' '"South Carolina"' '"South Dakota"' \
-'Tennessee' 'Texas' 'Utah' 'Vermont' 'Virginia' 'Washington' '"West Virginia"' \
-'Wisconsin' 'Wyoming'` )
+state_gen="
+from urlsbystate import URLS_BY_STATE
+
+for state in URLS_BY_STATE.keys():
+    if ' ' in state:
+        # Ensure shell keeps words in a string
+        print(f'\"{state}\" ')
+    else:
+        print(f'{state} ')
+"
+eval state_seq=( `python -c "$state_gen" | shuf` )
 
 # Calibration: minimum 10 min. interval.  Set of len(state_seq) intervals adds to "Elapsed:"
 # hours, so all states will be tweeted within about a day.  Set by experiment.
