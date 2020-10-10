@@ -117,7 +117,7 @@ URLS_BY_STATE = {
 	"Michigan": {"code": "MI",
 				 "reg": "https://mvic.sos.state.mi.us/",
 				 "polls": "https://mvic.sos.state.mi.us/",
-				 "cities": ['Detroit', 'Flint', 'Ann Arbor', 'Grand Rapids', 'Lansing', 'Marquette']},
+				 "cities": ['Detroit', 'Flint', 'Ann Arbor', 'Grand Rapids', 'Lansing', 'Marquette', 'Saginaw']},
 	"Minnesota": {"code": "MN",
 				  "reg": "https://mnvotes.sos.state.mn.us/VoterStatus.aspx",
 				  "polls": "https://pollfinder.sos.state.mn.us/",
