@@ -1,17 +1,25 @@
 import unittest
 import mock
-import random
 import sys
+import importlib
 
-import voterinfo
-from render import hashtag, build_tweet
+import voterinfo, socialize
+from render import *
 from urlsbystate import URLS_BY_STATE
 
 
+MY_TWITTER_UID = 16230307
+
 
 class TestVoterInfo(unittest.TestCase):
-	@mock.patch("twitter.Api", autospec=True)
-	def test_main(self, _mock_api):
+	def tearDown(self):
+		importlib.reload(socialize)
+		importlib.reload(voterinfo)
+
+	@mock.patch("transport.post_tweet")
+	def test_voterinfo_main(self, mock_post):
+		mock_post.return_value = 0
+		importlib.reload(voterinfo)
 		arg0 = sys.argv[0]
 		sys.argv = [arg0, 'Puerto Rico']
 		self.assertEqual(voterinfo.main(), 0)
@@ -49,16 +57,34 @@ class TestVoterInfo(unittest.TestCase):
 			_present("polls")
 			_present("cities")
 
-	# @mock.patch("twitter.Api", autospec=True)
-	def test_build_tweet(self):
+	def test_build_voterinfo(self):
 		random.seed(0)
 		for state in ("California", "Idaho", "West Virginia", "Puerto Rico", "Guam"):
-			effective_len, tweet = build_tweet(state)
+			effective_len, tweet = build_voterinfo(state)
 			print(effective_len, tweet)
 			assert len(tweet) > 0  # XXX This could flap
 
-		self.assertRaises(KeyError, build_tweet, ("Arcadia",))
+		self.assertRaises(KeyError, build_voterinfo, ("Arcadia",))
 
+	@mock.patch("twitter.Api.GetFollowerIDs")
+	@mock.patch("twitter.Api.GetFriendIDs")
+	@mock.patch("transport.post_tweet")
+	def test_socialize_main(self, mock_post, mock_friends, mock_followers):
+		mock_post.return_value = 0
+		importlib.reload(socialize)
+		bs_fn = build_socialize
+		mock_followers.return_value \
+			= (157815060, 1230281, 13027572, 155295889, 26825139, 153942024, 153934792)
+		mock_friends.return_value \
+			= (26825139, 13027572, 823171093854912516, 54885400, 153942024)
+		socialize.main()
+		mock_post.assert_has_calls([mock.call(bs_fn, 13027572), mock.call(bs_fn, 153942024), mock.call(bs_fn, 26825139)],
+									 any_order=True)
+
+	def test_build_socialize(self):
+		effective_length, tweet_text = build_socialize(MY_TWITTER_UID)
+		print(effective_length)
+		print(tweet_text)
 
 if __name__ == '__main__':
 	unittest.main()

@@ -3,8 +3,10 @@ import random
 import twitter
 
 from urlsbystate import URLS_BY_STATE
+from transport import api
 
 TWITTER_SHORT_URL_LENGTH = len('https://t.co/XXXXXXXXXX?amp=1')  # XXX By observation only.
+VOTERINFO_SEARCH_URL = "https://twitter.com/search?q=%22Out%20of%20U.S.A.%22%20%22Vote%20by%20mail%3A%22&f=live"
 
 
 def hashtag(phrase, plain=False):
@@ -25,7 +27,7 @@ def hashtag(phrase, plain=False):
 	return '#' + ''.join(words)
 
 
-def build_tweet(state):
+def build_voterinfo(state):
 	"""Render a tweet of voting info for a state"""
 	state_info = URLS_BY_STATE[state]
 	num_cities = len(state_info['cities'])
@@ -47,7 +49,7 @@ def build_tweet(state):
 					cities.append(hashtag(city))
 					city_set.remove(city)
 
-			effective_length, tweet_text = render_tweet(cities, state, state_info)
+			effective_length, tweet_text = render_voterinfo(cities, state, state_info)
 			break
 		except AssertionError:
 			tweet_text = ""
@@ -56,15 +58,15 @@ def build_tweet(state):
 	return effective_length, tweet_text
 
 
-def render_tweet(cities, state, state_info):
+def render_voterinfo(cities, state, state_info):
 	tweet_text = f"""
-				{hashtag(state)} {hashtag(state_info['code'], True)} {hashtag('vote')}
-				{' '.join(cities)}
-				Reg. deadline: {state_info['regdl']}
-				Check registration: {state_info['reg']}
-				Polling places: {state_info['polls']}
-				Out of U.S.A.: {state_info['abroad']}
-				Vote by mail: {state_info['abs']}
+		{hashtag(state)} {hashtag(state_info['code'], True)} {hashtag('vote')}
+		{' '.join(cities)}
+		Reg. deadline: {state_info['regdl']}
+		Check registration: {state_info['reg']}
+		Polling places: {state_info['polls']}
+		Out of U.S.A.: {state_info['abroad']}
+		Vote by mail: {state_info['abs']}
 	"""
 
 	# Clean up multi-line string
@@ -77,5 +79,36 @@ def render_tweet(cities, state, state_info):
 						- len(state_info['polls']) - len(state_info['abs'])
 						- len(state_info['abroad'])
 						+ 5 * TWITTER_SHORT_URL_LENGTH)
+	assert effective_length <= twitter.api.CHARACTER_LIMIT
+	return effective_length, tweet_text
+
+
+def build_socialize(user_id):
+	try:
+		screen_name = api.GetUser(user_id).screen_name
+	except twitter.error.TwitterError:
+		print(f"Twitter user {user_id} not found.")
+		return 0, ""
+
+	tweet_text = f"""
+		@{screen_name}
+		Hi, we follow each other on Twitter.
+		Please RT my voter info tweets to help get out the vote!
+		1. Search my tweets: {VOTERINFO_SEARCH_URL}
+		2. Find a tweet for a state in the list, e.g., #Iowa or #NC.
+		3. Retweet it.
+
+		Thanks, and be sure to #vote!
+	"""
+
+	# Clean up multi-line string
+	tweet_text = re.sub('\t', '', tweet_text)
+
+	# Now try to guess the length of the resulting tweet.  Twitter imposes the
+	# length limit after it shortens the links.
+	effective_length = (len(tweet_text)
+						- len(VOTERINFO_SEARCH_URL)
+						+ TWITTER_SHORT_URL_LENGTH)
+	# print(effective_length, tweet_text)
 	assert effective_length <= twitter.api.CHARACTER_LIMIT
 	return effective_length, tweet_text
