@@ -1,3 +1,5 @@
+import sys
+
 import twitter
 
 import keys
@@ -16,9 +18,13 @@ def post_tweet(post_func, *post_args):
 	effective_len, tweet_text = post_func(*post_args)
 
 	if tweet_text:
-		print(effective_len, tweet_text)
-		post_result = api.PostUpdate(tweet_text)
-		print(post_result)
+		print(effective_len, tweet_text, file=sys.stderr)
+		try:
+			post_result = api.PostUpdate(tweet_text)
+			print(post_result, file=sys.stderr)
+		except twitter.error.TwitterError as e:
+			print(f"Failed to send tweet: {e.message}", file=sys.stderr)
+			ret_status = 1
 	else:
 		print("Error: Failed to generate tweet (most likely exceeded size limit).")
 		ret_status = 1

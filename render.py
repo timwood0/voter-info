@@ -84,8 +84,10 @@ def render_voterinfo(cities, state, state_info):
 
 
 def build_socialize(user_id):
+	# Build a tweet asking for retweets
 	try:
 		screen_name = api.GetUser(user_id).screen_name
+		print(f"Socialize: {screen_name}")
 	except twitter.error.TwitterError:
 		print(f"Twitter user {user_id} not found.")
 		return 0, ""

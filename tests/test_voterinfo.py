@@ -1,6 +1,7 @@
 import unittest
 import mock
 import sys
+import os
 import importlib
 
 import voterinfo, socialize
@@ -85,6 +86,17 @@ class TestVoterInfo(unittest.TestCase):
 		effective_length, tweet_text = build_socialize(MY_TWITTER_UID)
 		print(effective_length)
 		print(tweet_text)
+
+	def test_process_do_not_call(self):
+		dnc = open(os.path.join(sys.path[0], "do_not_call.txt"))
+		line_ct = 0
+		for line in dnc.readlines():
+			line_ct += 1
+		dnc.close()
+
+		# Requires no duplicates in DNC list
+		self.assertEqual(len(socialize.process_do_not_call()), line_ct)
+
 
 if __name__ == '__main__':
 	unittest.main()
