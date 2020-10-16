@@ -42,12 +42,14 @@ def build_voterinfo(state):
 		try:
 			# Select up to city_ct cities
 			cities = []
-			for i in range(0, city_ct):
+			i = 0
+			while i < city_ct:
 				city_idx = random.randint(0, num_cities - 1)
 				city = state_info['cities'][city_idx]
 				if city in city_set:
 					cities.append(hashtag(city))
 					city_set.remove(city)
+					i += 1
 
 			effective_length, tweet_text = render_voterinfo(cities, state, state_info)
 			break

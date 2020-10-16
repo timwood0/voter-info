@@ -4,6 +4,8 @@ import sys
 import os
 import importlib
 
+from twitter.models import User
+
 import voterinfo, socialize
 from render import *
 from urlsbystate import URLS_BY_STATE
@@ -67,10 +69,11 @@ class TestVoterInfo(unittest.TestCase):
 
 		self.assertRaises(KeyError, build_voterinfo, ("Arcadia",))
 
+	@mock.patch("twitter.Api.UsersLookup")
 	@mock.patch("twitter.Api.GetFollowerIDs")
 	@mock.patch("twitter.Api.GetFriendIDs")
 	@mock.patch("transport.post_tweet")
-	def test_socialize_main(self, mock_post, mock_friends, mock_followers):
+	def test_socialize_main(self, mock_post, mock_friends, mock_followers, _):
 		mock_post.return_value = 0
 		importlib.reload(socialize)
 		bs_fn = build_socialize
@@ -87,15 +90,22 @@ class TestVoterInfo(unittest.TestCase):
 		print(effective_length)
 		print(tweet_text)
 
-	def test_process_do_not_call(self):
+	@staticmethod
+	def _fake_users(*_, screen_name=None):
+		# id is the wrong type here, but we just need unique objects
+		return [User(id=n, screen_name=n) for n in screen_name]
+
+	@mock.patch("twitter.Api.UsersLookup")
+	def test_process_do_not_call(self, mock_users_lookup):
+		mock_users_lookup.side_effect = self._fake_users
 		dnc = open(os.path.join(sys.path[0], "do_not_call.txt"))
 		line_ct = 0
-		for line in dnc.readlines():
+		for _ in dnc.readlines():
 			line_ct += 1
 		dnc.close()
 
 		# Requires no duplicates in DNC list
-		self.assertEqual(len(socialize.process_do_not_call()), line_ct)
+		self.assertEqual(line_ct, len(socialize.process_do_not_call()))
 
 
 if __name__ == '__main__':
