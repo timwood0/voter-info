@@ -96,7 +96,7 @@ URLS_BY_STATE = {
 			   "cities": ['Kansas City', 'Topeka', 'Wichita', 'Dodge City', 'Manhattan']},
 	"Kentucky": {"code": "KY",
 				 "reg": "https://vrsws.sos.ky.gov/VIC/",
-				 "polls": "https://vrsws.sos.ky.gov/vic/",
+				 "polls": "https://www.sos.ky.gov/elections/Pages/Polling-Locations.aspx",
 				 "cities": ['Louisville', 'Lexington', 'Bowling Green', 'Frankfort', 'Paducah']},
 	"Louisiana": {"code": "LA",
 				  "reg": "https://voterportal.sos.la.gov/",
