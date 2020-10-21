@@ -77,7 +77,7 @@ URLS_BY_STATE = {
 	"Idaho": {"code": "ID",
 			  "reg": "https://elections.sos.idaho.gov/ElectionLink/ElectionLink/VoterSearch.aspx",
 			  "polls": "https://elections.sos.idaho.gov/ElectionLink/ElectionLink/ViewPollingLocation.aspx",
-			  "cities": ["Coeur d'Alene", 'Boise', 'Pocatello']},
+			  "cities": ["Coeur d'Alene", 'Boise', 'Pocatello', 'Gooding', 'Salmon']},
 	"Illinois": {"code": "IL",
 				 "reg": "https://ova.elections.il.gov/RegistrationLookup.aspx",
 				 "polls": "https://ova.elections.il.gov/PollingPlaceLookup.aspx",
