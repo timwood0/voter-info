@@ -164,7 +164,7 @@ URLS_BY_STATE = {
 	"New York": {"code": "NY",
 				 "reg": "https://voterlookup.elections.ny.gov/",
 				 "polls": "https://voterlookup.elections.ny.gov/",
-				 "cities": ['New York City', 'Albany', 'Rochester', 'Buffalo', 'Binghamton', 'Syracuse', 'Binghamton']},
+				 "cities": ['New York City', 'Albany', 'Rochester', 'Buffalo', 'Binghamton', 'Syracuse', 'Ithaca']},
 	"North Carolina": {"code": "NC",
 					   "reg": "https://vt.ncsbe.gov/RegLkup/",
 					   "polls": "https://vt.ncsbe.gov/PPLkup/",

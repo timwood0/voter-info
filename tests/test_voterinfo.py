@@ -50,6 +50,7 @@ class TestVoterInfo(unittest.TestCase):
 		for state, state_info in URLS_BY_STATE.items():
 			print(state_info['abs'], state_info['regdl'])
 			cities = state_info['cities']
+			self.assertEqual(len(cities), len(set(cities)))  # Check no duplicates
 			print(hashtag(state_info['code'], plain=True))
 			for city in cities:
 				print(hashtag(city))
