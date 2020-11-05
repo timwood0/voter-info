@@ -2,6 +2,7 @@
 Simple app. to automate tweeting of voting resources for the U.S. 2020 election.
 
 Synopses:
+
 Voter info facet:
 `python voterinfo.py [["]U.S.-state-or-territory-specifier["]]`
 
