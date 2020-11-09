@@ -1,4 +1,5 @@
 VO = "https://www.vote.org"
+VA = "https://www.voteamerica.com"
 
 
 def url_encode_state(state):
@@ -6,11 +7,11 @@ def url_encode_state(state):
 
 
 def absentee_ballot(state):
-	return VO + f"/absentee-ballot/{url_encode_state(state)}"
+	return VA + f"/vote-by-mail-{url_encode_state(state)}"
 
 
 def reg_deadline(state):
-	return VO + f"/voter-registration-deadlines/#{url_encode_state(state)}"
+	return VA + f"/register-to-vote-{url_encode_state(state)}"
 
 
 def abroad(state):
@@ -62,9 +63,46 @@ URLS_BY_STATE = {
 				"polls": "https://registration.elections.myflorida.com/CheckVoterStatus",
 				"cities": ['Tampa', 'Orlando', 'Miami', 'Palm Beach', 'Tallahassee', 'Jacksonville', 'Pensacola']},
 	"Georgia": {"code": "GA",
-				"reg": "http://www.mvp.sos.ga.gov/",
+				# A bit better than voteamerica.org's for the Jan. 2021 runoff,
+				# but does not display in a Twitter card
+				# "abs": "https://www.vote411.org/georgia#absentee-ballot-process",
+				# "regdl": "https://sos.ga.gov/admin/files/2020%20Revised%20Short%20Calendar.pdf",
+				"regdl": "December 7, 2020",
+				"reg": "https://www.mvp.sos.ga.gov/",
 				"polls": "https://www.mvp.sos.ga.gov/MVP/mvp.do",
-				"cities": ['Atlanta', 'Savannah', 'Athens', 'Macon', 'Augusta', 'Valdosta', 'Warner Robins']},
+				# Cities expanded for Jan. 2021 U.S. Senate runoff
+				"cities": ['Albany', 'Morgan', 'Fort Gaines', 'Dawson', 'Cuthbert', 'Richland', 'Americus', 'Athens',
+							'Carrollton', 'Fort Oglethorpe', 'Talbotton', 'Hinesville', 'Macon', 'Louisville', 'Sparta',
+							'Warrenton', 'Crawfordville', 'Lawrenceville', 'Marietta', 'Douglasville', 'Jonesboro',
+							'McDonough', 'Conyers', 'Covington', 'Decatur', 'North Decatur', 'Savannah', 'Kennesaw',
+							'Statesboro', 'Dalton', 'Douglas', 'Tifton', 'Sandy Springs',
+						   # Colleges
+							'Georgia State', 'Georgia Tech', 'Agnes Scott', 'South', 'Oglethorpe',
+							'Univ. of Georgia', 'Strayer', 'Emory', 'Kennesaw State',
+							'Georgia Southern', 'Clark Atlanta', 'Morehouse', 'Brenau',
+							'Georgia Highlands', 'Spelman', 'Life', 'Savannah State',
+							'Abraham Baldwin', 'Dalton State', 'Columbia State',
+							'Georgia Gwinnet', 'Coastal Georgia', 'North Georgia', 'Clayton State',
+						    'Mercer', 'Middle Georgia', 'Georgia Southwestern', 'Albany State',
+						    'Georgia', 'Armstrong State', 'Point',
+						   # Things Georgia
+							'6LACK', 'Ray Charles', 'Allman Bros.', 'Otis Redding', 'R.E.M.', 'The B-52s',
+							'Alison Krauss', 'Atlanta Rhythm Section', 'CeeLo Green', 'Cat Power',
+						    'Confederate Railroad', 'Brenda Lee', 'Bubba Knight', 'Bob', 'Boyz \'N Da Hood',
+							'TLC', 'Trisha Yearwood', 'Alan Jackson', 'Outkast', 'Little Richard', 'James Brown',
+						    'John Mayer', 'Pylon', 'Zac Brown', 'Luke Bryan', 'Gladys Night', 'Indigo Girls',
+						    'Tetrarch', 'Collective Soul', 'Ludacris', 'Goodie Mob', 'YoungBloodZ', 'Lil Nas X',
+						    'Black Crowes', 'Ciara', 'Jermaine Dupri', 'Mastodon', 'Usher', 'Sugarland',
+						    'Florida Georgia Line', 'Falcons', 'Foxes and Fossils',
+							'Fort Benning', 'Marshall Tucker Band',
+						   # Pro athletes
+						     # Atlanta Falcons
+						    'Matt Ryan', 'Julio Jones', 'Alex Mack', 'Deion Jones', 'Grady Jarrett', 'James Carpenter',
+						    'Jake Matthews', 'Todd Gurley', 'Chris Lindstrom', 'Calvin Ridley', 'Kaleb McGary',
+						    'Tyeler Davison', 'Isaiah Oliver', 'Keanu Neal', 'Ricardo Allen', 'Dante Fowler',
+						    'Luke Stocker', 'Foyesade Oluokun', 'AJ Terrell', 'Hayden Hurst', 'Steven Means',
+						    'Hank Aaron'
+						   ]},
 	"Guam": {"code": "GU",
 				"abs": "https://gec.guam.gov/index.php/in-office/in-office-absentee-voting",
 				"reg": "https://gec.guam.gov/validate",

@@ -42,16 +42,16 @@ def build_voterinfo(state):
 		try:
 			# Select up to city_ct cities
 			cities = []
-			i = 0
-			while i < city_ct:
+			cities_found = 0
+			while cities_found < city_ct:
 				city_idx = random.randint(0, num_cities - 1)
 				city = state_info['cities'][city_idx]
 				if city in city_set:
 					cities.append(hashtag(city))
 					city_set.remove(city)
-					i += 1
+					cities_found += 1
 
-			effective_length, tweet_text = render_voterinfo(cities, state, state_info)
+			effective_length, tweet_text = render_voterinfo(cities, state)
 			break
 		except AssertionError:
 			tweet_text = ""
@@ -60,7 +60,10 @@ def build_voterinfo(state):
 	return effective_length, tweet_text
 
 
-def render_voterinfo(cities, state, state_info):
+def render_voterinfo(cities, state):
+	state_info = URLS_BY_STATE[state]
+
+	# XXX Tweet text should go in external files and be selectable.  Interface back to code?
 	tweet_text = f"""
 		{hashtag(state)} {hashtag(state_info['code'], True)} {hashtag('vote')}
 		{' '.join(cities)}
@@ -77,10 +80,10 @@ def render_voterinfo(cities, state, state_info):
 	# Now try to guess the length of the resulting tweet.  Twitter imposes the
 	# length limit after it shortens the links.
 	effective_length = (len(tweet_text)
-						- len(state_info['regdl']) - len(state_info['reg'])
-						- len(state_info['polls']) - len(state_info['abs'])
-						- len(state_info['abroad'])
-						+ 5 * TWITTER_SHORT_URL_LENGTH)
+		- len(state_info['regdl']) - len(state_info['reg'])
+		- len(state_info['polls']) - len(state_info['abs'])
+		- len(state_info['abroad'])
+		+ 5 * TWITTER_SHORT_URL_LENGTH)
 	assert effective_length <= twitter.api.CHARACTER_LIMIT
 	return effective_length, tweet_text
 
@@ -116,3 +119,22 @@ def build_socialize(user_id):
 	# print(effective_length, tweet_text)
 	assert effective_length <= twitter.api.CHARACTER_LIMIT
 	return effective_length, tweet_text
+
+
+def shell_string(chars):
+	if ' ' in chars:
+		# Ensure shell keeps words in a string
+		return f'"{chars}" '
+	else:
+		return f'{chars} '
+
+
+# For bot-driver script
+def all_states():
+	for state in URLS_BY_STATE.keys():
+		print(shell_string(state))
+
+# For bot-driver script
+def all_cities(state):
+	for city in URLS_BY_STATE[state]['cities']:
+		print(shell_string(city))

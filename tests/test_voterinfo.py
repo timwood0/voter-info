@@ -20,7 +20,7 @@ class TestVoterInfo(unittest.TestCase):
 		importlib.reload(voterinfo)
 
 	@mock.patch("transport.post_tweet")
-	def test_voterinfo_main(self, mock_post):
+	def test_01voterinfo_main(self, mock_post):
 		mock_post.return_value = 0
 		importlib.reload(voterinfo)
 		arg0 = sys.argv[0]
@@ -34,7 +34,7 @@ class TestVoterInfo(unittest.TestCase):
 		self.assertEqual(voterinfo.main(), 0)
 		# XXX Set & check a fake JSON return value for _mock_api.return_value.PostUpdate.return_value
 
-	def test_hashtag(self):
+	def test_02hashtag(self):
 		self.assertEqual(hashtag("North Dakota"), "#NorthDakota")
 		self.assertEqual(hashtag("RI", True), "#RI")
 		self.assertEqual(hashtag("dc"), "#Dc")
@@ -43,7 +43,7 @@ class TestVoterInfo(unittest.TestCase):
 		self.assertEqual(hashtag("District of Columbia"), "#DistrictOfColumbia")
 		self.assertEqual(hashtag("Oregon"), "#Oregon")
 
-	def test_urls_by_state(self):
+	def test_03urls_by_state(self):
 		def _present(field):
 			self.assertTrue(field in state_info, f"{field} missing from {state}")
 
@@ -61,9 +61,9 @@ class TestVoterInfo(unittest.TestCase):
 			_present("polls")
 			_present("cities")
 
-	def test_build_voterinfo(self):
+	def test_04build_voterinfo(self):
 		random.seed(0)
-		for state in ("California", "Idaho", "West Virginia", "Puerto Rico", "Guam"):
+		for state in ("Georgia", "California", "Idaho", "West Virginia", "Puerto Rico", "Guam"):
 			effective_len, tweet = build_voterinfo(state)
 			print(effective_len, tweet)
 			assert len(tweet) > 0  # XXX This could flap
@@ -74,7 +74,7 @@ class TestVoterInfo(unittest.TestCase):
 	@mock.patch("twitter.Api.GetFollowerIDs")
 	@mock.patch("twitter.Api.GetFriendIDs")
 	@mock.patch("transport.post_tweet")
-	def test_socialize_main(self, mock_post, mock_friends, mock_followers, _):
+	def test_05socialize_main(self, mock_post, mock_friends, mock_followers, _):
 		mock_post.return_value = 0
 		importlib.reload(socialize)
 		bs_fn = build_socialize
@@ -86,7 +86,7 @@ class TestVoterInfo(unittest.TestCase):
 		mock_post.assert_has_calls([mock.call(bs_fn, 13027572), mock.call(bs_fn, 153942024), mock.call(bs_fn, 26825139)],
 									 any_order=True)
 
-	def test_build_socialize(self):
+	def test_06build_socialize(self):
 		effective_length, tweet_text = build_socialize(MY_TWITTER_UID)
 		print(effective_length)
 		print(tweet_text)
@@ -97,7 +97,7 @@ class TestVoterInfo(unittest.TestCase):
 		return [User(id=n, screen_name=n) for n in screen_name]
 
 	@mock.patch("twitter.Api.UsersLookup")
-	def test_process_do_not_call(self, mock_users_lookup):
+	def test_07process_do_not_call(self, mock_users_lookup):
 		mock_users_lookup.side_effect = self._fake_users
 		dnc = open(os.path.join(sys.path[0], "do_not_call.txt"))
 		line_ct = 0
