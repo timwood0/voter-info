@@ -7,18 +7,29 @@ def url_encode_state(state):
 
 
 def absentee_ballot(state):
-	return VA + f"/vote-by-mail-{url_encode_state(state)}"
+	return VA + f"/absentee-mail-ballot/{url_encode_state(state)}/#guide"
 
 
 def reg_deadline(state):
-	return VA + f"/register-to-vote-{url_encode_state(state)}"
+	return VA + f"/voter-registration/{url_encode_state(state)}/#guide"
 
 
 def abroad(state):
 	return f"https://www.votefromabroad.org/states/{URLS_BY_STATE[state]['code']}"
 
 
-# Static info, extended with initializers below
+# Static info, extended with initializers below.
+# Static schema:
+# 	code: Postal state/territory code
+# 	reg: URL for state voter registration
+# 	polls: URL for state polling places
+#	cities: Places people and things in state
+#	vote: Optional call to action for hashtag
+# Dynamic schema:
+#	abs: Absentee ballot info (3rd party)
+#	regdl: Registration deadlines (3rd party)
+#	abroad: Voters abroad info
+# XXX More of this should go in configuration.
 URLS_BY_STATE = {
 	"Alabama": {"code": "AL",
 				"reg": "https://myinfo.alabamavotes.gov/VoterView/RegistrantSearch.do",
@@ -40,7 +51,7 @@ URLS_BY_STATE = {
 				   "reg": "https://www.sos.ca.gov/elections/registration-status/",
 				   "polls": "https://www.sos.ca.gov/elections/polling-place/",
 				   "cities": ['Los Angeles', 'San Francisco', 'Sacramento', 'San Diego', 'Anaheim', 'Fresno',
-							  'Modesto', 'Salinas', 'Redding']},
+					          'Modesto', 'Salinas', 'Redding']},
 	"Colorado": {"code": "CO",
 				 "reg": "https://www.sos.state.co.us/voter/pages/pub/olvr/findVoterReg.xhtml",
 				 "polls": "https://www.sos.state.co.us/pubs/elections/Resources/CountyElectionOffices.html",

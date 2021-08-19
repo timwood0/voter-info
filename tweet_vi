@@ -8,9 +8,13 @@
 exec=
 [[ "$-" =~ .*x.* ]] && exec=:
 
+usage() {
+	echo "Usage: $0 [-h] [-s state] [-q number-of-tweets] [-w time-period(max 86400 sec.)]"
+}
+
 while getopts hs:q:w: option; do
 	case $option in
-	h) echo "Usage: $0 [-h] [-s state] [-q number-of-tweets] [-w time-period(max 86400 sec.)]"
+	h) usage
 		exit 0
 		;;
 	s) state="$OPTARG"
@@ -19,6 +23,8 @@ while getopts hs:q:w: option; do
 		;;
 	w) waking_hrs="$OPTARG"
 		;;
+	?) usage
+		exit 1
 	esac
 done
 

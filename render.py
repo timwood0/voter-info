@@ -65,7 +65,7 @@ def render_voterinfo(cities, state):
 
 	# XXX Tweet text should go in external files and be selectable.  Interface back to code?
 	tweet_text = f"""
-		{hashtag(state)} {hashtag(state_info['code'], True)} {hashtag('vote')}
+		{hashtag(state)} {hashtag(state_info['code'], True)} {hashtag(state_info.get('vote', 'vote'))}
 		{' '.join(cities)}
 		Reg. deadline: {state_info['regdl']}
 		Check registration: {state_info['reg']}
