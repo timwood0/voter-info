@@ -9,8 +9,12 @@ Voter info facet:
 Socialize facet:
 `python socialize.py [-l limit]`
 
-This tool contains two facets, or executable entry-points, one to tweet voter info by U.S. states and territories,
-the other to tweet mutual followers asking them to search up and retweet the voter-info tweets.
+Driver:
+`./tweet_vi [-h] [-s state] [-q number-of-tweets] [-w time-period(max 86400 sec.)]`
+
+This tool contains two main facets, or executable entry-points, one to tweet voter info by U.S. states and territories,
+the other to tweet mutual followers asking them to search up and retweet the voter-info tweets.  It includes a
+driver script, `tweet_vi`, to automate tweeting to many states, or repeatedly to a single state.
 
 `voterinfo.py` by default issues a tweet on Twitter containing
 links to on-line resources for voters for a single random U.S. state or territory.
@@ -35,8 +39,9 @@ The script will exit with non-zero status if it cannot compose a tweet in its st
 that fits within Twitter's length limit for a tweet.  This is a rare occurrence, only happening when
 `voterinfo.py` cannot include at least one city in the state or territory in the tweet without exceeding the limit.
 
-Acknowledgement and thanks are due [vote.org](https://vote.org) for their carefully-assembled pages of state-by-state
-voter resources, which facilitated building this tool.
+Acknowledgement and thanks are due [voteamerica.com](https://voteamerica.com) for their carefully-assembled
+pages of state-by-state voter resources, which facilitated building this tool; also to Twitter:@balkingpoints for
+developing the tweets-to-cities targeting strategy.
 
 Requirements:  
 - Python >=3.6
@@ -44,7 +49,7 @@ Requirements:
 - See `requirements.txt`
 
 License:
-   Copyright 2020, Timothy E. Wood
+   Copyright 2020-21, Timothy E. Wood
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
