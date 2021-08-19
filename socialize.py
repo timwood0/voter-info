@@ -3,6 +3,7 @@ import os
 import argparse
 
 import render
+from campaign import campaigns
 from transport import api, post_tweet
 
 
@@ -12,13 +13,15 @@ def main():
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-l', '--limit', dest='limit', type=int, default=0)
-	parser.add_argument('tweep', type=str, nargs='?')
+	parser.add_argument('campaign', type=str, help='Symbolic name of campaign, e.g. 2020_presidential.')
+	parser.add_argument('tweep', type=str, nargs='?', help="Name of a Twitter user.")
 	args = parser.parse_args()
 
+	campaign = campaigns[args.campaign]
 	if args.tweep:
 		# Tweet an individual (ignoring DNC)
 		user_id = api.GetUser(screen_name=args.tweep).id
-		ret_status = post_tweet(render.build_socialize, user_id)
+		ret_status = post_tweet(render.build_socialize, campaign, user_id)
 	else:
 		# Tweet our tweeps
 		followers = set(api.GetFollowerIDs())
@@ -33,7 +36,7 @@ def main():
 		print(f"Limit: {args.limit}, Followers: {len(followers)}, Following: {len(following)}, "
 			  f"Tweeps: {len_tweeps}, Tweeps - DNC: {len(tweeps)}")
 		for user_id in tweeps:
-			ret_status = post_tweet(render.build_socialize, user_id)
+			ret_status = post_tweet(render.build_socialize, campaign, user_id)
 			count += 1
 			print(f'Count: {count}', file=sys.stderr)
 			if count == args.limit:

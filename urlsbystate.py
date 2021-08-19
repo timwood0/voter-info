@@ -1,5 +1,68 @@
 VO = "https://www.vote.org"
 VA = "https://www.voteamerica.com"
+CODE = 'code'
+REG = 'reg'
+POLLS = 'polls'
+CITIES = 'cities'  # XXX This should move to campaign.Campaign but it's disruptive
+ABS = 'abs'
+REGDL = 'regdl'
+ABROAD = 'abroad'
+
+
+class States:
+	ALABAMA = 'Alabama'
+	ALASKA = 'Alaska'
+	ARIZONA = 'Arizona'
+	ARKANSAS = 'Arkansas'
+	CALIFORNIA = 'California'
+	COLORADO = 'Colorado'
+	CONNECTICUT = 'Connecticut'
+	DELAWARE = 'Delaware'
+	DISTRICT_OF_COLUMBIA = 'District of Columbia'
+	FLORIDA = 'Florida'
+	GEORGIA = 'Georgia'
+	GUAM = 'Guam'
+	HAWAII = 'Hawaii'
+	IDAHO = 'Idaho'
+	ILLINOIS = 'Illinois'
+	INDIANA = 'Indiana'
+	IOWA = 'Iowa'
+	KANSAS = 'Kansas'
+	KENTUCKY = 'Kentucky'
+	LOUISIANA = 'Louisiana'
+	MAINE = 'Maine'
+	MARYLAND = 'Maryland'
+	MASSACHUSETTS = 'Massachusetts'
+	MICHIGAN = 'Michigan'
+	MINNESOTA = 'Minnesota'
+	MISSISSIPPI = 'Mississippi'
+	MISSOURI = 'Missouri'
+	MONTANA = 'Montana'
+	NEBRASKA = 'Nebraska'
+	NEVADA = 'Nevada'
+	NEW_HAMPSHIRE = 'New Hampshire'
+	NEW_JERSEY = 'New Jersey'
+	NEW_MEXICO = 'New Mexico'
+	NEW_YORK = 'New York'
+	NORTH_CAROLINA = 'North Carolina'
+	NORTH_DAKOTA = 'North Dakota'
+	OHIO = 'Ohio'
+	OKLAHOMA = 'Oklahoma'
+	OREGON = 'Oregon'
+	PENNSYLVANIA = 'Pennsylvania'
+	PUERTO_RICO = 'Puerto Rico'
+	RHODE_ISLAND = 'Rhode Island'
+	SOUTH_CAROLINA = 'South Carolina'
+	SOUTH_DAKOTA = 'South Dakota'
+	TENNESSEE = 'Tennessee'
+	TEXAS = 'Texas'
+	UTAH = 'Utah'
+	VERMONT = 'Vermont'
+	VIRGINIA = 'Virginia'
+	WASHINGTON = 'Washington'
+	WEST_VIRGINIA = 'West Virginia'
+	WISCONSIN = 'Wisconsin'
+	WYOMING = 'Wyoming'
 
 
 def url_encode_state(state):
@@ -15,7 +78,7 @@ def reg_deadline(state):
 
 
 def abroad(state):
-	return f"https://www.votefromabroad.org/states/{URLS_BY_STATE[state]['code']}"
+	return f"https://www.votefromabroad.org/states/{URLS_BY_STATE[state][CODE]}"
 
 
 # Static info, extended with initializers below.
@@ -31,281 +94,184 @@ def abroad(state):
 #	abroad: Voters abroad info
 # XXX More of this should go in configuration.
 URLS_BY_STATE = {
-	"Alabama": {"code": "AL",
-				"reg": "https://myinfo.alabamavotes.gov/VoterView/RegistrantSearch.do",
-				"polls": "https://myinfo.alabamavotes.gov/VoterView/PollingPlaceSearch.do",
-				"cities": ['Birmingham', 'Anniston', 'Montgomery', 'Tuscaloosa', 'Mobile', 'Muscle Shoals', 'Dothan']},
-	"Alaska": {"code": "AK",
-			   "reg": "https://myvoterinformation.alaska.gov/",
-			   "polls": "https://myvoterinformation.alaska.gov/",
-			   "cities": ['Anchorage', 'Fairbanks', 'Juneau', 'Nome', 'Dillingham', 'Barrow', 'Kodiak']},
-	"Arizona": {"code": "AZ",
-				"reg": "https://voter.azsos.gov/VoterView/RegistrantSearch.do",
-				"polls": "https://my.arizona.vote/PortalList.aspx",
-				"cities": ['Phoenix', 'Flagstaff', 'Tucson', 'Yuma', 'Bullhead City', 'Tuba City', 'Prescott']},
-	"Arkansas": {"code": "AR",
-				 "reg": "https://www.voterview.ar-nova.org/voterview",
-				 "polls": "https://www.voterview.ar-nova.org/voterview",
-				 "cities": ['Little Rock', 'Hot Springs', 'Pine Bluff', 'Hope', 'Fort Smith', 'Fayetteville']},
-	"California": {"code": "CA",
-				   "reg": "https://www.sos.ca.gov/elections/registration-status/",
-				   "polls": "https://www.sos.ca.gov/elections/polling-place/",
-				   "cities": ['Los Angeles', 'San Francisco', 'Sacramento', 'San Diego', 'Anaheim', 'Fresno',
-					          'Modesto', 'Salinas', 'Redding']},
-	"Colorado": {"code": "CO",
-				 "reg": "https://www.sos.state.co.us/voter/pages/pub/olvr/findVoterReg.xhtml",
-				 "polls": "https://www.sos.state.co.us/pubs/elections/Resources/CountyElectionOffices.html",
-				 "cities": ['Colorado Springs', 'Denver', 'Boulder', 'Grand Junction', 'Pueblo',
-							'Greeley', 'Sterling']},
-	"Connecticut": {"code": "CT",
-					"reg": "https://www.dir.ct.gov/sots/LookUp.aspx",
-					"polls": "https://portaldir.ct.gov/sots/LookUp.aspx",
-					"cities": ['Hartford', 'Stamford', 'New Haven', 'Bridgeport', 'Waterbury', 'Danbury', 'Norwich']},
-	"Delaware": {"code": "DE",
-				 "reg": "https://ivote.de.gov/voterview",
-				 "polls": "https://ivote.de.gov/VoterView",
-				 "cities": ['Dover', 'Wilmington', 'New Castle', 'Milford', 'Slaughter Beach', 'Seaford']},
-	"District of Columbia": {"code": "DC",
-						"reg": "https://www.dcboe.org/Voters/Register-To-Vote/Check-Voter-Registration-Status",
-						"polls": "https://www.dcboe.org/Voters/Where-to-Vote/Find-Out-Where-to-Vote",
-						"cities": ['Washington']},
-	"Florida": {"code": "FL",
-				"reg": "http://registration.elections.myflorida.com/CheckVoterStatus",
-				"polls": "https://registration.elections.myflorida.com/CheckVoterStatus",
-				"cities": ['Tampa', 'Orlando', 'Miami', 'Palm Beach', 'Tallahassee', 'Jacksonville', 'Pensacola']},
-	"Georgia": {"code": "GA",
+	"Alabama": {CODE: "AL",
+				REG: "https://myinfo.alabamavotes.gov/VoterView/RegistrantSearch.do",
+				POLLS: "https://myinfo.alabamavotes.gov/VoterView/PollingPlaceSearch.do"},
+	"Alaska": {CODE: "AK",
+			   REG: "https://myvoterinformation.alaska.gov/",
+			   POLLS: "https://myvoterinformation.alaska.gov/"},
+	"Arizona": {CODE: "AZ",
+				REG: "https://voter.azsos.gov/VoterView/RegistrantSearch.do",
+				POLLS: "https://my.arizona.vote/PortalList.aspx"},
+	"Arkansas": {CODE: "AR",
+				 REG: "https://www.voterview.ar-nova.org/voterview",
+				 POLLS: "https://www.voterview.ar-nova.org/voterview"},
+	"California": {CODE: "CA",
+				   REG: "https://www.sos.ca.gov/elections/registration-status/",
+				   POLLS: "https://www.sos.ca.gov/elections/polling-place/"},
+	"Colorado": {CODE: "CO",
+				 REG: "https://www.sos.state.co.us/voter/pages/pub/olvr/findVoterReg.xhtml",
+				 POLLS: "https://www.sos.state.co.us/pubs/elections/Resources/CountyElectionOffices.html"},
+	"Connecticut": {CODE: "CT",
+					REG: "https://www.dir.ct.gov/sots/LookUp.aspx",
+					POLLS: "https://portaldir.ct.gov/sots/LookUp.aspx"},
+	"Delaware": {CODE: "DE",
+				 REG: "https://ivote.de.gov/voterview",
+				 POLLS: "https://ivote.de.gov/VoterView"},
+	"District of Columbia": {CODE: "DC",
+						REG: "https://www.dcboe.org/Voters/Register-To-Vote/Check-Voter-Registration-Status",
+						POLLS: "https://www.dcboe.org/Voters/Where-to-Vote/Find-Out-Where-to-Vote"},
+	"Florida": {CODE: "FL",
+				REG: "http://registration.elections.myflorida.com/CheckVoterStatus",
+				POLLS: "https://registration.elections.myflorida.com/CheckVoterStatus"},
+	"Georgia": {CODE: "GA",
 				# A bit better than voteamerica.org's for the Jan. 2021 runoff,
 				# but does not display in a Twitter card
-				# "abs": "https://www.vote411.org/georgia#absentee-ballot-process",
-				# "regdl": "https://sos.ga.gov/admin/files/2020%20Revised%20Short%20Calendar.pdf",
-				"regdl": "December 7, 2020",
-				"reg": "https://www.mvp.sos.ga.gov/",
-				"polls": "https://www.mvp.sos.ga.gov/MVP/mvp.do",
-				# Cities expanded for Jan. 2021 U.S. Senate runoff
-				"cities": ['Albany', 'Morgan', 'Fort Gaines', 'Dawson', 'Cuthbert', 'Richland', 'Americus', 'Athens',
-							'Carrollton', 'Fort Oglethorpe', 'Talbotton', 'Hinesville', 'Macon', 'Louisville', 'Sparta',
-							'Warrenton', 'Crawfordville', 'Lawrenceville', 'Marietta', 'Douglasville', 'Jonesboro',
-							'McDonough', 'Conyers', 'Covington', 'Decatur', 'North Decatur', 'Savannah', 'Kennesaw',
-							'Statesboro', 'Dalton', 'Douglas', 'Tifton', 'Sandy Springs',
-						   # Colleges
-							'Georgia State', 'Georgia Tech', 'Agnes Scott', 'South', 'Oglethorpe',
-							'Univ. of Georgia', 'Strayer', 'Emory', 'Kennesaw State',
-							'Georgia Southern', 'Clark Atlanta', 'Morehouse', 'Brenau',
-							'Georgia Highlands', 'Spelman', 'Life', 'Savannah State',
-							'Abraham Baldwin', 'Dalton State', 'Columbia State',
-							'Georgia Gwinnet', 'Coastal Georgia', 'North Georgia', 'Clayton State',
-						    'Mercer', 'Middle Georgia', 'Georgia Southwestern', 'Albany State',
-						    'Georgia', 'Armstrong State', 'Point',
-						   # Things Georgia
-							'6LACK', 'Ray Charles', 'Allman Bros.', 'Otis Redding', 'R.E.M.', 'The B-52s',
-							'Alison Krauss', 'Atlanta Rhythm Section', 'CeeLo Green', 'Cat Power',
-						    'Confederate Railroad', 'Brenda Lee', 'Bubba Knight', 'Bob', 'Boyz \'N Da Hood',
-							'TLC', 'Trisha Yearwood', 'Alan Jackson', 'Outkast', 'Little Richard', 'James Brown',
-						    'John Mayer', 'Pylon', 'Zac Brown', 'Luke Bryan', 'Gladys Night', 'Indigo Girls',
-						    'Tetrarch', 'Collective Soul', 'Ludacris', 'Goodie Mob', 'YoungBloodZ', 'Lil Nas X',
-						    'Black Crowes', 'Ciara', 'Jermaine Dupri', 'Mastodon', 'Usher', 'Sugarland',
-						    'Florida Georgia Line', 'Falcons', 'Foxes and Fossils',
-							'Fort Benning', 'Marshall Tucker Band',
-						   # Pro athletes
-						     # Atlanta Falcons
-						    'Matt Ryan', 'Julio Jones', 'Alex Mack', 'Deion Jones', 'Grady Jarrett', 'James Carpenter',
-						    'Jake Matthews', 'Todd Gurley', 'Chris Lindstrom', 'Calvin Ridley', 'Kaleb McGary',
-						    'Tyeler Davison', 'Isaiah Oliver', 'Keanu Neal', 'Ricardo Allen', 'Dante Fowler',
-						    'Luke Stocker', 'Foyesade Oluokun', 'AJ Terrell', 'Hayden Hurst', 'Steven Means',
-						    'Hank Aaron'
-						   ]},
-	"Guam": {"code": "GU",
-				"abs": "https://gec.guam.gov/index.php/in-office/in-office-absentee-voting",
-				"reg": "https://gec.guam.gov/validate",
-				"regdl": "https://gec.guam.gov/index.php/gec-2018-election-important-dates",
-				"polls": "https://drive.google.com/file/d/1w6pdGRrjwqVMa8cRbx_-9zObMCVQQ3aR/view",
-				"cities": ['Tamuning', 'Santa Rita', 'Piti', 'Dededo']},
-	"Hawaii": {"code": "HI",
-			   "reg": "https://olvr.hawaii.gov/register.aspx",
-			   "polls": "https://olvr.hawaii.gov/altpollingplacesearch.aspx",
-			   "cities": ['Honolulu', 'Kahului', 'Hilo', 'Kapaa', 'Kaunakakai', 'Lanai City']},
-	"Idaho": {"code": "ID",
-			  "reg": "https://elections.sos.idaho.gov/ElectionLink/ElectionLink/VoterSearch.aspx",
-			  "polls": "https://elections.sos.idaho.gov/ElectionLink/ElectionLink/ViewPollingLocation.aspx",
-			  "cities": ["Coeur d'Alene", 'Boise', 'Pocatello', 'Gooding', 'Salmon', 'Lewiston']},
-	"Illinois": {"code": "IL",
-				 "reg": "https://ova.elections.il.gov/RegistrationLookup.aspx",
-				 "polls": "https://ova.elections.il.gov/PollingPlaceLookup.aspx",
-				 "cities": ['Chicago', 'Evanston', 'East St. Louis', 'Peoria', 'Springfield', 'Rockford',
-							'Decatur', 'Rock Island']},
-	"Indiana": {"code": "IN",
-				"reg": "https://indianavoters.in.gov/",
-				"polls": "https://indianavoters.in.gov/",
-				"cities": ['Indianapolis', 'Gary', 'Fort Wayne', 'Terre Haute', 'South Bend',
-						   'Evansville', 'Lafayette']},
-	"Iowa": {"code": "IA",
-			 "reg": "https://sos.iowa.gov/elections/VoterReg/RegToVote/search.aspx",
-			 "polls": "https://sos.iowa.gov/elections/voterreg/pollingplace/search.aspx",
-			 "cities": ['Dubuque', 'Ames', 'Cedar Rapids', 'Des Moines', 'Sioux City', 'Ft. Dodge', 'Council Bluffs']},
-	"Kansas": {"code": "KS",
-			   "reg": "https://myvoteinfo.voteks.org/VoterView/RegistrantSearch.do",
-			   "polls": "https://myvoteinfo.voteks.org/VoterView/PollingPlaceSearch.do",
-			   "cities": ['Kansas City', 'Topeka', 'Wichita', 'Dodge City', 'Manhattan', 'Salina', 'Concordia']},
-	"Kentucky": {"code": "KY",
-				 "reg": "https://vrsws.sos.ky.gov/VIC/",
-				 "polls": "https://www.sos.ky.gov/elections/Pages/Polling-Locations.aspx",
-				 "cities": ['Louisville', 'Lexington', 'Bowling Green', 'Frankfort', 'Paducah',
-							'Mayfield', 'Danville']},
-	"Louisiana": {"code": "LA",
-				  "reg": "https://voterportal.sos.la.gov/",
-				  "polls": "https://voterportal.sos.la.gov/",
-				  "cities": ['New Orleans', 'Shreveport', 'Baton Rouge', 'Monroe', 'Lake Charles', 'Evangeline']},
-	"Maine": {"code": "ME",
-			  "reg": "http://www.maine.gov/portal/government/edemocracy/voter_lookup.php",
-			  "polls": "https://www1.maine.gov/portal/government/edemocracy/voter_lookup.php",
-			  "cities": ['Bangor', 'Lewiston', 'Augusta', 'Portland', 'Presque Isle', 'Waterville']},
-	"Maryland": {"code": "MD",
-				 "reg": "https://voterservices.elections.maryland.gov/votersearch",
-				 "polls": "https://elections.maryland.gov/voting/where.html",
-				 "cities": ['Baltimore', 'Annapolis', 'Hagerstown', 'Cumberland', 'Aberdeen', 'Salisbury']},
-	"Massachusetts": {"code": "MA",
-					  "reg": "https://www.sec.state.ma.us/VoterRegistrationSearch/MyVoterRegStatus.aspx",
-					  "polls": "https://www.sec.state.ma.us/wheredoivotema/bal/MyElectionInfo.aspx",
-					  "cities": ['Boston', 'Springfield', 'Newton', 'Worcester', 'New Bedford', 'Quincy', 'Holyoke']},
-	"Michigan": {"code": "MI",
-				 "reg": "https://mvic.sos.state.mi.us/",
-				 "polls": "https://mvic.sos.state.mi.us/",
-				 "cities": ['Detroit', 'Flint', 'Ann Arbor', 'Grand Rapids', 'Lansing', 'Marquette', 'Saginaw']},
-	"Minnesota": {"code": "MN",
-				  "reg": "https://mnvotes.sos.state.mn.us/VoterStatus.aspx",
-				  "polls": "https://pollfinder.sos.state.mn.us/",
-				  "cities": ['Minneapolis', 'St. Paul', 'Rochester', 'Grand Forks', 'Duluth',
-							 'Bloomington', 'St. Cloud']},
-	"Mississippi": {"code": "MS",
-					"reg": "https://www.msegov.com/sos/voter_registration/AmIRegistered",
-					"polls": "https://www.sos.ms.gov/PollingPlace/Pages/default.aspx",
-					"cities": ['Hattiesburg', 'Jackson', 'Biloxi', 'Gulfport', 'Greenwood', 'Columbus', 'Meridian']},
-	"Missouri": {"code": "MO",
-				 "reg": "https://s1.sos.mo.gov/elections/voterlookup/",
-				 "polls": "https://voteroutreach.sos.mo.gov/PRD/VoterOutreach/VOSearch.aspx",
-				 "cities": ['St. Louis', 'Kansas City', 'Springfield', 'Independence', 'Jefferson City',
-							'Joplin', 'Ferguson']},
-	"Montana": {"code": "MT",
-				"reg": "https://app.mt.gov/voterinfo/",
-				"polls": "https://app.mt.gov/voterinfo/",
-				"cities": ['Bozeman', 'Butte', 'Great Falls', 'Billings', 'Missoula', 'Helena', 'Wolf Point']},
-	"Nebraska": {"code": "NE",
-				 "reg": "https://www.votercheck.necvr.ne.gov/VoterView/RegistrantSearch.do",
-				 "polls": "https://www.votercheck.necvr.ne.gov/VoterView/PollingPlaceSearch.do",
-				 "cities": ['Omaha', 'Lincoln', 'North Platte', 'Valentine', 'Scottsbluff', 'Columbus']},
-	"Nevada": {"code": "NV",
-			   "reg": "https://nvsos.gov/votersearch/",
-			   "polls": "https://www.nvsos.gov/votersearch/",
-			   "cities": ['Las Vegas', 'Carson City', 'Reno', 'Elko', 'Winnemucca', 'Henderson', 'Boulder City']},
-	"New Hampshire": {"code": "NH",
-					  "reg": "https://app.sos.nh.gov/Public/PartyInfo.aspx",
-					  "polls": "https://app.sos.nh.gov/Public/PollingPlaceSearch.aspx",
-					  "cities": ['Berlin', 'Manchester', 'Nashua', 'Concord', 'Hanover', 'Portsmouth', 'Keene']},
-	"New Jersey": {"code": "NJ",
-				   "reg": "https://voter.njsvrs.com/PublicAccess/jsp/UserLogin/Login.jsp",
-				   "polls": "https://voter.svrs.nj.gov/polling-place-search",
-				   "cities": ['Newark', 'Jersey City', 'Morristown', 'Trenton', 'New Brunswick',
-							  'Vineland', 'Camden', 'Paterson']},
-	"New Mexico": {"code": "NM",
-				   "reg": "https://voterportal.servis.sos.state.nm.us/WhereToVote.aspx",
-				   "polls": "https://voterportal.servis.sos.state.nm.us/WhereToVoteAddress.aspx",
-				   "cities": ['Gallup', 'Albuquerque', 'Santa Fe', 'Las Cruces', 'Los Alamos', 'Roswell']},
-	"New York": {"code": "NY",
-				 "reg": "https://voterlookup.elections.ny.gov/",
-				 "polls": "https://voterlookup.elections.ny.gov/",
-				 "cities": ['New York City', 'Albany', 'Rochester', 'Buffalo', 'Binghamton', 'Syracuse', 'Ithaca']},
-	"North Carolina": {"code": "NC",
-					   "reg": "https://vt.ncsbe.gov/RegLkup/",
-					   "polls": "https://vt.ncsbe.gov/PPLkup/",
-					   "cities": ['Raleigh', 'Greensboro', 'Winston-Salem', 'Charlotte', 'Wilmington',
-								  'Asheville', 'Fayetteville']},
-	"North Dakota": {"code": "ND",
-					 "reg": "https://vip.sos.nd.gov/PortalListDetails.aspx?ptlhPKID=79&ptlPKID=7",
-					 "polls": "https://vip.sos.nd.gov/wheretovote.aspx",
-					 "cities": ['Grand Forks', 'Fargo', 'Bismarck', 'Jamestown', 'Dickinson', 'Minot']},
-	"Ohio": {"code": "OH",
-			 "reg": "https://voterlookup.ohiosos.gov/voterlookup.aspx",
-			 "polls": "https://voterlookup.ohiosos.gov/VoterLookup.aspx",
-			 "cities": ['Columbus', 'Akron', 'Cleveland', 'Toledo', 'Cincinnati', 'Dayton', 'Chillicothe']},
-	"Oklahoma": {"code": "OK",
-				 "reg": "https://services.okelections.us/voterSearch.aspx",
-				 "polls": "https://okvoterportal.okelections.us/",
-				 "cities": ['Oklahoma City', 'Tulsa', 'Muskogee', 'Enid', 'Guymon', 'Ardmore']},
-	"Oregon": {"code": "OR",
-			   "reg": "https://secure.sos.state.or.us/orestar/vr/showVoterSearch.do?source=SOS",
-			   "polls": "https://sos.oregon.gov/voting/Pages/drop-box-locator.aspx",
-			   "cities": ['Portland', 'Salem', 'Eugene', 'Ashland', 'Medford', 'Bend', 'Klamath Falls', 'Pendleton']},
-	"Pennsylvania": {"code": "PA",
-					 "reg": "https://www.pavoterservices.state.pa.us/Pages/VoterRegistrationStatus.aspx",
-					 "polls": "https://www.pavoterservices.pa.gov/Pages/PollingPlaceInfo.aspx",
-					 "cities": ['Philadelphia', 'Pittsburgh', 'Scranton', 'Harrisburg',
-								'Allentown', 'Johnstown', 'Altoona', 'Gettysburg']},
-	"Puerto Rico": {"code": "PR",
-					"reg": "http://consulta.ceepur.org/",
-					"regdl": "http://ww2.ceepur.org/Home/EducacionElectoral",
-					"abs": "http://ww2.ceepur.org/Home/SolicituddeVoto#VotoAusente",
-					"polls": "http://www.ceepur.org/directorio.htm",
-					"cities": ['San Juan', 'Mayaguez', 'Arecibo', 'Ponce', 'Caguas']},
-	"Rhode Island": {"code": "RI",
-					 "reg": "https://vote.sos.ri.gov/Home/UpdateVoterRecord?ActiveFlag=0",
-					 "polls": "https://vote.sos.ri.gov/Home/PollingPlaces?ActiveFlag=2",
-					 "cities": ['Providence', 'Cranston', 'Metunuck', 'Warwick', 'Newport', 'Woonsocket']},
-	"South Carolina": {"code": "SC",
-					   "reg": "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx"
+				# ABS: "https://www.vote411.org/georgia#absentee-ballot-process",
+				# REGDL: "https://sos.ga.gov/admin/files/2020%20Revised%20Short%20Calendar.pdf",
+				REGDL: "December 7, 2020",
+				REG: "https://www.mvp.sos.ga.gov/",
+				POLLS: "https://www.mvp.sos.ga.gov/MVP/mvp.do"},
+	"Guam": {CODE: "GU",
+				ABS: "https://gec.guam.gov/index.php/in-office/in-office-absentee-voting",
+				REG: "https://gec.guam.gov/validate",
+				REGDL: "https://gec.guam.gov/index.php/gec-2018-election-important-dates",
+				POLLS: "https://drive.google.com/file/d/1w6pdGRrjwqVMa8cRbx_-9zObMCVQQ3aR/view"},
+	"Hawaii": {CODE: "HI",
+			   REG: "https://olvr.hawaii.gov/register.aspx",
+			   POLLS: "https://olvr.hawaii.gov/altpollingplacesearch.aspx"},
+	"Idaho": {CODE: "ID",
+			  REG: "https://elections.sos.idaho.gov/ElectionLink/ElectionLink/VoterSearch.aspx",
+			  POLLS: "https://elections.sos.idaho.gov/ElectionLink/ElectionLink/ViewPollingLocation.aspx"},
+	"Illinois": {CODE: "IL",
+				 REG: "https://ova.elections.il.gov/RegistrationLookup.aspx",
+				 POLLS: "https://ova.elections.il.gov/PollingPlaceLookup.aspx"},
+	"Indiana": {CODE: "IN",
+				REG: "https://indianavoters.in.gov/",
+				POLLS: "https://indianavoters.in.gov/"},
+	"Iowa": {CODE: "IA",
+			 REG: "https://sos.iowa.gov/elections/VoterReg/RegToVote/search.aspx",
+			 POLLS: "https://sos.iowa.gov/elections/voterreg/pollingplace/search.aspx"},
+	"Kansas": {CODE: "KS",
+			   REG: "https://myvoteinfo.voteks.org/VoterView/RegistrantSearch.do",
+			   POLLS: "https://myvoteinfo.voteks.org/VoterView/PollingPlaceSearch.do"},
+	"Kentucky": {CODE: "KY",
+				 REG: "https://vrsws.sos.ky.gov/VIC/",
+				 POLLS: "https://www.sos.ky.gov/elections/Pages/Polling-Locations.aspx"},
+	"Louisiana": {CODE: "LA",
+				  REG: "https://voterportal.sos.la.gov/",
+				  POLLS: "https://voterportal.sos.la.gov/"},
+	"Maine": {CODE: "ME",
+			  REG: "http://www.maine.gov/portal/government/edemocracy/voter_lookup.php",
+			  POLLS: "https://www1.maine.gov/portal/government/edemocracy/voter_lookup.php"},
+	"Maryland": {CODE: "MD",
+				 REG: "https://voterservices.elections.maryland.gov/votersearch",
+				 POLLS: "https://elections.maryland.gov/voting/where.html"},
+	"Massachusetts": {CODE: "MA",
+					  REG: "https://www.sec.state.ma.us/VoterRegistrationSearch/MyVoterRegStatus.aspx",
+					  POLLS: "https://www.sec.state.ma.us/wheredoivotema/bal/MyElectionInfo.aspx"},
+	"Michigan": {CODE: "MI",
+				 REG: "https://mvic.sos.state.mi.us/",
+				 POLLS: "https://mvic.sos.state.mi.us/"},
+	"Minnesota": {CODE: "MN",
+				  REG: "https://mnvotes.sos.state.mn.us/VoterStatus.aspx",
+				  POLLS: "https://pollfinder.sos.state.mn.us/"},
+	"Mississippi": {CODE: "MS",
+					REG: "https://www.msegov.com/sos/voter_registration/AmIRegistered",
+					POLLS: "https://www.sos.ms.gov/PollingPlace/Pages/default.aspx"},
+	"Missouri": {CODE: "MO",
+				 REG: "https://s1.sos.mo.gov/elections/voterlookup/",
+				 POLLS: "https://voteroutreach.sos.mo.gov/PRD/VoterOutreach/VOSearch.aspx"},
+	"Montana": {CODE: "MT",
+				REG: "https://app.mt.gov/voterinfo/",
+				POLLS: "https://app.mt.gov/voterinfo/"},
+	"Nebraska": {CODE: "NE",
+				 REG: "https://www.votercheck.necvr.ne.gov/VoterView/RegistrantSearch.do",
+				 POLLS: "https://www.votercheck.necvr.ne.gov/VoterView/PollingPlaceSearch.do"},
+	"Nevada": {CODE: "NV",
+			   REG: "https://nvsos.gov/votersearch/",
+			   POLLS: "https://www.nvsos.gov/votersearch/"},
+	"New Hampshire": {CODE: "NH",
+					  REG: "https://app.sos.nh.gov/Public/PartyInfo.aspx",
+					  POLLS: "https://app.sos.nh.gov/Public/PollingPlaceSearch.aspx"},
+	"New Jersey": {CODE: "NJ",
+				   REG: "https://voter.njsvrs.com/PublicAccess/jsp/UserLogin/Login.jsp",
+				   POLLS: "https://voter.svrs.nj.gov/polling-place-search"},
+	"New Mexico": {CODE: "NM",
+				   REG: "https://voterportal.servis.sos.state.nm.us/WhereToVote.aspx",
+				   POLLS: "https://voterportal.servis.sos.state.nm.us/WhereToVoteAddress.aspx"},
+	"New York": {CODE: "NY",
+				 REG: "https://voterlookup.elections.ny.gov/",
+				 POLLS: "https://voterlookup.elections.ny.gov/"},
+	"North Carolina": {CODE: "NC",
+					   REG: "https://vt.ncsbe.gov/RegLkup/",
+					   POLLS: "https://vt.ncsbe.gov/PPLkup/"},
+	"North Dakota": {CODE: "ND",
+					 REG: "https://vip.sos.nd.gov/PortalListDetails.aspx?ptlhPKID=79&ptlPKID=7",
+					 POLLS: "https://vip.sos.nd.gov/wheretovote.aspx"},
+	"Ohio": {CODE: "OH",
+			 REG: "https://voterlookup.ohiosos.gov/voterlookup.aspx",
+			 POLLS: "https://voterlookup.ohiosos.gov/VoterLookup.aspx"},
+	"Oklahoma": {CODE: "OK",
+				 REG: "https://services.okelections.us/voterSearch.aspx",
+				 POLLS: "https://okvoterportal.okelections.us/"},
+	"Oregon": {CODE: "OR",
+			   REG: "https://secure.sos.state.or.us/orestar/vr/showVoterSearch.do?source=SOS",
+			   POLLS: "https://sos.oregon.gov/voting/Pages/drop-box-locator.aspx"},
+	"Pennsylvania": {CODE: "PA",
+					 REG: "https://www.pavoterservices.state.pa.us/Pages/VoterRegistrationStatus.aspx",
+					 POLLS: "https://www.pavoterservices.pa.gov/Pages/PollingPlaceInfo.aspx"},
+	"Puerto Rico": {CODE: "PR",
+					REG: "http://consulta.ceepur.org/",
+					REGDL: "http://ww2.ceepur.org/Home/EducacionElectoral",
+					ABS: "http://ww2.ceepur.org/Home/SolicituddeVoto#VotoAusente",
+					POLLS: "http://www.ceepur.org/directorio.htm"},
+	"Rhode Island": {CODE: "RI",
+					 REG: "https://vote.sos.ri.gov/Home/UpdateVoterRecord?ActiveFlag=0",
+					 POLLS: "https://vote.sos.ri.gov/Home/PollingPlaces?ActiveFlag=2"},
+	"South Carolina": {CODE: "SC",
+					   REG: "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx"
 							  "?PagMode=VoterInfo",
-					   "polls": "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx"
-								"?PageMode=VoterInfo",
-					   "cities": ['Charleston', 'Columbia', 'Greenville', 'Augusta', 'Springfield', 'Orangeburg']},
-	"South Dakota": {"code": "SD",
-					 "reg": "https://vip.sdsos.gov/viplogin.aspx",
-					 "polls": "https://vip.sdsos.gov/viplogin.aspx",
-					 "cities": ['Sioux Falls', 'Rapid City', 'Mitchell', 'Pierre', 'Springfield', 'Mobridge']},
-	"Tennessee": {"code": "TN",
-				  "reg": "https://tnmap.tn.gov/voterlookup/",
-				  "polls": "https://web.go-vote-tn.elections.tn.gov/",
-				  "cities": ['Memphis', 'Nashville', 'Chattanooga', 'Knoxville', 'Springfield',
-							 'Oak Ridge', 'Murfreesboro']},
-	"Texas": {"code": "TX",
-			  "reg": "https://teamrv-mvp.sos.texas.gov/MVP/mvp.do",
-			  "polls": "https://teamrv-mvp.sos.texas.gov/MVP/mvp.do",
-			  "cities": ['Dallas', 'Fort Worth', 'Austin', 'Houston', 'Amarillo', 'Lubbock',
-						 'El Paso', 'San Antonio', 'Big Spring']},
-	"Utah": {"code": "UT",
-			 "reg": "https://votesearch.utah.gov/voter-search/search/search-by-voter/voter-info",
-			 "polls": "https://votesearch.utah.gov/voter-search/search/search-by-address/how-and-where-can-i-vote",
-			 "cities": ['Provo', 'Salt Lake City', 'Ogden', 'Cedar City', 'Vernal', 'Logan']},
-	"Vermont": {"code": "VT",
-				"reg": "https://mvp.sec.state.vt.us/",
-				"polls": "https://mvp.sec.state.vt.us/",
-				"cities": ['Brattleboro', 'Rutland', 'Burlington', 'Barre', 'Montpelier', 'St. Albans']},
-	"Virginia": {"code": "VA",
-				 "reg": "https://vote.elections.virginia.gov/VoterInformation",
-				 "polls": "https://www.elections.virginia.gov/citizen-portal/index.html",
-				 "cities": ['Richmond', 'Vienna', 'Arlington', 'Norfolk', 'Portsmouth', 'Virginia Beach', 'Roanoke']},
-	"Washington": {"code": "WA",
-				   "reg": "https://www.sos.wa.gov/elections/myvote/",
-				   "polls": "https://www.sos.wa.gov/elections/auditors/",
-				   "cities": ['Seattle', 'Tacoma', 'Bellingham', 'Spokane', 'Walla Walla', 'Olympia', 'Richland']},
-	"West Virginia": {"code": "WV",
-					  "reg": "https://apps.sos.wv.gov/elections/voter/",
-					  "polls": "https://services.sos.wv.gov/Elections/Voter/FindMyPollingPlace",
-					  "cities": ['Huntington', 'Charleston', 'Parkersburg', 'Wheeling', 'Clarksburg', 'Beckley']},
-	"Wisconsin": {"code": "WI",
-				  "reg": "https://myvote.wi.gov/en-US/RegisterToVote",
-				  "polls": "https://myvote.wi.gov/en-US/FindMyPollingPlace",
-				  "cities": ['Milwaukee', 'Kenosha', 'Green Bay', 'Eau Claire', 'Madison', 'Wausau', 'Duluth']},
-	"Wyoming": {"code": "WY",
-				"reg": "https://sos.wyo.gov/Elections/Docs/WYCountyClerks.pdf",
-				"polls": "https://soswy.state.wy.us/Elections/PollPlace/Default.aspx",
-				"cities": ['Cheyenne', 'Sheridan', 'Cody', 'Rock Springs', 'Casper', 'Laramie']},
+					   POLLS: "https://info.scvotes.sc.gov/eng/voterinquiry/VoterInformationRequest.aspx"
+								"?PageMode=VoterInfo"},
+	"South Dakota": {CODE: "SD",
+					 REG: "https://vip.sdsos.gov/viplogin.aspx",
+					 POLLS: "https://vip.sdsos.gov/viplogin.aspx"},
+	"Tennessee": {CODE: "TN",
+				  REG: "https://tnmap.tn.gov/voterlookup/",
+				  POLLS: "https://web.go-vote-tn.elections.tn.gov/"},
+	"Texas": {CODE: "TX",
+			  REG: "https://teamrv-mvp.sos.texas.gov/MVP/mvp.do",
+			  POLLS: "https://teamrv-mvp.sos.texas.gov/MVP/mvp.do"},
+	"Utah": {CODE: "UT",
+			 REG: "https://votesearch.utah.gov/voter-search/search/search-by-voter/voter-info",
+			 POLLS: "https://votesearch.utah.gov/voter-search/search/search-by-address/how-and-where-can-i-vote"},
+	"Vermont": {CODE: "VT",
+				REG: "https://mvp.sec.state.vt.us/",
+				POLLS: "https://mvp.sec.state.vt.us/"},
+	"Virginia": {CODE: "VA",
+				 REG: "https://vote.elections.virginia.gov/VoterInformation",
+				 POLLS: "https://www.elections.virginia.gov/citizen-portal/index.html"},
+	"Washington": {CODE: "WA",
+				   REG: "https://www.sos.wa.gov/elections/myvote/",
+				   POLLS: "https://www.sos.wa.gov/elections/auditors/"},
+	"West Virginia": {CODE: "WV",
+					  REG: "https://apps.sos.wv.gov/elections/voter/",
+					  POLLS: "https://services.sos.wv.gov/Elections/Voter/FindMyPollingPlace"},
+	"Wisconsin": {CODE: "WI",
+				  REG: "https://myvote.wi.gov/en-US/RegisterToVote",
+				  POLLS: "https://myvote.wi.gov/en-US/FindMyPollingPlace"},
+	"Wyoming": {CODE: "WY",
+				REG: "https://sos.wyo.gov/Elections/Docs/WYCountyClerks.pdf",
+				POLLS: "https://soswy.state.wy.us/Elections/PollPlace/Default.aspx"}
 }
 
 
 # Now do some dynamic setup in the table
 for k, v in URLS_BY_STATE.items():
-	if 'abs' not in v:
-		v['abs'] = absentee_ballot(k)
-	if 'regdl' not in v:
-		v['regdl'] = reg_deadline(k)
-	if 'abroad' not in v:
-		v['abroad'] = abroad(k)
+	if ABS not in v:
+		v[ABS] = absentee_ballot(k)
+	if REGDL not in v:
+		v[REGDL] = reg_deadline(k)
+	if ABROAD not in v:
+		v[ABROAD] = abroad(k)

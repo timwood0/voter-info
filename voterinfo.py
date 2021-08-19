@@ -5,6 +5,7 @@ import argparse
 import render
 from transport import post_tweet
 from urlsbystate import URLS_BY_STATE
+from campaign import campaigns
 
 
 def _choose_state(args):
@@ -25,17 +26,17 @@ def _choose_state(args):
 
 
 def main():
-	ret_status = 0
-
 	parser = argparse.ArgumentParser()
-	parser.add_argument('state', type=str, nargs='?')
+	parser.add_argument('campaign', type=str, help='Symbolic name of campaign, e.g. 2020_presidential.')
+	parser.add_argument('state', type=str, nargs='?', help='State as listed in urlsbystate.States.')
 	args = parser.parse_args()
 
+	campaign = campaigns[args.campaign]
 	state = _choose_state(args)
-	if not state :
+	if not state:
 		return 1
 
-	ret_status = post_tweet(render.build_voterinfo, state)
+	ret_status = post_tweet(render.build_voterinfo, campaign, state)
 
 	return ret_status
 

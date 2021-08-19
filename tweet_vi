@@ -9,7 +9,9 @@ exec=
 [[ "$-" =~ .*x.* ]] && exec=:
 
 usage() {
-	echo "Usage: $0 [-h] [-s state] [-q number-of-tweets] [-w time-period(max 86400 sec.)]"
+	echo "Usage:
+$0 -h
+$0 [-s state] [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] campaign"
 }
 
 while getopts hs:q:w: option; do
@@ -28,6 +30,11 @@ while getopts hs:q:w: option; do
 	esac
 done
 
+args=($@)
+OPTIND=$(($OPTIND - 1))
+campaign="${args[$OPTIND]}"
+[ -n "$campaign" ] || { usage; exit 1; }
+
 # Be careful to quote multi-word names into the array
 if [ -z "$state" ]; then
 	state_gen="
@@ -39,8 +46,9 @@ render.all_states()
 	place_label_plu="States"
 else
 	cities_gen="
+import campaign
 import render
-render.all_cities('""$state""')
+render.all_cities(campaign.campaigns['"$campaign"'], '""$state""')
 "
 	eval state_seq=( `python -c "$cities_gen" | shuf` )
 	place_label_sing="Step"
@@ -51,7 +59,7 @@ fi
 # hours, so all states will be tweeted within "waking hours" (approx. 16 hrs., e.g. 6AM-10PM).
 # This algorithm applies for states as well as cities within a state.
 base_wait=600
-[ "$quanta" -ge 0 -a "$quanta" -le ${#state_seq[@]} ] 2>- || quanta=${#state_seq[@]}
+[ "$quanta" -ge 4 -a "$quanta" -le ${#state_seq[@]} ] 2>- || quanta=${#state_seq[@]}
 [ "$waking_hrs" -ge 0 -a "$waking_hrs" -le 86400 ] 2>- || waking_hrs=$((16 * 60 * 60))  # sec.
 
 # We have one base_wait interval, then ($quanta - 2) wait intervals occurring between states
@@ -91,7 +99,7 @@ while [ -n "${state_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
 
 	# For cities in a state, always tweet the same state
 	[ -z "$state" ] && place="${state_seq[$i]}" || place="$state"
-	$exec python voterinfo.py "$place"
+	$exec python voterinfo.py $campaign "$place"
 	$exec sleep ${interval_seq[$i]}
 	i=$(($i + 1))
 done
