@@ -14,14 +14,24 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-l', '--limit', dest='limit', type=int, default=0)
 	parser.add_argument('campaign', type=str, help='Symbolic name of campaign, e.g. 2020_presidential.')
-	parser.add_argument('tweep', type=str, nargs='?', help="Name of a Twitter user.")
+	arg_group = parser.add_mutually_exclusive_group()
+	arg_group.add_argument('-i', '--id', dest='user_id', type=int, default=0)
+	arg_group.add_argument('tweep', type=str, nargs='?', help="Name of a Twitter user.")
 	args = parser.parse_args()
 
 	campaign = campaigns[args.campaign]
+	user_id = 0
 	if args.tweep:
 		# Tweet an individual (ignoring DNC)
 		user_id = api.GetUser(screen_name=args.tweep).id
-		ret_status = post_tweet(render.build_socialize, campaign, user_id)
+
+	if args.user_id:
+		user_id = args.user_id
+
+	if user_id:
+		# Ensure user not opted-out
+		if ({user_id} - process_do_not_call()):
+			ret_status = post_tweet(render.build_socialize, campaign, user_id)
 	else:
 		# Tweet our tweeps
 		followers = set(api.GetFollowerIDs())

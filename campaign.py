@@ -26,25 +26,28 @@ class Campaign:
 		# Break out message elements that contain URLs to make accurate effective length calculations.
 		# XXX This belongs in a file as configuration.
 		VOTER_INFO: {
-			PREAMBLE: ('f"{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)}"'
-			"""f' {hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG, "vote"))}'""",),
-			CITIES: ("""f'{" ".join(cities)}'""",),
-			REGDL: ('"Reg. deadline: "', 'f"{self.info_by_state[state][REGDL]}"'),
-			REG: ('"Check registration: "', 'f"{self.info_by_state[state][REG]}"'),
-			POLLS: ('"Polling places: "', 'f"{self.info_by_state[state][POLLS]}"'),
-			ABROAD: ('"Out of U.S.A.: "', 'f"{self.info_by_state[state][ABROAD]}"'),
-			ABS: ('"Vote by mail: "', 'f"{self.info_by_state[state][ABS]}"')
+			PREAMBLE: ['f"{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)}"'
+			"""f' {hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG, "vote"))}'"""],
+			CITIES: ["""f'{" ".join(cities)}'"""],
+			REGDL: ['"Reg. deadline: "', 'f"{self.info_by_state[state][REGDL]}"'],
+			REG: ['"Check registration: "', 'f"{self.info_by_state[state][REG]}"'],
+			POLLS: ['"Polling places: "', 'f"{self.info_by_state[state][POLLS]}"'],
+			ABROAD: ['"Out of U.S.A.: "', 'f"{self.info_by_state[state][ABROAD]}"'],
+			ABS: ['"Vote by mail: "', 'f"{self.info_by_state[state][ABS]}"']
 		},
 		SOCIALIZE: {
-			HEADER: ('''f"""@{screen_name}
+			HEADER: ['''f"""@{screen_name}
 				Hi, we follow each other on Twitter.
-				Please RT my voter info tweets to help get out the vote!"""''',),
-			SEARCH: ('"Search my tweets: "', 'f"{self.campaign_info.get(Campaign.SEARCH_URL)}"',),
-			PER_STATE: ('"Find a tweet for a state in the list, e.g., #Iowa or #NC."',),
-			RT: ('"Retweet."',),
-			BE_SURE: ('"Thanks, and be sure to #vote!"',)
+				Please RT my voter info tweets to help get out the vote!"""'''],
+			SEARCH: ['"Search my tweets: "', 'f"{self.campaign_info.get(Campaign.SEARCH_URL)}"'],
+			PER_STATE: ['"Find a tweet for a state in the list, e.g., #Iowa or #NC."'],
+			RT: ['"Retweet."'],
+			BE_SURE: ['"Thanks, and be sure to #vote!"']
 		}
 	}
+
+	VI_TEMPLATE = TWEET_TEMPLATES[VOTER_INFO]
+	SOC_TEMPLATE = TWEET_TEMPLATES[SOCIALIZE]
 
 	@property
 	def campaign_info(self):
@@ -107,6 +110,7 @@ class Campaign:
 		self._campaign_info = campaign_info if campaign_info else {}
 		self._tweet_content = self._campaign_info.get(Campaign.TWEET_CONTENT, None)
 
+
 # Campaigns data.  XXX This should be modeled in a database or flat files instead.
 campaigns = {
 	"2020_presidential": Campaign(
@@ -117,7 +121,7 @@ campaigns = {
 			"Arizona": {CITIES: ['Phoenix', 'Flagstaff', 'Tucson', 'Yuma', 'Bullhead City', 'Tuba City', 'Prescott']},
 			"Arkansas": {CITIES: ['Little Rock', 'Hot Springs', 'Pine Bluff', 'Hope', 'Fort Smith', 'Fayetteville']},
 			"California": {CITIES: ['Los Angeles', 'San Francisco', 'Sacramento', 'San Diego', 'Anaheim', 'Fresno',
-                                    'Modesto', 'Salinas', 'Redding']},
+				'Modesto', 'Salinas', 'Redding']},
 			"Colorado": {CITIES: ['Colorado Springs', 'Denver', 'Boulder', 'Grand Junction', 'Pueblo',
 								  'Greeley', 'Sterling']},
 			"Connecticut": {
@@ -193,20 +197,20 @@ campaigns = {
 				"https://twitter.com/search?q=%22Out%20of%20U.S.A.%22%20%22Vote%20by%20mail%3A%22&f=live",
 			Campaign.TWEET_CONTENT: {
 				Campaign.VOTER_INFO: [
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][Campaign.PREAMBLE],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][CITIES],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][REGDL],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][REG],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][POLLS],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][ABROAD],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][ABS]
+					Campaign.VI_TEMPLATE[Campaign.PREAMBLE],
+					Campaign.VI_TEMPLATE[CITIES],
+					Campaign.VI_TEMPLATE[REGDL],
+					Campaign.VI_TEMPLATE[REG],
+					Campaign.VI_TEMPLATE[POLLS],
+					Campaign.VI_TEMPLATE[ABROAD],
+					Campaign.VI_TEMPLATE[ABS]
 				],
 				Campaign.SOCIALIZE: [
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.HEADER],
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.SEARCH],
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.PER_STATE],
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.RT],
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.BE_SURE]
+					Campaign.SOC_TEMPLATE[Campaign.HEADER],
+					Campaign.SOC_TEMPLATE[Campaign.SEARCH],
+					Campaign.SOC_TEMPLATE[Campaign.PER_STATE],
+					Campaign.SOC_TEMPLATE[Campaign.RT],
+					Campaign.SOC_TEMPLATE[Campaign.BE_SURE]
 				]
 			}
 		}
@@ -251,6 +255,7 @@ campaigns = {
 	"2021_california_recall": Campaign(
 		{
 			States.CALIFORNIA: {CITIES: [
+				# Supplied by @balkingpoints
 				'Los Angeles', 'San Francisco', 'San Diego', 'Riverside', 'Sacramento', 'San Jose', 'Fresno',
 				'Concord', 'Mission Viejo', 'Bakersfield', 'Murrieta', 'Long Beach', 'Oakland',
 				# 'Indio',
@@ -273,30 +278,44 @@ campaigns = {
 				# 'Yuba City',
 				'Seaside', 'Gilroy', 'El Monte', 'Carlsbad', 'Temecula', 'Costa Mesa', 'Downey',
 				'El Centro', 'San Buenaventura', 'Inglewood', 'Richmond', 'Clovis', 'West Covina',
-				# 'Turlock',
+				'Turlock',
 				'Daly City', 'Chico', 'Norwalk', 'Jurupa Valley', 'Burbank', 'San Mateo', 'El Cajon', 'Rialto',
 				'Vista', 'Vacaville', 'Manteca', 'Arden-Arcade', 'Compton', 'San Marcos', 'Tracy', 'South Gate',
 				# 'Hesperia',
 				'Carson', 'Santa Monica',
 				# 'Hanford',
 				'Westminster', 'Livermore',
-			], Campaign.VOTE_MSG: "CA Recall", REGDL: "August 31, 2021!"}
+				# Added by Tim
+				'Mendocino', 'Eureka', 'Ukiah', 'Woodland', 'Davis', 'Petaluma',
+				'San Luis Obispo', 'Paso Robles', 'Pismo Beach', 'Morro Bay', 'Monterey',
+				'Delano', 'Ventura', 'Los Banos', 'Wasco', 'Coalinga', 'Atwater',
+				'La Jolla', 'Madera', 'Hollister', 'Soledad'
+			], Campaign.VOTE_MSG: "CA Recall", REGDL: "August 30, 2021!"}
 		},
 		campaign_info={
 			Campaign.TWEET_CONTENT: {
 				Campaign.VOTER_INFO: [
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][Campaign.PREAMBLE],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][CITIES],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][REGDL],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][REG],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][POLLS],
-					Campaign.TWEET_TEMPLATES[Campaign.VOTER_INFO][ABROAD],
+					Campaign.VI_TEMPLATE[Campaign.PREAMBLE],
+					Campaign.VI_TEMPLATE[CITIES],
+					Campaign.VI_TEMPLATE[POLLS],
+					['"Completed your ballot?  Drop in the mail today, no postage necessary!"'],
+					['"Find mailboxes: "', '"https://tools.usps.com/find-location.htm?locationType=collectionbox"'],
 				],
 				Campaign.SOCIALIZE: [
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.HEADER],
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.SEARCH],
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.RT],
-					Campaign.TWEET_TEMPLATES[Campaign.SOCIALIZE][Campaign.BE_SURE]
+					# Initial contact message
+					# ['''f"""@{screen_name}
+					# Hi, we follow each other on Twitter.
+					# Please RT my tweets for California recall turnout!"""'''],
+					# Campaign.SOC_TEMPLATE[Campaign.SEARCH],
+					# Campaign.SOC_TEMPLATE[Campaign.RT],
+					# ['''"""For a 1 mention/day reminder, reply YES.
+					# Otherwise this will be the last contact on this topic. Thank you!"""''']
+					# Daily reminder message
+					['''f"""@{screen_name}, here's that daily reminder to
+					retweet my tweets for California recall turnout!"""'''],
+					Campaign.SOC_TEMPLATE[Campaign.SEARCH],
+					['''"""Reply STOP to stop reminders, which end Sept. 14th.
+					Thanks again for helping."""''']
 				]
 			},
 			Campaign.SEARCH_URL: "https://twitter.com/search?q=%23California%20%23CA%20%23CARecall&f=live"

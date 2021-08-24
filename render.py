@@ -30,10 +30,11 @@ def build_voterinfo(campaign, state):
 	"""Render a tweet of voting info for a state"""
 	state_info = campaign.info_by_state[state]
 	num_cities = len(state_info[CITIES])
+	assert num_cities == len(set(state_info[CITIES])), f"Duplicate entries in CITIES for {state}."
+
 	city_ct = num_cities
 	effective_length = 0
 	tweet_text = ""
-
 	while city_ct > 0:
 		# Iterate on building a tweet until it fits within the limit.
 		# Return none if unsuccessful

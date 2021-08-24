@@ -100,8 +100,9 @@ class TestVoterInfo(unittest.TestCase):
 	@mock.patch("twitter.Api.UsersLookup")
 	@mock.patch("twitter.Api.GetFollowerIDs")
 	@mock.patch("twitter.Api.GetFriendIDs")
+	@mock.patch("twitter.Api.GetUser")
 	@mock.patch("transport.post_tweet")
-	def test_05socialize_main(self, mock_post, mock_friends, mock_followers, _):
+	def test_05socialize_main(self, mock_post, mock_get_user, mock_friends, mock_followers, _):
 		mock_post.return_value = 0
 		importlib.reload(socialize)
 
@@ -110,12 +111,33 @@ class TestVoterInfo(unittest.TestCase):
 		mock_friends.return_value \
 			= (26825139, 13027572, 823171093854912516, 54885400, 153942024)
 		arg0 = sys.argv[0]
-		campaign = campaigns['2020_presidential']
-		sys.argv = [arg0, '2020_presidential']
+
+		campaign_name = '2020_presidential'
+		campaign = campaigns[campaign_name]
+		sys.argv = [arg0, campaign_name]
 		socialize.main()
 		mock_post.assert_has_calls([mock.call(build_socialize, campaign, 13027572),
 									mock.call(build_socialize, campaign, 153942024),
 									mock.call(build_socialize, campaign, 26825139)], any_order=True)
+		mock_post.reset_mock()
+
+		campaign_name = '2021_california_recall'
+		campaign = campaigns[campaign_name]
+		sys.argv = [arg0, campaign_name, '-i', '153942024']
+		socialize.main()
+		mock_post.assert_has_calls([mock.call(build_socialize, campaign, 153942024)])
+		mock_post.reset_mock()
+
+		sys.argv = [arg0, campaign_name, 'livecut']
+		mock_get_user.return_value.id = MY_TWITTER_UID
+		socialize.main()
+		mock_post.assert_has_calls([mock.call(build_socialize, campaign, MY_TWITTER_UID)])
+		mock_post.reset_mock()
+
+		sys.argv = [arg0, campaign_name, '-i', '153942024', 'livecut']
+		with mock.patch("sys.exit"):
+			socialize.main()
+		mock_post.assert_has_calls([])
 
 		sys.argv = [arg0]
 
