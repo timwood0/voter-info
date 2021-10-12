@@ -5,49 +5,62 @@ from urlsbystate import (
 )
 from render import hashtag
 
+PREAMBLE = 'pre'
+SEARCH_URL = 'search_url'
+TWEET_CONTENT = 'tweet_markup'
+VOTER_INFO = 'voter_info'
+SOCIALIZE = 'socialize'
+HEADER = 'header'
+SEARCH = 'search'
+PER_STATE = 'per_state'
+RT = 'rt'
+BE_SURE = 'be_sure'
+VOTE_MSG = 'vote'
+
+
+def tweet_entry(*text):
+	# Add an entry to the tweet suitable for input to eval().
+	# Multi-line string and variable expansion with f"... is automatic.
+	text_entry = []
+	for item in text:
+		text_entry.append("f'''" + item + "'''")
+
+	return text_entry
+
+
+TWEET_TEMPLATES = {
+	# Dicts of keys: tuples of strings parseable with eval().  Quick & dirty way to build a tweet
+	# from a specification using runtime data.  XXX Fails security review. :o
+	# Break out message elements that contain URLs to make accurate effective length calculations.
+	# XXX This belongs in a file as configuration.
+	VOTER_INFO: {
+		PREAMBLE: tweet_entry("{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)}"
+				   ' {hashtag(self.info_by_state[state].get(VOTE_MSG, "vote"))}'),
+		CITIES: tweet_entry('{" ".join(cities)}'),
+		REGDL: tweet_entry("Reg. deadline: ", "{self.info_by_state[state][REGDL]}"),
+		REG: tweet_entry("Check registration: ", "{self.info_by_state[state][REG]}"),
+		POLLS: tweet_entry("Polling places: ", "{self.info_by_state[state][POLLS]}"),
+		ABROAD: tweet_entry("Out of U.S.A.: ", "{self.info_by_state[state][ABROAD]}"),
+		ABS: tweet_entry("Vote by mail: ", "{self.info_by_state[state][ABS]}")
+	},
+	SOCIALIZE: {
+		HEADER: tweet_entry("""@{screen_name}
+			Hi, we follow each other on Twitter.
+			Please RT my voter info tweets to help get out the vote!"""),
+		SEARCH: tweet_entry("Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"),
+		PER_STATE: tweet_entry("Find a tweet for a state in the list, e.g., #Iowa or #NC."),
+		RT: tweet_entry("Retweet."),
+		BE_SURE: tweet_entry("Thanks, and be sure to #vote!")
+	}
+}
+
+VI_TEMPLATE = TWEET_TEMPLATES[VOTER_INFO]
+SOC_TEMPLATE = TWEET_TEMPLATES[SOCIALIZE]
+
+
 # Class to model a tweeting campaign, generally in the context of elections taking place in
 # one or more states.
 class Campaign:
-	PREAMBLE = 'pre'
-	SEARCH_URL = 'search_url'
-	TWEET_CONTENT = 'tweet_markup'
-	VOTER_INFO = 'voter_info'
-	SOCIALIZE = 'socialize'
-	HEADER = 'header'
-	SEARCH = 'search'
-	PER_STATE = 'per_state'
-	RT = 'rt'
-	BE_SURE = 'be_sure'
-	VOTE_MSG = 'vote'
-
-	TWEET_TEMPLATES = {
-		# Dicts of keys: tuples of strings parseable with eval().  Quick & dirty way to build a tweet
-		# from a specification using runtime data.  XXX Fails security review. :o
-		# Break out message elements that contain URLs to make accurate effective length calculations.
-		# XXX This belongs in a file as configuration.
-		VOTER_INFO: {
-			PREAMBLE: ['f"{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)}"'
-			"""f' {hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG, "vote"))}'"""],
-			CITIES: ["""f'{" ".join(cities)}'"""],
-			REGDL: ['"Reg. deadline: "', 'f"{self.info_by_state[state][REGDL]}"'],
-			REG: ['"Check registration: "', 'f"{self.info_by_state[state][REG]}"'],
-			POLLS: ['"Polling places: "', 'f"{self.info_by_state[state][POLLS]}"'],
-			ABROAD: ['"Out of U.S.A.: "', 'f"{self.info_by_state[state][ABROAD]}"'],
-			ABS: ['"Vote by mail: "', 'f"{self.info_by_state[state][ABS]}"']
-		},
-		SOCIALIZE: {
-			HEADER: ['''f"""@{screen_name}
-				Hi, we follow each other on Twitter.
-				Please RT my voter info tweets to help get out the vote!"""'''],
-			SEARCH: ['"Search my tweets: "', 'f"{self.campaign_info.get(Campaign.SEARCH_URL)}"'],
-			PER_STATE: ['"Find a tweet for a state in the list, e.g., #Iowa or #NC."'],
-			RT: ['"Retweet."'],
-			BE_SURE: ['"Thanks, and be sure to #vote!"']
-		}
-	}
-
-	VI_TEMPLATE = TWEET_TEMPLATES[VOTER_INFO]
-	SOC_TEMPLATE = TWEET_TEMPLATES[SOCIALIZE]
 
 	@property
 	def campaign_info(self):
@@ -61,11 +74,11 @@ class Campaign:
 		then the tweet lines.
 		"""
 
-		if not self._tweet_content or not self._tweet_content[Campaign.VOTER_INFO]:
+		if not self._tweet_content or not self._tweet_content[VOTER_INFO]:
 			return []
 
 		ret_tweet = [0, 0]
-		for line_parts in self._tweet_content[Campaign.VOTER_INFO]:
+		for line_parts in self._tweet_content[VOTER_INFO]:
 			line = ""
 			for part in line_parts:
 				part_val = re.sub('\t', '', eval(part))
@@ -82,11 +95,11 @@ class Campaign:
 		:param screen_name Twitter user name, used in tweet content eval.
 		:return List of tweet lines.
 		"""
-		if not self._tweet_content or not self._tweet_content[Campaign.SOCIALIZE]:
+		if not self._tweet_content or not self._tweet_content[SOCIALIZE]:
 			return []
 
 		ret_tweet = [0, 0]
-		for line_parts in self._tweet_content[Campaign.SOCIALIZE]:
+		for line_parts in self._tweet_content[SOCIALIZE]:
 			line = ""
 			for part in line_parts:
 				part_val = re.sub('\t', '', eval(part))
@@ -108,7 +121,7 @@ class Campaign:
 
 		# Configure which URL fields we're using
 		self._campaign_info = campaign_info if campaign_info else {}
-		self._tweet_content = self._campaign_info.get(Campaign.TWEET_CONTENT, None)
+		self._tweet_content = self._campaign_info.get(TWEET_CONTENT, None)
 
 
 # Campaigns data.  XXX This should be modeled in a database or flat files instead.
@@ -193,24 +206,24 @@ campaigns = {
 			"Wyoming": {CITIES: ['Cheyenne', 'Sheridan', 'Cody', 'Rock Springs', 'Casper', 'Laramie']},
 		},
 		campaign_info={
-			Campaign.SEARCH_URL:
+			SEARCH_URL:
 				"https://twitter.com/search?q=%22Out%20of%20U.S.A.%22%20%22Vote%20by%20mail%3A%22&f=live",
-			Campaign.TWEET_CONTENT: {
-				Campaign.VOTER_INFO: [
-					Campaign.VI_TEMPLATE[Campaign.PREAMBLE],
-					Campaign.VI_TEMPLATE[CITIES],
-					Campaign.VI_TEMPLATE[REGDL],
-					Campaign.VI_TEMPLATE[REG],
-					Campaign.VI_TEMPLATE[POLLS],
-					Campaign.VI_TEMPLATE[ABROAD],
-					Campaign.VI_TEMPLATE[ABS]
+			TWEET_CONTENT: {
+				VOTER_INFO: [
+					VI_TEMPLATE[PREAMBLE],
+					VI_TEMPLATE[CITIES],
+					VI_TEMPLATE[REGDL],
+					VI_TEMPLATE[REG],
+					VI_TEMPLATE[POLLS],
+					VI_TEMPLATE[ABROAD],
+					VI_TEMPLATE[ABS]
 				],
-				Campaign.SOCIALIZE: [
-					Campaign.SOC_TEMPLATE[Campaign.HEADER],
-					Campaign.SOC_TEMPLATE[Campaign.SEARCH],
-					Campaign.SOC_TEMPLATE[Campaign.PER_STATE],
-					Campaign.SOC_TEMPLATE[Campaign.RT],
-					Campaign.SOC_TEMPLATE[Campaign.BE_SURE]
+				SOCIALIZE: [
+					SOC_TEMPLATE[HEADER],
+					SOC_TEMPLATE[SEARCH],
+					SOC_TEMPLATE[PER_STATE],
+					SOC_TEMPLATE[RT],
+					SOC_TEMPLATE[BE_SURE]
 				]
 			}
 		}
@@ -290,35 +303,91 @@ campaigns = {
 				'San Luis Obispo', 'Paso Robles', 'Pismo Beach', 'Morro Bay', 'Monterey',
 				'Delano', 'Ventura', 'Los Banos', 'Wasco', 'Coalinga', 'Atwater',
 				'La Jolla', 'Madera', 'Hollister', 'Soledad'
-			], Campaign.VOTE_MSG: "CA Recall", REGDL: "August 30, 2021!"}
+			], VOTE_MSG: "CA Recall", REGDL: "August 30, 2021!"}
 		},
 		campaign_info={
-			Campaign.TWEET_CONTENT: {
-				Campaign.VOTER_INFO: [
-					Campaign.VI_TEMPLATE[Campaign.PREAMBLE],
-					Campaign.VI_TEMPLATE[CITIES],
-					Campaign.VI_TEMPLATE[POLLS],
-					['"Completed your ballot?  Drop in the mail today, no postage necessary!"'],
-					['"Find mailboxes: "', '"https://tools.usps.com/find-location.htm?locationType=collectionbox"'],
+			TWEET_CONTENT: {
+				VOTER_INFO: [
+					VI_TEMPLATE[PREAMBLE],
+					VI_TEMPLATE[CITIES],
+					VI_TEMPLATE[POLLS],
+					tweet_entry("Completed your ballot?  Drop in the mail today, no postage necessary!"),
+					tweet_entry("Find mailboxes: ",
+								"https://tools.usps.com/find-location.htm?locationType=collectionbox")
 				],
-				Campaign.SOCIALIZE: [
+				SOCIALIZE: [
 					# Initial contact message
 					# ['''f"""@{screen_name}
 					# Hi, we follow each other on Twitter.
 					# Please RT my tweets for California recall turnout!"""'''],
-					# Campaign.SOC_TEMPLATE[Campaign.SEARCH],
-					# Campaign.SOC_TEMPLATE[Campaign.RT],
+					# SOC_TEMPLATE[SEARCH],
+					# SOC_TEMPLATE[RT],
 					# ['''"""For a 1 mention/day reminder, reply YES.
 					# Otherwise this will be the last contact on this topic. Thank you!"""''']
 					# Daily reminder message
-					['''f"""@{screen_name}, here's that daily reminder to
-					retweet my tweets for California recall turnout!"""'''],
-					Campaign.SOC_TEMPLATE[Campaign.SEARCH],
-					['''"""Reply STOP to stop reminders, which end Sept. 14th.
-					Thanks again for helping."""''']
+					tweet_entry("""@{screen_name}, here's that daily reminder to
+					retweet my tweets for California recall turnout!"""),
+					SOC_TEMPLATE[SEARCH],
+					tweet_entry("""Reply STOP to stop reminders, which end Sept. 14th.
+					Thanks again for helping.""")
 				]
 			},
-			Campaign.SEARCH_URL: "https://twitter.com/search?q=%23California%20%23CA%20%23CARecall&f=live"
+			SEARCH_URL: "https://twitter.com/search?q=%23California%20%23CA%20%23CARecall&f=live"
+		}
+	),
+	"2021_nj_va_gov": Campaign(
+		{
+			States.NEW_JERSEY: {
+				CITIES: [
+					'Newark', 'West Orange', 'East Orange', 'South Orange', 'Orange', 'Englewood', 'Teaneck',
+					'Paterson', 'Weehawken', 'West New York', 'Montvale', 'Nutley', 'Ho-Ho-Kus', 'Secaucus',
+					'Hoboken', 'Fort Lee', 'Sandy Hook',
+					'Jersey City', 'Passaic', 'Fair Lawn', 'Paramus', 'Clifton', 'Bloomfield',
+					'Kearny', 'Elizabeth', 'Wayne', 'Oakland',  'Pompton Lakes', 'Morristown',
+					'Bayonne', 'Linden', 'Union', 'Atlantic City', 'Camden', 'Trenton', 'Cherry Hill', 'Vineland',
+				],
+				VOTE_MSG: "NJ gov"
+			},
+			States.VIRGINIA: {
+				CITIES: [
+					'Roanoke', 'Richmond', 'Alexandria', 'Arlington', 'Fredericksburg', 'Charlottesville',
+					'Hampton', 'Hampton Roads','Norfolk', 'Newport News', 'Portsmouth', 'Suffolk',
+					'Chesapeake', 'Emporia', 'Lawrenceville', 'Sussex', 'Surrey', 'Danville', 'Yorktown',
+					'Williamsburg', 'Charles City', 'Chesterfield', 'Farmville', 'Christiansburg', 'Manassas',
+					'Fairfax', 'Leesburg',
+				],
+				VOTE_MSG: "VA gov"
+			},
+		},
+		campaign_info={
+			TWEET_CONTENT: {
+				VOTER_INFO: [
+					# VI_TEMPLATE[PREAMBLE],
+					tweet_entry("{hashtag(state)} {hashtag(self.info_by_state[state].get(VOTE_MSG))}"),
+					VI_TEMPLATE[CITIES],
+					VI_TEMPLATE[ABS],
+					tweet_entry("Find mailboxes: ",
+								"https://tools.usps.com/find-location.htm?locationType=collectionbox"),
+					VI_TEMPLATE[POLLS]
+				],
+				SOCIALIZE: [
+					# Initial contact message
+					tweet_entry("""@{screen_name}
+					Hi, we follow each other on Twitter.
+					Please RT my tweets for NJ and VA governor elections turnout!"""),
+					SOC_TEMPLATE[SEARCH],
+					SOC_TEMPLATE[RT],
+					tweet_entry("""For a 1 mention/day reminder, reply YES.
+					Otherwise this will be the last contact on this topic. Thank you!"""),
+					# Daily reminder message
+# 					tweet_entry("""@{screen_name}, here's that daily reminder to
+# retweet my tweets for Virginia and New Jersey gubernatorial turnout!"""),
+# 					SOC_TEMPLATE[SEARCH],
+# 					tweet_entry("""Reply STOP to stop reminders, which end Sept. 14th.
+# Thanks again for helping.""")
+				]
+			},
+			SEARCH_URL: "https://twitter.com/search?f=live&q=(%23NJGov%20OR%20%23VAGov)%20%40livecut"
 		}
 	)
 }

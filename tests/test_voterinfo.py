@@ -9,7 +9,7 @@ from twitter.models import User
 import voterinfo, socialize
 from render import *
 from urlsbystate import URLS_BY_STATE, CODE, CITIES, REGDL, REG, POLLS, ABS
-from campaign import campaigns
+from campaign import campaigns, SEARCH_URL
 
 
 MY_TWITTER_UID = 16230307
@@ -147,8 +147,8 @@ class TestVoterInfo(unittest.TestCase):
 			effective_length, tweet_text = build_socialize(campaign, MY_TWITTER_UID)
 			print(effective_length)
 			print(tweet_text)
-			if campaign.SEARCH_URL in campaign.campaign_info:
-				self.assertIn(campaign.campaign_info[campaign.SEARCH_URL], tweet_text,
+			if SEARCH_URL in campaign.campaign_info:
+				self.assertIn(campaign.campaign_info[SEARCH_URL], tweet_text,
 							  "Search URL not found in tweet.")
 
 	@staticmethod
