@@ -30,7 +30,7 @@ while getopts hs:q:w: option; do
 	esac
 done
 
-args=($@)
+args=("$@")
 OPTIND=$(($OPTIND - 1))
 campaign="${args[$OPTIND]}"
 [ -n "$campaign" ] || { usage; exit 1; }

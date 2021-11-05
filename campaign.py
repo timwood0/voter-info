@@ -3,7 +3,7 @@ import re
 from urlsbystate import (
 	States, URLS_BY_STATE, CITIES, REGDL, REG, POLLS, ABROAD, ABS, CODE
 )
-from render import hashtag
+from render import hashtag  # NOTE: Used in eval()
 
 PREAMBLE = 'pre'
 SEARCH_URL = 'search_url'
@@ -345,16 +345,27 @@ campaigns = {
 					'Jersey City', 'Passaic', 'Fair Lawn', 'Paramus', 'Clifton', 'Bloomfield',
 					'Kearny', 'Elizabeth', 'Wayne', 'Oakland',  'Pompton Lakes', 'Morristown',
 					'Bayonne', 'Linden', 'Union', 'Atlantic City', 'Camden', 'Trenton', 'Cherry Hill', 'Vineland',
+					'Edison', 'New Brunswick', 'Piscataway', 'Princeton',
+					# Things NJ
+					'Springsteen', 'Bon Jovi', 'The Sopranos', 'Frank Sinatra', 'George Washington',
+					'My Chemical Romance', 'Unix', 'Bell Labs', 'Dionne Warwick', 'Whitney Houston',
+					'Count Basie', 'Ricky Nelson', 'Donald Fagen', 'Sarah Vaughan', 'Fugees', 'The Shirelles',
+					'Paul Simon', 'Yo La Tengo', 'Bill Evans', 'Patti Smith', 'Rutgers',
+					'Fairleigh Dickinson', 'Drew'
 				],
 				VOTE_MSG: "NJ gov"
 			},
 			States.VIRGINIA: {
 				CITIES: [
 					'Roanoke', 'Richmond', 'Alexandria', 'Arlington', 'Fredericksburg', 'Charlottesville',
-					'Hampton', 'Hampton Roads','Norfolk', 'Newport News', 'Portsmouth', 'Suffolk',
+					'Hampton', 'Hampton Roads', 'Norfolk', 'Newport News', 'Portsmouth', 'Suffolk',
 					'Chesapeake', 'Emporia', 'Lawrenceville', 'Sussex', 'Surrey', 'Danville', 'Yorktown',
 					'Williamsburg', 'Charles City', 'Chesterfield', 'Farmville', 'Christiansburg', 'Manassas',
 					'Fairfax', 'Leesburg',
+					# Things VA
+					'Aimee Mann', 'Pharrell Williams', 'Ella Fitzgerald', 'Patsy Cline', 'Dave Matthews Band',
+					'Missy Elliott', 'Dave Grohl', 'Bruce Hornsby', 'Pearl Bailey', 'Jason Mraz', 'Gene Vincent',
+					'Stewart Copeland'
 				],
 				VOTE_MSG: "VA gov"
 			},

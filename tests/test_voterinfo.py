@@ -95,6 +95,12 @@ class TestVoterInfo(unittest.TestCase):
 		state = 'California'
 		_call_build_voterinfo(0)
 
+		campaign = campaigns['2021_nj_va_gov']
+		state = 'Virginia'
+		_call_build_voterinfo(0)
+		state = 'New Jersey'
+		_call_build_voterinfo(0)
+
 		self.assertRaises(KeyError, build_voterinfo, campaigns['2020_presidential'], ("Arcadia",))
 
 	@mock.patch("twitter.Api.UsersLookup")

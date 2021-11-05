@@ -251,7 +251,7 @@ URLS_BY_STATE = {
 				POLLS: "https://mvp.sec.state.vt.us/"},
 	"Virginia": {CODE: "VA",
 				 REG: "https://vote.elections.virginia.gov/VoterInformation",
-				 POLLS: "https://www.elections.virginia.gov/citizen-portal/index.html"},
+				 POLLS: "https://www.elections.virginia.gov/casting-a-ballot/"},
 	"Washington": {CODE: "WA",
 				   REG: "https://www.sos.wa.gov/elections/myvote/",
 				   POLLS: "https://www.sos.wa.gov/elections/auditors/"},
