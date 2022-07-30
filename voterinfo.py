@@ -8,18 +8,18 @@ from urlsbystate import URLS_BY_STATE
 from campaign import campaigns
 
 
-def _choose_state(args):
+def _choose_state(args, campaign):
 	if args.state:
-		if args.state not in URLS_BY_STATE:
-			print(f"Did not recognize {args.state} in the United States.")
+		if args.state not in campaign.info_by_state:
+			print(f"Did not recognize {args.state} in {campaign}.")
 			return None
 
 		state = args.state
 	else:
 		# Pick a random state & tweet out its voter info
 		random.seed()
-		idx = random.randint(0, len(URLS_BY_STATE) - 1)
-		states = list(URLS_BY_STATE.keys())
+		idx = random.randint(0, len(campaign.info_by_state) - 1)
+		states = list(campaign.info_by_state.keys())
 		state = states[idx]
 
 	return state
@@ -32,7 +32,7 @@ def main():
 	args = parser.parse_args()
 
 	campaign = campaigns[args.campaign]
-	state = _choose_state(args)
+	state = _choose_state(args, campaign)
 	if not state:
 		return 1
 

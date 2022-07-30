@@ -400,5 +400,42 @@ campaigns = {
 			},
 			SEARCH_URL: "https://twitter.com/search?f=live&q=(%23NJGov%20OR%20%23VAGov)%20%40livecut"
 		}
+	),
+	"2022_kansas_choice": Campaign(
+		{
+			States.KANSAS: {
+				CITIES: [
+					"Topeka", "Kansas City", "Lawrence", "Manhattan", "Salina", "Hutchinson", "Wichita", "Independence",
+					"El Dorado", "Coffeyville", "Russell",  "Hays", "Great Bend", "Dodge City", "Garden City", "Pratt",
+					"Goodland", "Concordia", "Leavenworth", "Marysville", "Overland Park", "Lenexa", "Liberal",
+					"Ottawa", "Junction City", "Potawatomi", "Kickapoo", "Oglala Sioux", "BBQ", "Royals", "Chiefs"
+				],
+				VOTE_MSG: "Save Choice", REGDL: "July 13, 2022"
+			}
+		},
+		campaign_info={
+			TWEET_CONTENT: {
+				VOTER_INFO: [
+					tweet_entry("{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)}"),
+					tweet_entry("{hashtag(self.info_by_state[state].get(VOTE_MSG))} {hashtag('No on HCR5003')}"),
+					VI_TEMPLATE[CITIES],
+					VI_TEMPLATE[POLLS],
+					VI_TEMPLATE[ABS],
+					tweet_entry("Find mailboxes: ",
+								"https://tools.usps.com/find-location.htm?locationType=collectionbox"),
+				],
+				SOCIALIZE: [
+					# Initial contact message
+					tweet_entry("""@{screen_name}
+Hi, we follow each other on Twitter.
+Please RT my tweets for Kansas Choice (NO on #HCR5003) turnout!"""),
+					SOC_TEMPLATE[SEARCH],
+					SOC_TEMPLATE[RT],
+					tweet_entry("""For a 1 mention/day reminder, reply YES.
+Otherwise this will be the last contact on this topic. Thank you!"""),
+				]
+			},
+			SEARCH_URL: "https://twitter.com/search?f=live&q=%23SaveChoice%20%40livecut"
+		}
 	)
 }

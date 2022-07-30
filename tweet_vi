@@ -38,8 +38,9 @@ campaign="${args[$OPTIND]}"
 # Be careful to quote multi-word names into the array
 if [ -z "$state" ]; then
 	state_gen="
+import campaign
 import render
-render.all_states()
+render.all_states(campaign.campaigns['"$campaign"'])
 "
 	eval state_seq=( `python -c "$state_gen" | shuf` )
 	place_label_sing="State"
@@ -63,8 +64,8 @@ base_wait=600
 [ "$waking_hrs" -ge 0 -a "$waking_hrs" -le 86400 ] 2>- || waking_hrs=$((16 * 60 * 60))  # sec.
 
 # We have one base_wait interval, then ($quanta - 2) wait intervals occurring between states
-delta=$(( ($waking_hrs - (($quanta - 2) * $base_wait)) / (($quanta - 2)**2 / 2) ))
-[ "$delta" -ge 0 ] || delta=0
+delta=`exec 2>-; echo $(( ($waking_hrs - (($quanta - 2) * $base_wait)) / (($quanta - 2)**2 / 2) ))`
+[ "$delta" -ge 0 ] 2>- || delta=0
 echo "quanta: $quanta, delta: $delta"
 interval_seq=( `count=1; time=$base_wait;
 		while [ $count -lt $quanta ]; do

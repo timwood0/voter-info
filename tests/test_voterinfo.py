@@ -76,30 +76,23 @@ class TestVoterInfo(unittest.TestCase):
 			_present(CITIES)
 
 	def test_04build_voterinfo(self):
-		def _call_build_voterinfo(bound):
-			effective_len, tweet = build_voterinfo(campaign, state)
-			print(effective_len)
-			print(tweet)
-			assert len(tweet) > bound  # XXX This could flap
+		def _call_build_voterinfo(campaign, bound):
+			for state in campaign.info_by_state:
+				effective_len, tweet = build_voterinfo(campaign, state)
+				print(effective_len)
+				print(tweet)
+				assert len(tweet) > bound  # XXX This could flap
 
 		random.seed(0)
-		campaign = campaigns['2020_presidential']
-		for state in ("Georgia", "California", "Idaho", "West Virginia", "Puerto Rico", "Guam"):
-			_call_build_voterinfo(0)
+		_call_build_voterinfo(campaigns['2020_presidential'], 0)
 
-		campaign = campaigns['2021_georgia_runoff']
-		state = 'Georgia'
-		_call_build_voterinfo(-1)
+		_call_build_voterinfo(campaigns['2021_georgia_runoff'], -1)
 
-		campaign = campaigns['2021_california_recall']
-		state = 'California'
-		_call_build_voterinfo(0)
+		_call_build_voterinfo(campaigns['2021_california_recall'], 0)
 
-		campaign = campaigns['2021_nj_va_gov']
-		state = 'Virginia'
-		_call_build_voterinfo(0)
-		state = 'New Jersey'
-		_call_build_voterinfo(0)
+		_call_build_voterinfo(campaigns['2021_nj_va_gov'], 0)
+
+		_call_build_voterinfo(campaigns['2022_kansas_choice'], 0)
 
 		self.assertRaises(KeyError, build_voterinfo, campaigns['2020_presidential'], ("Arcadia",))
 

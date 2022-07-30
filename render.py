@@ -106,8 +106,13 @@ def shell_string(chars):
 
 
 # For bot-driver script
-def all_states():
-	for state in URLS_BY_STATE.keys():
+def all_states(campaign=None):
+	if campaign is None:
+		keys = URLS_BY_STATE.keys()
+	else:
+		keys = campaign.info_by_state.keys()
+
+	for state in keys:
 		print(shell_string(state))
 
 # For bot-driver script
