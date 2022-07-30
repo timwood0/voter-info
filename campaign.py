@@ -16,6 +16,9 @@ PER_STATE = 'per_state'
 RT = 'rt'
 BE_SURE = 'be_sure'
 VOTE_MSG = 'vote'
+ELECTION_DAY = 'election_day'
+USPO = 'post_office'
+MAILBOX = 'mailbox'
 
 
 def tweet_entry(*text):
@@ -41,7 +44,10 @@ TWEET_TEMPLATES = {
 		REG: tweet_entry("Check registration: ", "{self.info_by_state[state][REG]}"),
 		POLLS: tweet_entry("Polling places: ", "{self.info_by_state[state][POLLS]}"),
 		ABROAD: tweet_entry("Out of U.S.A.: ", "{self.info_by_state[state][ABROAD]}"),
-		ABS: tweet_entry("Vote by mail: ", "{self.info_by_state[state][ABS]}")
+		ABS: tweet_entry("Vote by mail: ", "{self.info_by_state[state][ABS]}"),
+		MAILBOX: tweet_entry("Find mailboxes: ", "https://tools.usps.com/find-location.htm?locationType=collectionbox"),
+		ELECTION_DAY: tweet_entry("Mail ballots at a Post Office for ELECTION DAY postmark!"),
+		USPO: tweet_entry("Find post offices: ", "https://tools.usps.com/find-location.htm?locationType=po"),
 	},
 	SOCIALIZE: {
 		HEADER: tweet_entry("""@{screen_name}
@@ -421,8 +427,7 @@ campaigns = {
 					VI_TEMPLATE[CITIES],
 					VI_TEMPLATE[POLLS],
 					VI_TEMPLATE[ABS],
-					tweet_entry("Find mailboxes: ",
-								"https://tools.usps.com/find-location.htm?locationType=collectionbox"),
+					VI_TEMPLATE[MAILBOX],
 				],
 				SOCIALIZE: [
 					# Initial contact message
