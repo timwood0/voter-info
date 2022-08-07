@@ -4,7 +4,6 @@ import argparse
 
 import render
 from transport import post_tweet
-from urlsbystate import URLS_BY_STATE
 from campaign import campaigns
 
 

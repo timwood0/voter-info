@@ -34,8 +34,20 @@ that it send a tweet.  Currently, you must manually maintain `do_not_call.txt` w
 already tweeted (see output for recipients), if you want to prevent duplicate tweeting.
 
 This tool currently requires the user to have a Twitter developer account.
-The `keys.py` file must contain the _consumer keys_ and _access tokens_ for the developer account under
-whose user ID the tweets will be posted. The user of the script must set the variables in `keys.py`
+The `keys.py` file requires a `keys.xml` file in the top-level directory with the structure
+```
+<credentials>
+  <twitterCredentials>
+    <apiKey>...
+    <apiSecret>...
+    <bearerToken>...
+    <accessToken>...
+    <accessSecret>...
+  </twitterCredentials>
+</credentials>
+```
+with the _consumer keys_ and _access tokens_ for the developer account under
+whose user ID the tweets will be posted. The user of the script must set the element contents in `keys.xml`
 to valid values issued by Twitter.
 
 The script will exit with non-zero status if it cannot compose a tweet in its standard format

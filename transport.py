@@ -6,6 +6,7 @@ import keys
 
 
 """Post a single message to Twitter via the API."""
+keys.loadKeys("./keys.xml")
 api = twitter.Api(consumer_key=keys.API_KEY,
 				  consumer_secret=keys.API_SECRET,
 				  access_token_key=keys.ACCESS_TOKEN,
