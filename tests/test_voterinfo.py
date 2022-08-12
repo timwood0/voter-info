@@ -3,8 +3,9 @@ import mock
 import sys
 import os
 import importlib
+import requests
 
-from twitter.models import User
+from tweepy import User
 
 import voterinfo, socialize
 from render import *
@@ -19,6 +20,23 @@ class TestVoterInfo(unittest.TestCase):
 	def tearDown(self):
 		importlib.reload(socialize)
 		importlib.reload(voterinfo)
+
+	@staticmethod
+	def _fake_users(*, usernames=None):
+		resp = requests.Response()
+		users = []
+		for n in usernames:
+			users.append(User({"id": len(users),
+							   "name": n,
+							   "username": n,
+							   "created_at": None,
+							   "description": "",
+							   "entities": None, "location": None, "pinned_tweet_id": None, "profile_image_url": None,
+							   "protected": None, "public_metrics": None, "url": None, "verified": None, "withheld": None}
+			))
+
+		resp.data = users
+		return resp
 
 	@mock.patch("transport.post_tweet")
 	def test_01voterinfo_main(self, mock_post):
@@ -96,19 +114,22 @@ class TestVoterInfo(unittest.TestCase):
 
 		self.assertRaises(KeyError, build_voterinfo, campaigns['2020_cerfvqragvny'], ("Arcadia",))
 
-	@mock.patch("twitter.Api.UsersLookup")
-	@mock.patch("twitter.Api.GetFollowerIDs")
-	@mock.patch("twitter.Api.GetFriendIDs")
-	@mock.patch("twitter.Api.GetUser")
+	@mock.patch("tweepy.Client.follow_user")
+	@mock.patch("tweepy.Client.get_users")
+	@mock.patch("tweepy.Client.get_users_followers")
+	@mock.patch("tweepy.Client.get_users_following")
+	@mock.patch("tweepy.Client.get_user")
 	@mock.patch("transport.post_tweet")
-	def test_05socialize_main(self, mock_post, mock_get_user, mock_friends, mock_followers, _):
+	def test_05socialize_main(self, mock_post, mock_get_user, mock_friends, mock_followers, _, mock_follow_user):
 		mock_post.return_value = 0
 		importlib.reload(socialize)
 
-		mock_followers.return_value \
-			= (157815060, 1230281, 13027572, 155295889, 26825139, 153942024, 153934792)
+		mock_get_user.return_value.data.id = MY_TWITTER_UID
 		mock_friends.return_value \
 			= (26825139, 13027572, 823171093854912516, 54885400, 153942024)
+		mock_followers.return_value \
+			= (157815060, 1230281, 13027572, 155295889, 26825139, 153942024, 153934792)
+		mock_follow_user.return_value = requests.Response()
 		arg0 = sys.argv[0]
 
 		campaign_name = '2020_cerfvqragvny'
@@ -188,12 +209,7 @@ class TestVoterInfo(unittest.TestCase):
 				self.assertIn(campaign.campaign_info[SEARCH_URL], tweet_text,
 							  "Search URL not found in tweet.")
 
-	@staticmethod
-	def _fake_users(*_, screen_name=None):
-		# id is the wrong type here, but we just need unique objects
-		return [User(id=n, screen_name=n) for n in screen_name]
-
-	@mock.patch("twitter.Api.UsersLookup")
+	@mock.patch("tweepy.Client.get_users")
 	def test_07process_do_not_call(self, mock_users_lookup):
 		mock_users_lookup.side_effect = self._fake_users
 		dnc = open(os.path.join(sys.path[0], "do_not_call.txt"))

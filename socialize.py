@@ -3,7 +3,7 @@ import os
 import argparse
 
 import render
-from campaign import campaigns
+from campaign import campaigns, FOLLOW
 from transport import api, post_tweet
 
 
@@ -12,11 +12,14 @@ def main():
 	ret_status = 0
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-l', '--limit', dest='limit', type=int, default=0)
+	parser.add_argument('-l', '--limit', dest='limit', type=int, default=0,
+						help="Max number of tweets (in community mode.)")
 	parser.add_argument('campaign', type=str, help='Symbolic name of campaign, e.g. 2020_presidential.')
 	arg_group = parser.add_mutually_exclusive_group()
-	arg_group.add_argument('-i', '--id', dest='user_id', type=int, default=0)
-	arg_group.add_argument('tweep', type=str, nargs='?', help="Name of a Twitter user.")
+	arg_group.add_argument('-i', '--id', dest='user_id', type=int, default=0,
+						   help="A Twitter user ID, overrides tweep.")
+	arg_group.add_argument('tweep', type=str, nargs='?', help="Name of a Twitter user."
+						   "  If missing, tweet to community of mutual followers.")
 	args = parser.parse_args()
 
 	campaign = campaigns[args.campaign]
@@ -33,10 +36,14 @@ def main():
 		# Ensure user not opted-out
 		if (user_id not in process_do_not_call()) and (user_id in process_opt_in()):
 			ret_status = post_tweet(render.build_socialize, campaign, user_id)
+			if FOLLOW in campaign.campaign_info:
+				res = api.follow_user(user_id)
+				if 'following' not in res.data or not res.data['following']:
+					print(f"Warning: Failed to follow {user_id}.")
 	else:
 		# Tweet our tweeps
-		followers = set(api.GetFollowerIDs())
-		following = set(api.GetFriendIDs())
+		followers = set(api.get_users_followers())
+		following = set(api.get_users_following())
 		tweeps = (followers & following)
 		len_tweeps = len(tweeps)
 
@@ -49,6 +56,10 @@ def main():
 			  f"Tweeps: {len_tweeps}, Tweeps - DNC: {len(tweeps)}")
 		for user_id in tweeps:
 			ret_status = post_tweet(render.build_socialize, campaign, user_id)
+			if FOLLOW in campaign.campaign_info:
+				res = api.follow_user(user_id)
+				if 'following' not in res.data or not res.data['following']:
+					print(f"Warning: Failed to follow {user_id}.")
 			count += 1
 			print(f'Count: {count}', file=sys.stderr)
 			if count == args.limit:

@@ -6,7 +6,7 @@ from urlsbystate import URLS_BY_STATE, CITIES
 from transport import api
 
 TWITTER_SHORT_URL_LENGTH = len('https://t.co/XXXXXXXXXX?amp=1')  # XXX By observation only.
-
+CHARACTER_LIMIT = 280  # XXX Can't find a constant in tweepy.Client
 
 def hashtag(phrase, plain=False):
 	"""
@@ -80,7 +80,7 @@ def render_voterinfo(campaign, state, cities):
 def build_socialize(campaign, user_id):
 	# Build a tweet asking for retweets
 	try:
-		screen_name = api.GetUser(user_id).screen_name
+		screen_name = api.get_user(id=user_id).data.username
 		print(f"Socialize: {screen_name}")
 	except twitter.error.TwitterError:
 		print(f"Twitter user {user_id} not found.")
@@ -93,7 +93,7 @@ def build_socialize(campaign, user_id):
 	# length limit after it shortens the links.
 	effective_length = len(tweet_text) - tweet[0] + tweet[1] * TWITTER_SHORT_URL_LENGTH if tweet else 0
 	# print(effective_length, tweet_text)
-	assert effective_length <= twitter.api.CHARACTER_LIMIT
+	assert effective_length <= CHARACTER_LIMIT
 	return effective_length, tweet_text
 
 

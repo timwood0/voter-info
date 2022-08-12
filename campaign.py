@@ -1,4 +1,5 @@
 import re
+from enum import auto
 
 from lxml import etree, sax
 
