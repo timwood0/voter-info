@@ -22,10 +22,11 @@ def main():
 	campaign = campaigns[args.campaign]
 	user_id = 0
 	if args.tweep:
-		# Tweet an individual (ignoring DNC)
-		user_id = api.GetUser(screen_name=args.tweep).id
+		# Tweet an individual
+		user_id = api.get_user(username=args.tweep).data.id
 
 	if args.user_id:
+		# Tweet to ID overrides name
 		user_id = args.user_id
 
 	if user_id:

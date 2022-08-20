@@ -11,19 +11,131 @@ exec=
 usage() {
 	echo "Usage:
 $0 -h
-$0 [-s state] [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] campaign"
+$0 [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] { [-S tweep_file] | [-s state] } campaign"
+}
+exclu_msg="-s and -S are mutually exclusive."
+
+set_boundaries() {
+	# Set fail-safe bounds on input params that determine tweet period and intervals.
+	# Calibration: minimum 10 min. interval.  Set of len(step_seq) intervals adds to "Elapsed:"
+	# hours, so all states will be tweeted within "waking hours" (approx. 16 hrs., e.g. 6AM-10PM).
+	# This algorithm applies for states as well as cities within a state.
+	[ "$Quanta" -ge 4 -a "$Quanta" -le ${#step_seq[@]} ] 2>- || Quanta=${#step_seq[@]}
+	[ "$Waking_hrs" -ge 0 -a "$Waking_hrs" -le 86400 ] 2>- || Waking_hrs=$((16 * 60 * 60))  # sec.
 }
 
-while getopts hs:q:w: option; do
+build_voterinfo_seq() {
+	local step_gen
+
+	# Be careful to quote multi-word names into the array
+	if [ -z "$State" ]; then
+		step_gen="
+import campaign
+import render
+render.all_states(campaign.campaigns['"$Campaign"'])
+"
+	else
+		step_gen="
+import campaign
+import render
+render.all_cities(campaign.campaigns['"$Campaign"'], '"$State"')
+"
+	fi
+	eval step_seq=( `python -c "$step_gen" | shuf` )
+}
+
+build_tweep_seq() {
+	step_seq=( `awk 'BEGIN { FS="|" } { print $2 }' $Tweep_file` )
+}
+
+build_interval_seq() {
+	# Generate a shuffled list of wait intervals spread over a time period.
+	# We have one base_wait interval, then ($Quanta - 2) wait intervals occurring between steps.
+	local delta time_period base_wait
+
+	base_wait=600
+	time_period=$1
+	delta=`exec 2>-; echo $(( ($time_period - (($Quanta - 2) * $base_wait)) / (($Quanta - 2)**2 / 2) ))`
+	[ "$delta" -ge 0 ] 2>- || delta=0
+	echo "quanta: $Quanta, delta: $delta"
+	interval_seq=( `count=1; time=$base_wait;
+			while [ $count -lt $Quanta ]; do
+				echo $time; time=$(($time + $delta)); count=$(($count + 1));
+			done | shuf` )
+	interval_seq=( ${interval_seq[@]} 0 )	# Terminate interval list
+	echo "Elapsed:" $(((`echo ${interval_seq[*]} | sed 's/ /+/g'`) / 60)) "min."
+}
+
+print_tweet_schedule() {
+	local i
+
+	i=0
+	echo -n "Steps/intervals: "
+	while [ -n "${step_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
+		if [ -z "$State" ]; then
+			echo -n "${step_seq[$i]}/${interval_seq[$i]}"
+		else
+			echo -n "$(($i + 1))/${interval_seq[$i]}"
+		fi
+		echo -n " "
+		i=$(($i + 1))
+	done
+}
+
+tweet_loop() {
+	# Enter a tweet loop, calling the action function at each interval
+	local i action
+
+	action=$1
+	i=0
+	while [ -n "${step_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
+		echo
+		if [ -z "$State" ]; then
+			echo "Step $(($i + 1)): ${step_seq[$i]}, interval ${interval_seq[$i]}"
+		else
+			echo "Step $(($i + 1)), interval ${interval_seq[$i]}"
+		fi
+
+		eval $action $i
+		$exec sleep ${interval_seq[$i]}
+		i=$(($i + 1))
+	done
+}
+
+voterinfo_tweet() {
+	# For cities in a state, always tweet the same state
+	[ -z "$State" ] && place="${step_seq[$1]}" || place="$State"
+	$exec python voterinfo.py $Campaign "$place"
+}
+
+socialize_tweet() {
+	$exec python socialize.py $Campaign "${step_seq[$1]}"
+}
+
+#
+# ------------ Main logic ------------
+#
+
+Action_fn=voterinfo_tweet
+Build_step_seq=build_voterinfo_seq
+while getopts hs:q:w:S: option; do
 	case $option in
 	h) usage
 		exit 0
 		;;
-	s) state="$OPTARG"
+	s)
+		[ -n "$Tweep_file" ] && { echo "$exclu_msg"; usage; exit 1; }
+		State="$OPTARG"
 		;;
-	q) quanta="$OPTARG"
+	q) Quanta="$OPTARG"
 		;;
-	w) waking_hrs="$OPTARG"
+	w) Waking_hrs="$OPTARG"
+		;;
+	S)
+		[ -n "$State" ] && { echo "$exclu_msg"; usage; exit 1; }
+		Tweep_file="$OPTARG"
+		Build_step_seq=build_tweep_seq
+		Action_fn=socialize_tweet
 		;;
 	?) usage
 		exit 1
@@ -32,75 +144,18 @@ done
 
 args=("$@")
 OPTIND=$(($OPTIND - 1))
-campaign="${args[$OPTIND]}"
-[ -n "$campaign" ] || { usage; exit 1; }
+Campaign="${args[$OPTIND]}"
+[ -n "$Campaign" ] || { usage; exit 1; }
 
-# Be careful to quote multi-word names into the array
-if [ -z "$state" ]; then
-	state_gen="
-import campaign
-import render
-render.all_states(campaign.campaigns['"$campaign"'])
-"
-	eval state_seq=( `python -c "$state_gen" | shuf` )
-	place_label_sing="State"
-	place_label_plu="States"
-else
-	cities_gen="
-import campaign
-import render
-render.all_cities(campaign.campaigns['"$campaign"'], '""$state""')
-"
-	eval state_seq=( `python -c "$cities_gen" | shuf` )
-	place_label_sing="Step"
-	place_label_plu="Steps"
-fi
+eval $Build_step_seq
 
-# Calibration: minimum 10 min. interval.  Set of len(state_seq) intervals adds to "Elapsed:"
-# hours, so all states will be tweeted within "waking hours" (approx. 16 hrs., e.g. 6AM-10PM).
-# This algorithm applies for states as well as cities within a state.
-base_wait=600
-[ "$quanta" -ge 4 -a "$quanta" -le ${#state_seq[@]} ] 2>- || quanta=${#state_seq[@]}
-[ "$waking_hrs" -ge 0 -a "$waking_hrs" -le 86400 ] 2>- || waking_hrs=$((16 * 60 * 60))  # sec.
+set_boundaries
 
-# We have one base_wait interval, then ($quanta - 2) wait intervals occurring between states
-delta=`exec 2>-; echo $(( ($waking_hrs - (($quanta - 2) * $base_wait)) / (($quanta - 2)**2 / 2) ))`
-[ "$delta" -ge 0 ] 2>- || delta=0
-echo "quanta: $quanta, delta: $delta"
-interval_seq=( `count=1; time=$base_wait;
-		while [ $count -lt $quanta ]; do
-			echo $time; time=$(($time + $delta)); count=$(($count + 1));
-		done | shuf` )
-interval_seq=( ${interval_seq[@]} 0 )	# Terminate interval list
-echo "Elapsed:" $(((`echo ${interval_seq[*]} | sed 's/ /+/g'`) / 60)) "min."
+build_interval_seq $Waking_hrs
 
-# Print schedule of tweets
-i=0
-echo -n "$place_label_plu/intervals: "
-while [ -n "${state_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
-	if [ -z "$state" ]; then
-		echo -n "${state_seq[$i]}/${interval_seq[$i]}"
-	else
-		echo -n "$(($i + 1))/${interval_seq[$i]}"
-	fi
-	echo -n " "
-	i=$(($i + 1))
-done
+print_tweet_schedule
 
-# Enter tweeting loop
-# NOTE: For this algorithm, a "state" will contain a city name if the script was invoked with -s.
-i=0
-while [ -n "${state_seq[$i]}" -a -n "${interval_seq[$i]}" ]; do
-	echo
-	if [ -z "$state" ]; then
-		echo "$place_label_sing $(($i + 1)): ${state_seq[$i]}, interval ${interval_seq[$i]}"
-	else
-		echo "$place_label_sing $(($i + 1)), interval ${interval_seq[$i]}"
-	fi
-
-	# For cities in a state, always tweet the same state
-	[ -z "$state" ] && place="${state_seq[$i]}" || place="$state"
-	$exec python voterinfo.py $campaign "$place"
-	$exec sleep ${interval_seq[$i]}
-	i=$(($i + 1))
-done
+# Enter tweeting loop.
+# NOTE: For this algorithm, a "step" will contain a city name if the script was invoked with -s,
+# or a Twitter username if invoked with -S.
+tweet_loop $Action_fn

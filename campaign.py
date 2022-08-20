@@ -442,5 +442,21 @@ Otherwise this will be the last contact on this topic. Thank you!"""),
 			},
 			SEARCH_URL: "https://twitter.com/search?f=live&q=%23SaveChoice%20%40livecut"
 		}
+	),
+	"2022_ttc_ramp_up": Campaign(
+		dict(),
+		campaign_info={
+			TWEET_CONTENT: {
+				VOTER_INFO: [],
+				SOCIALIZE: [
+					tweet_entry("""@{screen_name}
+Hi - Sending you a follow from @TweetsToCities.
+New account for the get-out-the-vote project of @Balkingpoints and @livecut.
+Ramping up for the midterms - Roy G. & Tim W.
+"""),
+				]
+			},
+			FOLLOW: True
+		}
 	)
 }
