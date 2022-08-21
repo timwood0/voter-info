@@ -11,7 +11,7 @@ exec=
 usage() {
 	echo "Usage:
 $0 -h
-$0 [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] { [-S tweep_file] | [-s state] } campaign"
+$0 [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] { [-S tweep_file] | [-s state] } campaign"
 }
 exclu_msg="-s and -S are mutually exclusive."
 
@@ -50,15 +50,14 @@ build_tweep_seq() {
 
 build_interval_seq() {
 	# Generate a shuffled list of wait intervals spread over a time period.
-	# We have one base_wait interval, then ($Quanta - 2) wait intervals occurring between steps.
-	local delta time_period base_wait
+	# We have one Base_wait interval, then ($Quanta - 2) wait intervals occurring between steps.
+	local delta time_period
 
-	base_wait=600
 	time_period=$1
-	delta=`exec 2>-; echo $(( ($time_period - (($Quanta - 2) * $base_wait)) / (($Quanta - 2)**2 / 2) ))`
+	delta=`exec 2>-; echo $(( ($time_period - (($Quanta - 2) * $Base_wait)) / (($Quanta - 2)**2 / 2) ))`
 	[ "$delta" -ge 0 ] 2>- || delta=0
 	echo "quanta: $Quanta, delta: $delta"
-	interval_seq=( `count=1; time=$base_wait;
+	interval_seq=( `count=1; time=$Base_wait;
 			while [ $count -lt $Quanta ]; do
 				echo $time; time=$(($time + $delta)); count=$(($count + 1));
 			done | shuf` )
@@ -103,6 +102,8 @@ tweet_loop() {
 }
 
 voterinfo_tweet() {
+	local place
+
 	# For cities in a state, always tweet the same state
 	[ -z "$State" ] && place="${step_seq[$1]}" || place="$State"
 	$exec python voterinfo.py $Campaign "$place"
@@ -118,7 +119,8 @@ socialize_tweet() {
 
 Action_fn=voterinfo_tweet
 Build_step_seq=build_voterinfo_seq
-while getopts hs:q:w:S: option; do
+Base_wait=600
+while getopts hs:q:w:S:b: option; do
 	case $option in
 	h) usage
 		exit 0
@@ -134,8 +136,10 @@ while getopts hs:q:w:S: option; do
 	S)
 		[ -n "$State" ] && { echo "$exclu_msg"; usage; exit 1; }
 		Tweep_file="$OPTARG"
-		Build_step_seq=build_tweep_seq
 		Action_fn=socialize_tweet
+		Build_step_seq=build_tweep_seq
+		;;
+	b) Base_wait="$OPTARG"
 		;;
 	?) usage
 		exit 1
