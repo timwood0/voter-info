@@ -1,0 +1,1096 @@
+<campaigns>
+    <!-- This file contains a sample campaign specification from production use, illustrating the meta-programming
+    technique used to render content in this file within posted tweets. -->
+	<campaign name="2020_cerfvqragvny">
+		<state-info>
+			<state name="Alabama">
+				<cities>
+					<city name="Birmingham"/>
+					<city name="Anniston"/>
+					<city name="Montgomery"/>
+					<city name="Tuscaloosa"/>
+					<city name="Mobile"/>
+					<city name="Muscle Shoals"/>
+					<city name="Dothan"/>
+				</cities>
+			</state>
+			<state name="Alaska">
+				<cities>
+					<city name="Anchorage"/>
+					<city name="Fairbanks"/>
+					<city name="Juneau"/>
+					<city name="Nome"/>
+					<city name="Dillingham"/>
+					<city name="Barrow"/>
+					<city name="Kodiak"/>
+				</cities>
+			</state>
+			<state name="Arizona">
+				<cities>
+					<city name="Phoenix"/>
+					<city name="Flagstaff"/>
+					<city name="Tucson"/>
+					<city name="Yuma"/>
+					<city name="Bullhead City"/>
+					<city name="Tuba City"/>
+					<city name="Prescott"/>
+				</cities>
+			</state>
+			<state name="Arkansas">
+				<cities>
+					<city name="Little Rock"/>
+					<city name="Hot Springs"/>
+					<city name="Pine Bluff"/>
+					<city name="Hope"/>
+					<city name="Fort Smith"/>
+					<city name="Fayetteville"/>
+				</cities>
+			</state>
+			<state name="California">
+				<cities>
+					<city name="Los Angeles"/>
+					<city name="San Francisco"/>
+					<city name="Sacramento"/>
+					<city name="San Diego"/>
+					<city name="Anaheim"/>
+					<city name="Fresno"/>
+					<city name="Modesto"/>
+					<city name="Salinas"/>
+					<city name="Redding"/>
+				</cities>
+			</state>
+			<state name="Colorado">
+				<cities>
+					<city name="Colorado Springs"/>
+					<city name="Denver"/>
+					<city name="Boulder"/>
+					<city name="Grand Junction"/>
+					<city name="Pueblo"/>
+					<city name="Greeley"/>
+					<city name="Sterling"/>
+				</cities>
+			</state>
+			<state name="Connecticut">
+				<cities>
+					<city name="Hartford"/>
+					<city name="Stamford"/>
+					<city name="New Haven"/>
+					<city name="Bridgeport"/>
+					<city name="Waterbury"/>
+					<city name="Danbury"/>
+					<city name="Norwich"/>
+				</cities>
+			</state>
+			<state name="Delaware">
+				<cities>
+					<city name="Dover"/>
+					<city name="Wilmington"/>
+					<city name="New Castle"/>
+					<city name="Milford"/>
+					<city name="Slaughter Beach"/>
+					<city name="Seaford"/>
+				</cities>
+			</state>
+			<state name="District of Columbia">
+				<cities>
+					<city name="Washington"/>
+				</cities>
+			</state>
+			<state name="Florida">
+				<cities>
+					<city name="Tampa"/>
+					<city name="Orlando"/>
+					<city name="Miami"/>
+					<city name="Palm Beach"/>
+					<city name="Tallahassee"/>
+					<city name="Jacksonville"/>
+					<city name="Pensacola"/>
+				</cities>
+			</state>
+			<state name="Georgia">
+				<cities>
+					<city name="Atlanta"/>
+					<city name="Savannah"/>
+					<city name="Athens"/>
+					<city name="Macon"/>
+					<city name="Augusta"/>
+					<city name="Valdosta"/>
+					<city name="Warner Robins"/>
+				</cities>
+			</state>
+			<state name="Guam">
+				<cities>
+					<city name="Tamuning"/>
+					<city name="Santa Rita"/>
+					<city name="Piti"/>
+					<city name="Dededo"/>
+				</cities>
+			</state>
+			<state name="Hawaii">
+				<cities>
+					<city name="Honolulu"/>
+					<city name="Kahului"/>
+					<city name="Hilo"/>
+					<city name="Kapaa"/>
+					<city name="Kaunakakai"/>
+					<city name="Lanai City"/>
+				</cities>
+			</state>
+			<state name="Idaho">
+				<cities>
+					<city name="Coeur d'Alene"/>
+					<city name="Boise"/>
+					<city name="Pocatello"/>
+					<city name="Gooding"/>
+					<city name="Salmon"/>
+					<city name="Lewiston"/>
+				</cities>
+			</state>
+			<state name="Illinois">
+				<cities>
+					<city name="Chicago"/>
+					<city name="Evanston"/>
+					<city name="East St. Louis"/>
+					<city name="Peoria"/>
+					<city name="Springfield"/>
+					<city name="Rockford"/>
+					<city name="Decatur"/>
+					<city name="Rock Island"/>
+				</cities>
+			</state>
+			<state name="Indiana">
+				<cities>
+					<city name="Indianapolis"/>
+					<city name="Gary"/>
+					<city name="Fort Wayne"/>
+					<city name="Terre Haute"/>
+					<city name="South Bend"/>
+					<city name="Evansville"/>
+					<city name="Lafayette"/>
+				</cities>
+			</state>
+			<state name="Iowa">
+				<cities>
+					<city name="Dubuque"/>
+					<city name="Ames"/>
+					<city name="Cedar Rapids"/>
+					<city name="Des Moines"/>
+					<city name="Sioux City"/>
+					<city name="Ft. Dodge"/>
+					<city name="Council Bluffs"/>
+				</cities>
+			</state>
+			<state name="Kansas">
+				<cities>
+					<city name="Kansas City"/>
+					<city name="Topeka"/>
+					<city name="Wichita"/>
+					<city name="Dodge City"/>
+					<city name="Manhattan"/>
+					<city name="Salina"/>
+					<city name="Concordia"/>
+				</cities>
+			</state>
+			<state name="Kentucky">
+				<cities>
+					<city name="Louisville"/>
+					<city name="Lexington"/>
+					<city name="Bowling Green"/>
+					<city name="Frankfort"/>
+					<city name="Paducah"/>
+					<city name="Mayfield"/>
+					<city name="Danville"/>
+				</cities>
+			</state>
+			<state name="Louisiana">
+				<cities>
+					<city name="New Orleans"/>
+					<city name="Shreveport"/>
+					<city name="Baton Rouge"/>
+					<city name="Monroe"/>
+					<city name="Lake Charles"/>
+					<city name="Evangeline"/>
+				</cities>
+			</state>
+			<state name="Maine">
+				<cities>
+					<city name="Bangor"/>
+					<city name="Lewiston"/>
+					<city name="Augusta"/>
+					<city name="Portland"/>
+					<city name="Presque Isle"/>
+					<city name="Waterville"/>
+				</cities>
+			</state>
+			<state name="Maryland">
+				<cities>
+					<city name="Baltimore"/>
+					<city name="Annapolis"/>
+					<city name="Hagerstown"/>
+					<city name="Cumberland"/>
+					<city name="Aberdeen"/>
+					<city name="Salisbury"/>
+				</cities>
+			</state>
+			<state name="Massachusetts">
+				<cities>
+					<city name="Boston"/>
+					<city name="Springfield"/>
+					<city name="Newton"/>
+					<city name="Worcester"/>
+					<city name="New Bedford"/>
+					<city name="Quincy"/>
+					<city name="Holyoke"/>
+				</cities>
+			</state>
+			<state name="Michigan">
+				<cities>
+					<city name="Detroit"/>
+					<city name="Flint"/>
+					<city name="Ann Arbor"/>
+					<city name="Grand Rapids"/>
+					<city name="Lansing"/>
+					<city name="Marquette"/>
+					<city name="Saginaw"/>
+				</cities>
+			</state>
+			<state name="Minnesota">
+				<cities>
+					<city name="Minneapolis"/>
+					<city name="St. Paul"/>
+					<city name="Rochester"/>
+					<city name="Grand Forks"/>
+					<city name="Duluth"/>
+					<city name="Bloomington"/>
+					<city name="St. Cloud"/>
+				</cities>
+			</state>
+			<state name="Mississippi">
+				<cities>
+					<city name="Hattiesburg"/>
+					<city name="Jackson"/>
+					<city name="Biloxi"/>
+					<city name="Gulfport"/>
+					<city name="Greenwood"/>
+					<city name="Columbus"/>
+					<city name="Meridian"/>
+				</cities>
+			</state>
+			<state name="Missouri">
+				<cities>
+					<city name="St. Louis"/>
+					<city name="Kansas City"/>
+					<city name="Springfield"/>
+					<city name="Independence"/>
+					<city name="Jefferson City"/>
+					<city name="Joplin"/>
+					<city name="Ferguson"/>
+				</cities>
+			</state>
+			<state name="Montana">
+				<cities>
+					<city name="Bozeman"/>
+					<city name="Butte"/>
+					<city name="Great Falls"/>
+					<city name="Billings"/>
+					<city name="Missoula"/>
+					<city name="Helena"/>
+					<city name="Wolf Point"/>
+				</cities>
+			</state>
+			<state name="Nebraska">
+				<cities>
+					<city name="Omaha"/>
+					<city name="Lincoln"/>
+					<city name="North Platte"/>
+					<city name="Valentine"/>
+					<city name="Scottsbluff"/>
+					<city name="Columbus"/>
+				</cities>
+			</state>
+			<state name="Nevada">
+				<cities>
+					<city name="Las Vegas"/>
+					<city name="Carson City"/>
+					<city name="Reno"/>
+					<city name="Elko"/>
+					<city name="Winnemucca"/>
+					<city name="Henderson"/>
+					<city name="Boulder City"/>
+				</cities>
+			</state>
+			<state name="New Hampshire">
+				<cities>
+					<city name="Berlin"/>
+					<city name="Manchester"/>
+					<city name="Nashua"/>
+					<city name="Concord"/>
+					<city name="Hanover"/>
+					<city name="Portsmouth"/>
+					<city name="Keene"/>
+				</cities>
+			</state>
+			<state name="New Jersey">
+				<cities>
+					<city name="Newark"/>
+					<city name="Jersey City"/>
+					<city name="Morristown"/>
+					<city name="Trenton"/>
+					<city name="New Brunswick"/>
+					<city name="Vineland"/>
+					<city name="Camden"/>
+					<city name="Paterson"/>
+				</cities>
+			</state>
+			<state name="New Mexico">
+				<cities>
+					<city name="Gallup"/>
+					<city name="Albuquerque"/>
+					<city name="Santa Fe"/>
+					<city name="Las Cruces"/>
+					<city name="Los Alamos"/>
+					<city name="Roswell"/>
+				</cities>
+			</state>
+			<state name="New York">
+				<cities>
+					<city name="New York City"/>
+					<city name="Albany"/>
+					<city name="Rochester"/>
+					<city name="Buffalo"/>
+					<city name="Binghamton"/>
+					<city name="Syracuse"/>
+					<city name="Ithaca"/>
+				</cities>
+			</state>
+			<state name="North Carolina">
+				<cities>
+					<city name="Raleigh"/>
+					<city name="Greensboro"/>
+					<city name="Winston-Salem"/>
+					<city name="Charlotte"/>
+					<city name="Wilmington"/>
+					<city name="Asheville"/>
+					<city name="Fayetteville"/>
+				</cities>
+			</state>
+			<state name="North Dakota">
+				<cities>
+					<city name="Grand Forks"/>
+					<city name="Fargo"/>
+					<city name="Bismarck"/>
+					<city name="Jamestown"/>
+					<city name="Dickinson"/>
+					<city name="Minot"/>
+				</cities>
+			</state>
+			<state name="Ohio">
+				<cities>
+					<city name="Columbus"/>
+					<city name="Akron"/>
+					<city name="Cleveland"/>
+					<city name="Toledo"/>
+					<city name="Cincinnati"/>
+					<city name="Dayton"/>
+					<city name="Chillicothe"/>
+				</cities>
+			</state>
+			<state name="Oklahoma">
+				<cities>
+					<city name="Oklahoma City"/>
+					<city name="Tulsa"/>
+					<city name="Muskogee"/>
+					<city name="Enid"/>
+					<city name="Guymon"/>
+					<city name="Ardmore"/>
+				</cities>
+			</state>
+			<state name="Oregon">
+				<cities>
+					<city name="Portland"/>
+					<city name="Salem"/>
+					<city name="Eugene"/>
+					<city name="Ashland"/>
+					<city name="Medford"/>
+					<city name="Bend"/>
+					<city name="Klamath Falls"/>
+					<city name="Pendleton"/>
+				</cities>
+			</state>
+			<state name="Pennsylvania">
+				<cities>
+					<city name="Philadelphia"/>
+					<city name="Pittsburgh"/>
+					<city name="Scranton"/>
+					<city name="Harrisburg"/>
+					<city name="Allentown"/>
+					<city name="Johnstown"/>
+					<city name="Altoona"/>
+					<city name="Gettysburg"/>
+				</cities>
+			</state>
+			<state name="Puerto Rico">
+				<cities>
+					<city name="San Juan"/>
+					<city name="Mayaguez"/>
+					<city name="Arecibo"/>
+					<city name="Ponce"/>
+					<city name="Caguas"/>
+				</cities>
+			</state>
+			<state name="Rhode Island">
+				<cities>
+					<city name="Providence"/>
+					<city name="Cranston"/>
+					<city name="Metunuck"/>
+					<city name="Warwick"/>
+					<city name="Newport"/>
+					<city name="Woonsocket"/>
+				</cities>
+			</state>
+			<state name="South Carolina">
+				<cities>
+					<city name="Charleston"/>
+					<city name="Columbia"/>
+					<city name="Greenville"/>
+					<city name="Augusta"/>
+					<city name="Springfield"/>
+					<city name="Orangeburg"/>
+				</cities>
+			</state>
+			<state name="South Dakota">
+				<cities>
+					<city name="Sioux Falls"/>
+					<city name="Rapid City"/>
+					<city name="Mitchell"/>
+					<city name="Pierre"/>
+					<city name="Springfield"/>
+					<city name="Mobridge"/>
+				</cities>
+			</state>
+			<state name="Tennessee">
+				<cities>
+					<city name="Memphis"/>
+					<city name="Nashville"/>
+					<city name="Chattanooga"/>
+					<city name="Knoxville"/>
+					<city name="Springfield"/>
+					<city name="Oak Ridge"/>
+					<city name="Murfreesboro"/>
+				</cities>
+			</state>
+			<state name="Texas">
+				<cities>
+					<city name="Dallas"/>
+					<city name="Fort Worth"/>
+					<city name="Austin"/>
+					<city name="Houston"/>
+					<city name="Amarillo"/>
+					<city name="Lubbock"/>
+					<city name="El Paso"/>
+					<city name="San Antonio"/>
+					<city name="Big Spring"/>
+				</cities>
+			</state>
+			<state name="Utah">
+				<cities>
+					<city name="Provo"/>
+					<city name="Salt Lake City"/>
+					<city name="Ogden"/>
+					<city name="Cedar City"/>
+					<city name="Vernal"/>
+					<city name="Logan"/>
+				</cities>
+			</state>
+			<state name="Vermont">
+				<cities>
+					<city name="Brattleboro"/>
+					<city name="Rutland"/>
+					<city name="Burlington"/>
+					<city name="Barre"/>
+					<city name="Montpelier"/>
+					<city name="St. Albans"/>
+				</cities>
+			</state>
+			<state name="Virginia">
+				<cities>
+					<city name="Richmond"/>
+					<city name="Vienna"/>
+					<city name="Arlington"/>
+					<city name="Norfolk"/>
+					<city name="Portsmouth"/>
+					<city name="Virginia Beach"/>
+					<city name="Roanoke"/>
+				</cities>
+			</state>
+			<state name="Washington">
+				<cities>
+					<city name="Seattle"/>
+					<city name="Tacoma"/>
+					<city name="Bellingham"/>
+					<city name="Spokane"/>
+					<city name="Walla Walla"/>
+					<city name="Olympia"/>
+					<city name="Richland"/>
+				</cities>
+			</state>
+			<state name="West Virginia">
+				<cities>
+					<city name="Huntington"/>
+					<city name="Charleston"/>
+					<city name="Parkersburg"/>
+					<city name="Wheeling"/>
+					<city name="Clarksburg"/>
+					<city name="Beckley"/>
+				</cities>
+			</state>
+			<state name="Wisconsin">
+				<cities>
+					<city name="Milwaukee"/>
+					<city name="Kenosha"/>
+					<city name="Green Bay"/>
+					<city name="Eau Claire"/>
+					<city name="Madison"/>
+					<city name="Wausau"/>
+					<city name="Duluth"/>
+				</cities>
+			</state>
+			<state name="Wyoming">
+				<cities>
+					<city name="Cheyenne"/>
+					<city name="Sheridan"/>
+					<city name="Cody"/>
+					<city name="Rock Springs"/>
+					<city name="Casper"/>
+					<city name="Laramie"/>
+				</cities>
+			</state>
+		</state-info>
+		<campaign-info>
+			<search-url><![CDATA[https://twitter.com/search?q=...&f=live]]></search-url>
+			<tweet-content>
+				<voter-info>
+					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)} {hashtag(self.info_by_state[state].get(VOTE_MSG, 'vote'))}"]]></entry>
+					<entry><![CDATA['{" ".join(cities)}']]></entry>
+					<entry><![CDATA["Reg. deadline: ", "{self.info_by_state[state][REGDL]}"]]></entry>
+					<entry><![CDATA["Check registration: ", "{self.info_by_state[state][REG]}"]]></entry>
+					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
+					<entry><![CDATA["Out of U.S.A.: ", "{self.info_by_state[state][ABROAD]}"]]></entry>
+					<entry><![CDATA["Vote by mail: ", "{self.info_by_state[state][ABS]}"]]></entry>
+				</voter-info>
+				<socialize>
+					<entry><![CDATA["""@{screen_name}
+			Hi, we follow each other on Twitter.
+			Please RT my voter info tweets to help get out the vote!"""]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["Find a tweet for a state in the list, e.g., #Iowa or #NC."]]></entry>
+					<entry><![CDATA["Retweet."]]></entry>
+					<entry><![CDATA["Thanks, and be sure to #vote!"]]></entry>
+				</socialize>
+			</tweet-content>
+		</campaign-info>
+	</campaign>
+
+	<campaign name="2021_trbetvn_ehabss">
+		<state-info>
+			<state name="Georgia">
+				<cities>
+					<city name='Albany'/>
+					<city name='Morgan'/>
+					<city name='Fort Gaines'/>
+					<city name='Dawson'/>
+					<city name='Cuthbert'/>
+					<city name='Richland'/>
+					<city name='Americus'/>
+					<city name='Athens'/>
+					<city name='Carrollton'/>
+					<city name='Fort Oglethorpe'/>
+					<city name='Talbotton'/>
+					<city name='Hinesville'/>
+					<city name='Macon'/>
+					<city name='Louisville'/>
+					<city name='Sparta'/>
+					<city name='Warrenton'/>
+					<city name='Crawfordville'/>
+					<city name='Lawrenceville'/>
+					<city name='Marietta'/>
+					<city name='Douglasville'/>
+					<city name='Jonesboro'/>
+					<city name='McDonough'/>
+					<city name='Conyers'/>
+					<city name='Covington'/>
+					<city name='Decatur'/>
+					<city name='North Decatur'/>
+					<city name='Savannah'/>
+					<city name='Kennesaw'/>
+					<city name='Statesboro'/>
+					<city name='Dalton'/>
+					<city name='Douglas'/>
+					<city name='Tifton'/>
+					<city name='Sandy Springs'/>
+					<city name='Georgia State'/>
+					<city name='Georgia Tech'/>
+					<city name='Agnes Scott'/>
+					<city name='South'/>
+					<city name='Oglethorpe'/>
+					<city name='Univ. of Georgia'/>
+					<city name='Strayer'/>
+					<city name='Emory'/>
+					<city name='Kennesaw State'/>
+					<city name='Georgia Southern'/>
+					<city name='Clark Atlanta'/>
+					<city name='Morehouse'/>
+					<city name='Brenau'/>
+					<city name='Georgia Highlands'/>
+					<city name='Spelman'/>
+					<city name='Life'/>
+					<city name='Savannah State'/>
+					<city name='Abraham Baldwin'/>
+					<city name='Dalton State'/>
+					<city name='Columbia State'/>
+					<city name='Georgia Gwinnet'/>
+					<city name='Coastal Georgia'/>
+					<city name='North Georgia'/>
+					<city name='Clayton State'/>
+					<city name='Mercer'/>
+					<city name='Middle Georgia'/>
+					<city name='Georgia Southwestern'/>
+					<city name='Albany State'/>
+					<city name='Georgia'/>
+					<city name='Armstrong State'/>
+					<city name='Point'/>
+					<city name='6LACK'/>
+					<city name='Ray Charles'/>
+					<city name='Allman Bros.'/>
+					<city name='Otis Redding'/>
+					<city name='R.E.M.'/>
+					<city name='The B-52s'/>
+					<city name='Alison Krauss'/>
+					<city name='Atlanta Rhythm Section'/>
+					<city name='CeeLo Green'/>
+					<city name='Cat Power'/>
+					<city name='Confederate Railroad'/>
+					<city name='Brenda Lee'/>
+					<city name='Bubba Knight'/>
+					<city name='Bob'/>
+					<city name='Boyz N Da Hood'/>
+					<city name='TLC'/>
+					<city name='Trisha Yearwood'/>
+					<city name='Alan Jackson'/>
+					<city name='Outkast'/>
+					<city name='Little Richard'/>
+					<city name='James Brown'/>
+					<city name='John Mayer'/>
+					<city name='Pylon'/>
+					<city name='Zac Brown'/>
+					<city name='Luke Bryan'/>
+					<city name='Gladys Night'/>
+					<city name='Indigo Girls'/>
+					<city name='Tetrarch'/>
+					<city name='Collective Soul'/>
+					<city name='Ludacris'/>
+					<city name='Goodie Mob'/>
+					<city name='YoungBloodZ'/>
+					<city name='Lil Nas X'/>
+					<city name='Black Crowes'/>
+					<city name='Ciara'/>
+					<city name='Jermaine Dupri'/>
+					<city name='Mastodon'/>
+					<city name='Usher'/>
+					<city name='Sugarland'/>
+					<city name='Florida Georgia Line'/>
+					<city name='Falcons'/>
+					<city name='Foxes and Fossils'/>
+					<city name='Fort Benning'/>
+					<city name='Marshall Tucker Band'/>
+					<city name='Matt Ryan'/>
+					<city name='Julio Jones'/>
+					<city name='Alex Mack'/>
+					<city name='Deion Jones'/>
+					<city name='Grady Jarrett'/>
+					<city name='James Carpenter'/>
+					<city name='Jake Matthews'/>
+					<city name='Todd Gurley'/>
+					<city name='Chris Lindstrom'/>
+					<city name='Calvin Ridley'/>
+					<city name='Kaleb McGary'/>
+					<city name='Tyeler Davison'/>
+					<city name='Isaiah Oliver'/>
+					<city name='Keanu Neal'/>
+					<city name='Ricardo Allen'/>
+					<city name='Dante Fowler'/>
+					<city name='Luke Stocker'/>
+					<city name='Foyesade Oluokun'/>
+					<city name='AJ Terrell'/>
+					<city name='Hayden Hurst'/>
+					<city name='Steven Means'/>
+					<city name='Hank Aaron'/>
+				</cities>
+			</state>
+		</state-info>
+		<campaign-info/>
+	</campaign>
+
+	<campaign name="2021_pnyvsbeavn_erpnyy">
+		<state-info>
+			<state name="California">
+				<cities>
+					<city name='Los Angeles'/>
+					<city name='San Francisco'/>
+					<city name='San Diego'/>
+					<city name='Riverside'/>
+					<city name='Sacramento'/>
+					<city name='San Jose'/>
+					<city name='Fresno'/>
+					<city name='Concord'/>
+					<city name='Mission Viejo'/>
+					<city name='Bakersfield'/>
+					<city name='Murrieta'/>
+					<city name='Long Beach'/>
+					<city name='Oakland'/>
+					<city name='Stockton'/>
+					<city name='Oxnard'/>
+					<city name='Modesto'/>
+					<city name='Anaheim'/>
+					<city name='Lancaster'/>
+					<city name='Santa Rosa'/>
+					<city name='Santa Clarita'/>
+					<city name='Antioch'/>
+					<city name='Irvine'/>
+					<city name='Chula Vista'/>
+					<city name='Fremont'/>
+					<city name='Thousand Oaks'/>
+					<city name='San Bernardino'/>
+					<city name='Fontana'/>
+					<city name='Moreno Valley'/>
+					<city name='Santa Barbara'/>
+					<city name='Glendale'/>
+					<city name='Huntington Beach'/>
+					<city name='Salinas'/>
+					<city name='Santa Cruz'/>
+					<city name='Rancho Cucamonga'/>
+					<city name='Oceanside'/>
+					<city name='Ontario'/>
+					<city name='Garden Grove'/>
+					<city name='Vallejo'/>
+					<city name='Elk Grove'/>
+					<city name='Corona'/>
+					<city name='Hayward'/>
+					<city name='Palmdale'/>
+					<city name='Sunnyvale'/>
+					<city name='Pomona'/>
+					<city name='Escondido'/>
+					<city name='Fairfield'/>
+					<city name='Torrance'/>
+					<city name='Merced'/>
+					<city name='Pasadena'/>
+					<city name='Fullerton'/>
+					<city name='Santa Maria'/>
+					<city name='Roseville'/>
+					<city name='Santa Clara'/>
+					<city name='East Los Angeles'/>
+					<city name='Berkeley'/>
+					<city name='Seaside'/>
+					<city name='Gilroy'/>
+					<city name='El Monte'/>
+					<city name='Carlsbad'/>
+					<city name='Temecula'/>
+					<city name='Costa Mesa'/>
+					<city name='Downey'/>
+					<city name='El Centro'/>
+					<city name='San Buenaventura'/>
+					<city name='Inglewood'/>
+					<city name='Richmond'/>
+					<city name='Clovis'/>
+					<city name='West Covina'/>
+					<city name='Turlock'/>
+					<city name='Daly City'/>
+					<city name='Chico'/>
+					<city name='Norwalk'/>
+					<city name='Jurupa Valley'/>
+					<city name='Burbank'/>
+					<city name='San Mateo'/>
+					<city name='El Cajon'/>
+					<city name='Rialto'/>
+					<city name='Vista'/>
+					<city name='Vacaville'/>
+					<city name='Manteca'/>
+					<city name='Arden-Arcade'/>
+					<city name='Compton'/>
+					<city name='San Marcos'/>
+					<city name='Tracy'/>
+					<city name='South Gate'/>
+					<city name='Carson'/>
+					<city name='Santa Monica'/>
+					<city name='Westminster'/>
+					<city name='Livermore'/>
+					<city name='Mendocino'/>
+					<city name='Eureka'/>
+					<city name='Ukiah'/>
+					<city name='Woodland'/>
+					<city name='Davis'/>
+					<city name='Petaluma'/>
+					<city name='San Luis Obispo'/>
+					<city name='Paso Robles'/>
+					<city name='Pismo Beach'/>
+					<city name='Morro Bay'/>
+					<city name='Monterey'/>
+					<city name='Delano'/>
+					<city name='Ventura'/>
+					<city name='Los Banos'/>
+					<city name='Wasco'/>
+					<city name='Coalinga'/>
+					<city name='Atwater'/>
+					<city name='La Jolla'/>
+					<city name='Madera'/>
+					<city name='Hollister'/>
+					<city name='Soledad'/>
+				</cities>
+				<vote-msg>CA Recall</vote-msg>
+				<reg-deadline>August 30, 2021!</reg-deadline>
+			</state>
+		</state-info>
+		<campaign-info>
+			<tweet-content>
+				<voter-info>
+					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)} {hashtag(self.info_by_state[state].get(VOTE_MSG, 'vote'))}"]]></entry>
+					<entry><![CDATA['{" ".join(cities)}']]></entry>
+					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
+					<entry><![CDATA["Completed your ballot?  Drop in the mail today, no postage necessary!"]]></entry>
+					<entry><![CDATA["Find mailboxes: ", "https://tools.usps.com/find-location.htm?locationType=collectionbox"]]></entry>
+					<entry><![CDATA[]]></entry>
+				</voter-info>
+				<socialize>
+					<entry><![CDATA["""@{screen_name}, here's that daily reminder to
+					retweet my tweets for ... turnout!"""]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["""Reply STOP to stop reminders, which end Sept. 14th.
+					Thanks again for helping."""]]></entry>
+					<entry><![CDATA[]]></entry>
+				</socialize>
+			</tweet-content>
+			<search-url><![CDATA[https://twitter.com/search?q=...&f=live]]></search-url>
+		</campaign-info>
+	</campaign>
+
+	<campaign name="2021_aw_in_tbi">
+		<state-info>
+			<state name="New Jersey">
+				<cities>
+					<city name='Newark'/>
+					<city name='West Orange'/>
+					<city name='East Orange'/>
+					<city name='South Orange'/>
+					<city name='Orange'/>
+					<city name='Englewood'/>
+					<city name='Teaneck'/>
+					<city name='Paterson'/>
+					<city name='Weehawken'/>
+					<city name='West New York'/>
+					<city name='Montvale'/>
+					<city name='Nutley'/>
+					<city name='Ho-Ho-Kus'/>
+					<city name='Secaucus'/>
+					<city name='Hoboken'/>
+					<city name='Fort Lee'/>
+					<city name='Sandy Hook'/>
+					<city name='Jersey City'/>
+					<city name='Passaic'/>
+					<city name='Fair Lawn'/>
+					<city name='Paramus'/>
+					<city name='Clifton'/>
+					<city name='Bloomfield'/>
+					<city name='Kearny'/>
+					<city name='Elizabeth'/>
+					<city name='Wayne'/>
+					<city name='Oakland'/>
+					<city name='Pompton Lakes'/>
+					<city name='Morristown'/>
+					<city name='Bayonne'/>
+					<city name='Linden'/>
+					<city name='Union'/>
+					<city name='Atlantic City'/>
+					<city name='Camden'/>
+					<city name='Trenton'/>
+					<city name='Cherry Hill'/>
+					<city name='Vineland'/>
+					<city name='Edison'/>
+					<city name='New Brunswick'/>
+					<city name='Piscataway'/>
+					<city name='Princeton'/>
+					<city name='Springsteen'/>
+					<city name='Bon Jovi'/>
+					<city name='The Sopranos'/>
+					<city name='Frank Sinatra'/>
+					<city name='George Washington'/>
+					<city name='My Chemical Romance'/>
+					<city name='Unix'/>
+					<city name='Bell Labs'/>
+					<city name='Dionne Warwick'/>
+					<city name='Whitney Houston'/>
+					<city name='Count Basie'/>
+					<city name='Ricky Nelson'/>
+					<city name='Donald Fagen'/>
+					<city name='Sarah Vaughan'/>
+					<city name='Fugees'/>
+					<city name='The Shirelles'/>
+					<city name='Paul Simon'/>
+					<city name='Yo La Tengo'/>
+					<city name='Bill Evans'/>
+					<city name='Patti Smith'/>
+					<city name='Rutgers'/>
+					<city name='Fairleigh Dickinson'/>
+					<city name='Drew'/>
+				</cities>
+				<vote-msg>Vote NJ!</vote-msg>
+			</state>
+			<state name="Virginia">
+				<cities>
+					<city name='Roanoke'/>
+					<city name='Richmond'/>
+					<city name='Alexandria'/>
+					<city name='Arlington'/>
+					<city name='Fredericksburg'/>
+					<city name='Charlottesville'/>
+					<city name='Hampton'/>
+					<city name='Hampton Roads'/>
+					<city name='Norfolk'/>
+					<city name='Newport'/>
+					<city name='News'/>
+					<city name='Portsmouth'/>
+					<city name='Suffolk'/>
+					<city name='Chesapeake'/>
+					<city name='Emporia'/>
+					<city name='Lawrenceville'/>
+					<city name='Sussex'/>
+					<city name='Surrey'/>
+					<city name='Danville'/>
+					<city name='Yorktown'/>
+					<city name='Williamsburg'/>
+					<city name='Charles City'/>
+					<city name='Chesterfield'/>
+					<city name='Farmville'/>
+					<city name='Christiansburg'/>
+					<city name='Manassas'/>
+					<city name='Fairfax'/>
+					<city name='Leesburg'/>
+					<city name='Aimee Mann'/>
+					<city name='Pharrell Williams'/>
+					<city name='Ella Fitzgerald'/>
+					<city name='Patsy Cline'/>
+					<city name='Dave Matthews Band'/>
+					<city name='Missy Elliott'/>
+					<city name='Dave Grohl'/>
+					<city name='Bruce Hornsby'/>
+					<city name='Pearl Bailey'/>
+					<city name='Jason Mraz'/>
+					<city name='Gene Vincent'/>
+					<city name='Stewart Copeland'/>
+				</cities>
+				<vote-msg>Vote VA!</vote-msg>
+			</state>
+		</state-info>
+		<campaign-info>
+			<search-url><![CDATA[https://twitter.com/search?f=live&q=...]]></search-url>
+			<tweet-content>
+				<voter-info>
+					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state].get(VOTE_MSG))}"]]></entry>
+					<entry><![CDATA['{" ".join(cities)}']]></entry>
+					<entry><![CDATA["Vote by mail: ", "{self.info_by_state[state][ABS]}"]]></entry>
+					<entry><![CDATA["Find mailboxes: ", "https://tools.usps.com/find-location.htm?locationType=collectionbox"]]></entry>
+					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
+				</voter-info>
+				<socialize>
+					<entry><![CDATA["""@{screen_name}
+					Hi, we follow each other on Twitter.
+					Please RT my tweets for ... turnout!"""]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["Retweet."]]></entry>
+					<entry><![CDATA["""For a 1 mention/day reminder, reply YES.
+					Otherwise this will be the last contact on this topic. Thank you!"""]]></entry>
+				</socialize>
+			</tweet-content>
+			<follow/>
+		</campaign-info>
+	</campaign>
+
+	<campaign name="2022_xnafnf_pubvpr">
+		<state-info>
+			<state name="Kansas">
+				<cities>
+					<city name="Topeka"/>
+					<city name="Kansas City"/>
+					<city name="Lawrence"/>
+					<city name="Manhattan"/>
+					<city name="Salina"/>
+					<city name="Hutchinson"/>
+					<city name="Wichita"/>
+					<city name="Independence"/>
+					<city name="El Dorado"/>
+					<city name="Coffeyville"/>
+					<city name="Russell"/>
+					<city name="Hays"/>
+					<city name="Great Bend"/>
+					<city name="Dodge City"/>
+					<city name="Garden City"/>
+					<city name="Pratt"/>
+					<city name="Goodland"/>
+					<city name="Concordia"/>
+					<city name="Leavenworth"/>
+					<city name="Marysville"/>
+					<city name="Overland Park"/>
+					<city name="Lenexa"/>
+					<city name="Liberal"/>
+					<city name="Ottawa"/>
+					<city name="Junction City"/>
+					<city name="Potawatomi"/>
+					<city name="Kickapoo"/>
+					<city name="Oglala Sioux"/>
+					<city name="BBQ"/>
+					<city name="Royals"/>
+					<city name="Chiefs"/>
+
+				</cities>
+				<vote-msg>VOTE</vote-msg>
+				<reg-deadline>July 13, 2022</reg-deadline>
+			</state>
+		</state-info>
+		<campaign-info>
+			<search-url><![CDATA[https://twitter.com/search?f=live&q=...]]></search-url>
+			<tweet-content>
+				<voter-info>
+					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)}"]]></entry>
+					<entry><![CDATA["{hashtag(self.info_by_state[state].get(VOTE_MSG))} {hashtag('VOTE!!!')}"]]></entry>
+					<entry><![CDATA['{" ".join(cities)}']]></entry>
+					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
+					<entry><![CDATA["Vote by mail: ", "{self.info_by_state[state][ABS]}"]]></entry>
+				</voter-info>
+				<socialize>
+					<entry><![CDATA["""@{screen_name}
+Hi, we follow each other on Twitter.
+Please RT my tweets for turnout!"""]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["Retweet."]]></entry>
+					<entry><![CDATA["""For a 1 mention/day reminder, reply YES.
+Otherwise this will be the last contact on this topic. Thank you!"""]]></entry>
+				</socialize>
+			</tweet-content>
+			<follow/>
+		</campaign-info>
+	</campaign>
+
+	<campaign name="2022_ggp_enzc_hc">
+		<state-info/>
+		<campaign-info>
+			<search-url/>
+			<tweet-content>
+				<voter-info/>
+				<socialize>
+					<entry><![CDATA["""@{screen_name}
+Hi - ..."""]]></entry>
+				</socialize>
+			</tweet-content>
+			<follow/>
+		</campaign-info>
+	</campaign>
+</campaigns>

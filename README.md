@@ -1,7 +1,7 @@
 # voter-info
 Simple app. to automate tweeting of voting resources for the U.S. 2020 election.
 
-Synopses:
+## Synopses:
 
 Voter info facet:
 `python voterinfo.py campaign [["]U.S.-state-or-territory-specifier["]]`
@@ -10,14 +10,14 @@ Socialize facet:
 `python socialize.py [-l limit] campaign [tweep]`
 
 Driver:
-`./tweet_vi [-h] [-s state] [-q number-of-tweets] [-w time-period(max 86400 sec.)] campaign`
+`./tweet_vi [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] { [-S tweep_file] | [-s state] } campaign`
 
 This tool contains two main facets, or executable entry-points, one to tweet voter info by U.S. states and territories,
 the other to tweet mutual followers asking them to search up and retweet the voter-info tweets.  It includes a
-driver script, `tweet_vi`, to automate tweeting to many states, or repeatedly to a single state.
+driver script, `tweet_vi`, to automate tweeting to many states, or repeatedly to a single state, or to mutual followers.
 
-The `campaign` argument refers to configurations of campaign-specific data, found in `campaign.campaigns`.
-Planned work will move the campaign configurations out of the code and into resource files.
+The `campaign` argument refers to configurations of campaign-specific data found in `campaigns.xml` in the top-level
+directory, a resource file you create.  You can use `campaigns-template.xml` as a guideline to the configuration schema.
 
 `voterinfo.py` by default issues a tweet on Twitter containing
 links to on-line resources for voters for a single random U.S. state or territory.
@@ -31,7 +31,11 @@ followers.  The `-l` argument limits the number of tweets to the given number of
 This facet outputs a header line with the user's follower and following counts, the count of mutual followers,
 and the number of remaining mutuals not in `do_not_call.txt`.  It then outputs a line with each follower's name
 that it send a tweet.  Currently, you must manually maintain `do_not_call.txt` with the names of mutual followers
-already tweeted (see output for recipients), if you want to prevent duplicate tweeting.
+already tweeted (see output for recipients), if you want to prevent duplicate tweeting or tweets to those who opt out.
+
+## Configuration
+
+### Credentials
 
 This tool currently requires the user to have a Twitter developer account.
 The `keys.py` file requires a `keys.xml` file in the top-level directory with the structure
@@ -53,6 +57,17 @@ to valid values issued by Twitter.
 The script will exit with non-zero status if it cannot compose a tweet in its standard format
 that fits within Twitter's length limit for a tweet.  This is a rare occurrence, only happening when
 `voterinfo.py` cannot include at least one city in the state or territory in the tweet without exceeding the limit.
+
+### Campaigns - Meta-Programming
+
+Recent changes have moved the definitions of campaigns out of Python code and into a resource file, `campaigns.xml`.
+The program loads the campaign definitions from this file at startup.
+
+The included `campaigns-template.xml` contains elaborate examples of single- and multi-state campaign definitions.  Note the
+contents of the `<entry>` elements.  `<entry>` element CDATA contains a list of Python formatted-string arguments passed
+verbatim to the `campaign.tweet_entry()` function to render data and other content conveniently.  Also note, before you
+can run the tests successfully, you should first rename or make a copy of any existing `campaigns.xml`, then copy
+`campaigns-template.xml` to `campaigns.xml`.
 
 Acknowledgement and thanks are due [voteamerica.com](https://voteamerica.com) for their carefully-assembled
 pages of state-by-state voter resources, which facilitated building this tool; also to Twitter:@balkingpoints for

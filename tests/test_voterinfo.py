@@ -25,17 +25,17 @@ class TestVoterInfo(unittest.TestCase):
 		mock_post.return_value = 0
 		importlib.reload(voterinfo)
 		arg0 = sys.argv[0]
-		sys.argv = [arg0, '2020_presidential', 'Puerto Rico']
+		sys.argv = [arg0, '2020_cerfvqragvny', 'Puerto Rico']
 		self.assertEqual(voterinfo.main(), 0)
 
-		sys.argv = [arg0, '2020_presidential', 'Arcadier']
+		sys.argv = [arg0, '2020_cerfvqragvny', 'Arcadier']
 		self.assertEqual(voterinfo.main(), 1)
 
 		sys.argv = [arg0]
 		with mock.patch("argparse.ArgumentParser.exit", side_effect=IndexError):
 			self.assertRaises(IndexError, voterinfo.main)
 
-		sys.argv = [arg0, '2021_georgia_runoff']
+		sys.argv = [arg0, '2021_trbetvn_ehabss']
 		self.assertEqual(voterinfo.main(), 0)
 		# XXX Set & check a fake JSON return value for _mock_api.return_value.PostUpdate.return_value
 
@@ -56,7 +56,7 @@ class TestVoterInfo(unittest.TestCase):
 			self.assertTrue(field in state_info, f"{field} missing from {state}")
 
 		# Pick the original 2020 campaign
-		campaign = campaigns['2020_presidential']
+		campaign = campaigns['2020_cerfvqragvny']
 		for state, ref_state_info in URLS_BY_STATE.items():
 			state_info = {}
 			state_info.update(ref_state_info)
@@ -84,17 +84,17 @@ class TestVoterInfo(unittest.TestCase):
 				assert len(tweet) > bound  # XXX This could flap
 
 		random.seed(0)
-		_call_build_voterinfo(campaigns['2020_presidential'], 0)
+		_call_build_voterinfo(campaigns['2020_cerfvqragvny'], 0)
 
-		_call_build_voterinfo(campaigns['2021_georgia_runoff'], -1)
+		_call_build_voterinfo(campaigns['2021_trbetvn_ehabss'], -1)
 
-		_call_build_voterinfo(campaigns['2021_california_recall'], 0)
+		_call_build_voterinfo(campaigns['2021_pnyvsbeavn_erpnyy'], 0)
 
-		_call_build_voterinfo(campaigns['2021_nj_va_gov'], 0)
+		_call_build_voterinfo(campaigns['2021_aw_in_tbi'], 0)
 
-		_call_build_voterinfo(campaigns['2022_kansas_choice'], 0)
+		_call_build_voterinfo(campaigns['2022_xnafnf_pubvpr'], 0)
 
-		self.assertRaises(KeyError, build_voterinfo, campaigns['2020_presidential'], ("Arcadia",))
+		self.assertRaises(KeyError, build_voterinfo, campaigns['2020_cerfvqragvny'], ("Arcadia",))
 
 	@mock.patch("twitter.Api.UsersLookup")
 	@mock.patch("twitter.Api.GetFollowerIDs")
@@ -111,7 +111,7 @@ class TestVoterInfo(unittest.TestCase):
 			= (26825139, 13027572, 823171093854912516, 54885400, 153942024)
 		arg0 = sys.argv[0]
 
-		campaign_name = '2020_presidential'
+		campaign_name = '2020_cerfvqragvny'
 		campaign = campaigns[campaign_name]
 		sys.argv = [arg0, campaign_name]
 		socialize.main()
@@ -120,7 +120,7 @@ class TestVoterInfo(unittest.TestCase):
 									mock.call(build_socialize, campaign, 26825139)], any_order=True)
 		mock_post.reset_mock()
 
-		campaign_name = '2021_california_recall'
+		campaign_name = '2021_pnyvsbeavn_erpnyy'
 		campaign = campaigns[campaign_name]
 		sys.argv = [arg0, campaign_name, '-i', '153942024']
 		socialize.main()
@@ -131,6 +131,13 @@ class TestVoterInfo(unittest.TestCase):
 		mock_get_user.return_value.id = MY_TWITTER_UID
 		socialize.main()
 		mock_post.assert_has_calls([mock.call(build_socialize, campaign, MY_TWITTER_UID)])
+		mock_post.reset_mock()
+
+		campaign_name = "2022_ggp_enzc_hc"
+		sys.argv = [arg0, campaign_name, "livecut"]
+		mock_follow_user.return_value.data = {'following': True, 'pending_follow': False}
+		socialize.main()
+		mock_follow_user.assert_has_calls([mock.call(MY_TWITTER_UID)])
 		mock_post.reset_mock()
 
 		sys.argv = [arg0, campaign_name, '-i', '153942024', 'livecut']
@@ -146,7 +153,7 @@ class TestVoterInfo(unittest.TestCase):
 			effective_length, tweet_text = build_socialize(campaign, MY_TWITTER_UID)
 			print(effective_length)
 			print(tweet_text)
-			if SEARCH_URL in campaign.campaign_info:
+			if SEARCH_URL in campaign.campaign_info and campaign.campaign_info[SEARCH_URL] is not None:
 				self.assertIn(campaign.campaign_info[SEARCH_URL], tweet_text,
 							  "Search URL not found in tweet.")
 
