@@ -31,7 +31,7 @@ def main():
 
 	if user_id:
 		# Ensure user not opted-out
-		if ({user_id} - process_do_not_call()):
+		if (user_id not in process_do_not_call()) and (user_id in process_opt_in()):
 			ret_status = post_tweet(render.build_socialize, campaign, user_id)
 	else:
 		# Tweet our tweeps
@@ -41,6 +41,7 @@ def main():
 		len_tweeps = len(tweeps)
 
 		tweeps -= process_do_not_call()
+		tweeps = tweeps & process_opt_in()
 
 		# Post to the community
 		count = 0
@@ -56,28 +57,38 @@ def main():
 	return ret_status
 
 
+# Return a list of users who have opted in to @-mentions, a Twitter requirement.
+def process_opt_in():
+	return process_opt_list("opt_in.txt")
+
+
+# Return a list of users IDs who have opted out of contact
 def process_do_not_call():
-	# Take away names on the DNC list
-	dnc = open(os.path.join(sys.path[0], "do_not_call.txt"))
-	dnc_tweeps = set()
-	dnc_names = list()
+	return process_opt_list("do_not_call.txt")
+
+
+# Look up user IDs for a usernames in a file, return the user IDs in a set.
+def process_opt_list(opt_file):
+	opt_fd = open(os.path.join(sys.path[0], opt_file))
+	opt_tweeps = set()
+	opt_names = list()
 	line_ct = 0
-	for line in dnc.readlines():
-		dnc_names.append(line[:-1])
+	for line in opt_fd.readlines():
+		opt_names.append(line[:-1])
 		line_ct += 1
 		if line_ct == 100:
 			# Limit of 100 names to look up at once
-			ul = api.UsersLookup(screen_name=dnc_names)
-			dnc_tweeps.update(u.id for u in ul)
-			dnc_names = list()
+			resp = api.get_users(usernames=opt_names)
+			opt_tweeps.update(u.id for u in resp.data)
+			opt_names = list()
 			line_ct = 0
 
 	if line_ct > 0:
-		ul = api.UsersLookup(screen_name=dnc_names)
-		dnc_tweeps.update(u.id for u in ul)
+		resp = api.get_users(usernames=opt_names)
+		opt_tweeps.update(u.id for u in resp.data)
 
-	dnc.close()
-	return dnc_tweeps
+	opt_fd.close()
+	return opt_tweeps
 
 
 if __name__ == '__main__':

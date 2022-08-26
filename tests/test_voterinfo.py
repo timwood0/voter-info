@@ -114,29 +114,57 @@ class TestVoterInfo(unittest.TestCase):
 		campaign_name = '2020_cerfvqragvny'
 		campaign = campaigns[campaign_name]
 		sys.argv = [arg0, campaign_name]
-		socialize.main()
+		with mock.patch("socialize.process_opt_in") as mock_opt_in:
+			mock_opt_in.return_value = {13027572, 153942024, 26825139}
+			socialize.main()
 		mock_post.assert_has_calls([mock.call(build_socialize, campaign, 13027572),
 									mock.call(build_socialize, campaign, 153942024),
 									mock.call(build_socialize, campaign, 26825139)], any_order=True)
+		mock_post.reset_mock()
+		# Test we don't tweet unless opted in
+		with mock.patch("socialize.process_opt_in") as mock_opt_in:
+			mock_opt_in.return_value = {153942024, 26825139}
+			socialize.main()
+		try:
+			mock_post.assert_has_calls([mock.call(build_socialize, campaign, 13027572)], any_order=True)
+			raise AssertionError("Should not have a call for 13027572.")
+		except AssertionError:
+			# The above call should not take place
+			pass
 		mock_post.reset_mock()
 
 		campaign_name = '2021_pnyvsbeavn_erpnyy'
 		campaign = campaigns[campaign_name]
 		sys.argv = [arg0, campaign_name, '-i', '153942024']
-		socialize.main()
+		with mock.patch("socialize.process_opt_in") as mock_opt_in:
+			mock_opt_in.return_value = {153942024}
+			socialize.main()
 		mock_post.assert_has_calls([mock.call(build_socialize, campaign, 153942024)])
+		mock_post.reset_mock()
+		with mock.patch("socialize.process_opt_in") as mock_opt_in:
+			mock_opt_in.return_value = {}
+			socialize.main()
+		try:
+			mock_post.assert_has_calls([mock.call(build_socialize, campaign, 153942024)])
+			raise AssertionError("Should not have a call for 153942024.")
+		except AssertionError:
+			# The above call should not take place
+			pass
 		mock_post.reset_mock()
 
 		sys.argv = [arg0, campaign_name, 'livecut']
-		mock_get_user.return_value.id = MY_TWITTER_UID
-		socialize.main()
+		with mock.patch("socialize.process_opt_in") as mock_opt_in:
+			mock_opt_in.return_value = {MY_TWITTER_UID}
+			socialize.main()
 		mock_post.assert_has_calls([mock.call(build_socialize, campaign, MY_TWITTER_UID)])
 		mock_post.reset_mock()
 
 		campaign_name = "2022_ggp_enzc_hc"
 		sys.argv = [arg0, campaign_name, "livecut"]
-		mock_follow_user.return_value.data = {'following': True, 'pending_follow': False}
-		socialize.main()
+		with mock.patch("socialize.process_opt_in") as mock_opt_in:
+			mock_opt_in.return_value = {MY_TWITTER_UID}
+			mock_follow_user.return_value.data = {'following': True, 'pending_follow': False}
+			socialize.main()
 		mock_follow_user.assert_has_calls([mock.call(MY_TWITTER_UID)])
 		mock_post.reset_mock()
 
@@ -147,7 +175,9 @@ class TestVoterInfo(unittest.TestCase):
 
 		sys.argv = [arg0]
 
-	def test_06build_socialize(self):
+	@mock.patch("tweepy.Client.get_user")
+	def test_06build_socialize(self, mock_get_user):
+		mock_get_user.return_value.data.username = 'livecut'
 		for campaign_name in campaigns:
 			campaign = campaigns[campaign_name]
 			effective_length, tweet_text = build_socialize(campaign, MY_TWITTER_UID)
@@ -172,7 +202,7 @@ class TestVoterInfo(unittest.TestCase):
 		dnc.close()
 
 		# Requires no duplicates in DNC list
-		self.assertEqual(line_ct, len(socialize.process_do_not_call()))
+		self.assertEqual(line_ct, len(socialize.process_opt_list("do_not_call.txt")))
 
 
 if __name__ == '__main__':
