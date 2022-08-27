@@ -163,3 +163,27 @@ print_tweet_schedule
 # NOTE: For this algorithm, a "step" will contain a city name if the script was invoked with -s,
 # or a Twitter username if invoked with -S.
 tweet_loop $Action_fn
+
+exit $?
+
+# ----- Test Cases -----
+# - Manual; network action suppressed.
+# - Validations:
+#	- Check interval (delay) list correctly computed.
+#	- Check "cities" items correctly selected.
+#	- Check resulting python commands correct as to form.
+#(
+#run_case() {
+#	bash -x tweet_vi "$@" 2>&1 | less
+#}
+#run_case 2022_xnafnf_pubvpr
+#run_case -s Kansas 2022_xnafnf_pubvpr
+#run_case 2020_cerfvqragvny
+#run_case -q 14 -w 28800 2020_cerfvqragvny
+#run_case -s Ohio -S foo 2022_xnafnf_pubvpr
+#run_case -S foo -s Ohio 2022_xnafnf_pubvpr
+#run_case -S tests/net_followers.out 2022_ggp_enzc_hc
+#run_case -S tests/net_followers.out -q 3 -w $(( 8 * 3600 )) 2022_ggp_enzc_hc
+#run_case -S tests/net_followers.out -q 6 -w $(( 8 * 3600 )) 2022_ggp_enzc_hc
+#run_case -S tests/net_followers.out -q 4 -w $(( 8 * 3600 )) 2022_ggp_enzc_hc
+#)
