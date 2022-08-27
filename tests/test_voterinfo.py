@@ -170,7 +170,8 @@ class TestVoterInfo(unittest.TestCase):
 
 		sys.argv = [arg0, campaign_name, '-i', '153942024', 'livecut']
 		with mock.patch("sys.exit"):
-			socialize.main()
+			with mock.patch("socialize.process_opt_in") as mock_opt_in:
+				socialize.main()
 		mock_post.assert_has_calls([])
 
 		sys.argv = [arg0]
