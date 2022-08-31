@@ -44,40 +44,26 @@ class Campaign:
 	def campaign_info(self):
 		return self._campaign_info
 
-	def voterinfo(self, state, cities) -> list:
-		"""Build a voterinfo tweet.
+	def build_tweet(self, state=None, cities=None, screen_name=None) -> list:
+		"""Build a tweet.
 		:param state State name, used in tweet content eval
 		:param cities City/topics list, used in tweet content eval
+			OR
+		:screen_name Twitter user name, used in tweet content eval.
+
 		:return List, starts with total length of URLs in the tweet, number of URLs in the tweet,
 		then the tweet lines.
 		"""
 
-		if not self._tweet_content or not self._tweet_content[VOTER_INFO]:
+		if screen_name:
+			template = SOCIALIZE
+		else:
+			template = VOTER_INFO
+		if not self._tweet_content or not self._tweet_content[template]:
 			return []
 
 		ret_tweet = [0, 0]
-		for line_parts in self._tweet_content[VOTER_INFO]:
-			line = ""
-			for part in line_parts:
-				part_val = re.sub('\t', '', eval(part))
-				if re.match('^http[s]?://.*', part_val):
-					ret_tweet[0] += len(part_val)
-					ret_tweet[1] += 1
-				line += part_val
-			ret_tweet.append(line)
-
-		return ret_tweet
-
-	def socialize(self, screen_name) -> list:
-		"""Build a socialize tweet.
-		:param screen_name Twitter user name, used in tweet content eval.
-		:return List of tweet lines.
-		"""
-		if not self._tweet_content or not self._tweet_content[SOCIALIZE]:
-			return []
-
-		ret_tweet = [0, 0]
-		for line_parts in self._tweet_content[SOCIALIZE]:
+		for line_parts in self._tweet_content[template]:
 			line = ""
 			for part in line_parts:
 				part_val = re.sub('\t', '', eval(part))

@@ -66,8 +66,7 @@ def render_tweet(tweet: list):
 
 def render_voterinfo(campaign, state, cities):
 
-	# XXX Tweet text should go in external files and be selectable.  Interface back to code?
-	tweet = campaign.voterinfo(state, cities)
+	tweet = campaign.build_tweet(state=state, cities=cities)
 	tweet_text = render_tweet(tweet)
 
 	# Now try to guess the length of the resulting tweet.  Twitter imposes the
@@ -86,7 +85,7 @@ def build_socialize(campaign, user_id):
 		print(f"Twitter user {user_id} not found.")
 		return 0, ""
 
-	tweet = campaign.socialize(screen_name)
+	tweet = campaign.build_tweet(screen_name=screen_name)
 	tweet_text = render_tweet(tweet)
 
 	# Now try to guess the length of the resulting tweet.  Twitter imposes the
