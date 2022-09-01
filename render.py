@@ -7,6 +7,7 @@ from transport import api
 
 TWITTER_SHORT_URL_LENGTH = len('https://t.co/XXXXXXXXXX?amp=1')  # XXX By observation only.
 CHARACTER_LIMIT = 280  # XXX Can't find a constant in tweepy.Client
+SD_FACTOR = 0.1  # Factor of list size for normal distribution s.d. on list indices of cities
 
 def hashtag(phrase, plain=False):
 	"""
@@ -26,47 +27,59 @@ def hashtag(phrase, plain=False):
 	return '#' + ''.join(words)
 
 
-def build_voterinfo(campaign, state):
+def build_voterinfo(campaign, state_name):
 	"""Render a tweet of voting info for a state"""
-	state_info = campaign.info_by_state[state]
-	num_cities = len(state_info[CITIES])
-	assert num_cities == len(set(state_info[CITIES])), f"Duplicate entries in CITIES for {state}."
+	state = campaign.info_by_state[state_name]
+	num_cities = len(state[CITIES])
+	assert num_cities == len(set(state[CITIES])), f"Duplicate entries in CITIES for {state_name}."
 
-	city_ct = num_cities
+	city_ct = 0
 	effective_length = 0
 	tweet_text = ""
-	while city_ct > 0:
+	while city_ct < num_cities:
 		# Iterate on building a tweet until it fits within the limit.
 		# Return none if unsuccessful
-		city_set = set(state_info[CITIES])
+		city_set = set(state[CITIES])
 		try:
 			# Select up to city_ct cities
 			cities = []
 			cities_found = 0
 			while cities_found < city_ct:
-				city_idx = random.randint(0, num_cities - 1)
-				city = state_info[CITIES][city_idx]
+				city_idx = select_city(campaign, state, num_cities)
+				city = state[CITIES][city_idx]
 				if city in city_set:
 					cities.append(hashtag(city))
 					city_set.remove(city)
 					cities_found += 1
 
-			effective_length, tweet_text = render_voterinfo(campaign, state, cities)
-			break
+			effective_length, tweet_text = render_voterinfo(campaign, state_name, cities)
+			city_ct += 1
 		except AssertionError:
-			tweet_text = ""
-			city_ct -= 1
+			# The last-returned tweet_text is at "max" capacity
+			break
 
 	return effective_length, tweet_text
+
+
+def select_city(campaign, state_info, num_cities):
+	# Simple function to pick a random index into the list of cities based on normal distribution of indexes
+	if campaign.CITIES_DISTRO in state_info:
+		city_idx = (num_cities >> 1) + int(round(random.gauss(0.0, SD_FACTOR * num_cities)))
+		city_idx = min(max(0, city_idx), num_cities - 1)
+	else:
+		city_idx = random.randint(0, num_cities - 1)
+	# print(f"city_idx: {city_idx}")
+
+	return city_idx
 
 
 def render_tweet(tweet: list):
 	return '\n'.join(tweet[2:]) if tweet else ""
 
 
-def render_voterinfo(campaign, state, cities):
+def render_voterinfo(campaign, state_name, cities):
 
-	tweet = campaign.build_tweet(state=state, cities=cities)
+	tweet = campaign.build_tweet(state=state_name, cities=cities)
 	tweet_text = render_tweet(tweet)
 
 	# Now try to guess the length of the resulting tweet.  Twitter imposes the

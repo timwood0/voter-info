@@ -570,7 +570,7 @@
 			<search-url><![CDATA[https://twitter.com/search?q=...&f=live]]></search-url>
 			<tweet-content>
 				<voter-info>
-					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)} {hashtag(self.info_by_state[state].get(VOTE_MSG, 'vote'))}"]]></entry>
+					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)} {hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG, 'vote'))}"]]></entry>
 					<entry><![CDATA['{" ".join(cities)}']]></entry>
 					<entry><![CDATA["Reg. deadline: ", "{self.info_by_state[state][REGDL]}"]]></entry>
 					<entry><![CDATA["Check registration: ", "{self.info_by_state[state][REG]}"]]></entry>
@@ -582,7 +582,7 @@
 					<entry><![CDATA["""@{screen_name}
 			Hi, we follow each other on Twitter.
 			Please RT my voter info tweets to help get out the vote!"""]]></entry>
-					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(Campaign.SEARCH_URL)}"]]></entry>
 					<entry><![CDATA["Find a tweet for a state in the list, e.g., #Iowa or #NC."]]></entry>
 					<entry><![CDATA["Retweet."]]></entry>
 					<entry><![CDATA["Thanks, and be sure to #vote!"]]></entry>
@@ -853,7 +853,7 @@
 		<campaign-info>
 			<tweet-content>
 				<voter-info>
-					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)} {hashtag(self.info_by_state[state].get(VOTE_MSG, 'vote'))}"]]></entry>
+					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)} {hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG, 'vote'))}"]]></entry>
 					<entry><![CDATA['{" ".join(cities)}']]></entry>
 					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
 					<entry><![CDATA["Completed your ballot?  Drop in the mail today, no postage necessary!"]]></entry>
@@ -863,7 +863,7 @@
 				<socialize>
 					<entry><![CDATA["""@{screen_name}, here's that daily reminder to
 					retweet my tweets for ... turnout!"""]]></entry>
-					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(Campaign.SEARCH_URL)}"]]></entry>
 					<entry><![CDATA["""Reply STOP to stop reminders, which end Sept. 14th.
 					Thanks again for helping."""]]></entry>
 					<entry><![CDATA[]]></entry>
@@ -994,7 +994,7 @@
 			<search-url><![CDATA[https://twitter.com/search?f=live&q=...]]></search-url>
 			<tweet-content>
 				<voter-info>
-					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state].get(VOTE_MSG))}"]]></entry>
+					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG))}"]]></entry>
 					<entry><![CDATA['{" ".join(cities)}']]></entry>
 					<entry><![CDATA["Vote by mail: ", "{self.info_by_state[state][ABS]}"]]></entry>
 					<entry><![CDATA["Find mailboxes: ", "https://tools.usps.com/find-location.htm?locationType=collectionbox"]]></entry>
@@ -1004,7 +1004,7 @@
 					<entry><![CDATA["""@{screen_name}
 					Hi, we follow each other on Twitter.
 					Please RT my tweets for ... turnout!"""]]></entry>
-					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(Campaign.SEARCH_URL)}"]]></entry>
 					<entry><![CDATA["Retweet."]]></entry>
 					<entry><![CDATA["""For a 1 mention/day reminder, reply YES.
 					Otherwise this will be the last contact on this topic. Thank you!"""]]></entry>
@@ -1060,7 +1060,7 @@
 			<tweet-content>
 				<voter-info>
 					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state][CODE], True)}"]]></entry>
-					<entry><![CDATA["{hashtag(self.info_by_state[state].get(VOTE_MSG))} {hashtag('VOTE!!!')}"]]></entry>
+					<entry><![CDATA["{hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG))} {hashtag('VOTE!!!')}"]]></entry>
 					<entry><![CDATA['{" ".join(cities)}']]></entry>
 					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
 					<entry><![CDATA["Vote by mail: ", "{self.info_by_state[state][ABS]}"]]></entry>
@@ -1069,7 +1069,7 @@
 					<entry><![CDATA["""@{screen_name}
 Hi, we follow each other on Twitter.
 Please RT my tweets for turnout!"""]]></entry>
-					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(SEARCH_URL)}"]]></entry>
+					<entry><![CDATA["Search my tweets: ", "{self.campaign_info.get(Campaign.SEARCH_URL)}"]]></entry>
 					<entry><![CDATA["Retweet."]]></entry>
 					<entry><![CDATA["""For a 1 mention/day reminder, reply YES.
 Otherwise this will be the last contact on this topic. Thank you!"""]]></entry>
@@ -1080,11 +1080,149 @@ Otherwise this will be the last contact on this topic. Thank you!"""]]></entry>
 	</campaign>
 
 	<campaign name="2022_ggp_enzc_hc">
-		<state-info/>
+		<state-info>
+			<state name="Georgia">
+				<cities>
+					<city name='130'/>
+					<city name='129'/>
+					<city name='128'/>
+					<city name='127'/>
+					<city name='126'/>
+					<city name='125'/>
+					<city name='124'/>
+					<city name='123'/>
+					<city name='122'/>
+					<city name='121'/>
+					<city name='120'/>
+					<city name='119'/>
+					<city name='118'/>
+					<city name='117'/>
+					<city name='116'/>
+					<city name='115'/>
+					<city name='114'/>
+					<city name='113'/>
+					<city name='112'/>
+					<city name='111'/>
+					<city name='110'/>
+					<city name='109'/>
+					<city name='108'/>
+					<city name='107'/>
+					<city name='106'/>
+					<city name='105'/>
+					<city name='104'/>
+					<city name='103'/>
+					<city name='102'/>
+					<city name='101'/>
+					<city name='100'/>
+					<city name='99'/>
+					<city name='98'/>
+					<city name='97'/>
+					<city name='96'/>
+					<city name='95'/>
+					<city name='94'/>
+					<city name='93'/>
+					<city name='92'/>
+					<city name='91'/>
+					<city name='90'/>
+					<city name='89'/>
+					<city name='88'/>
+					<city name='87'/>
+					<city name='86'/>
+					<city name='85'/>
+					<city name='84'/>
+					<city name='83'/>
+					<city name='82'/>
+					<city name='81'/>
+					<city name='80'/>
+					<city name='79'/>
+					<city name='78'/>
+					<city name='77'/>
+					<city name='76'/>
+					<city name='75'/>
+					<city name='74'/>
+					<city name='73'/>
+					<city name='72'/>
+					<city name='71'/>
+					<city name='70'/>
+					<city name='69'/>
+					<city name='68'/>
+					<city name='67'/>
+					<city name='66'/>
+					<city name='65'/>
+					<city name='64'/>
+					<city name='63'/>
+					<city name='62'/>
+					<city name='61'/>
+					<city name='60'/>
+					<city name='59'/>
+					<city name='58'/>
+					<city name='57'/>
+					<city name='56'/>
+					<city name='55'/>
+					<city name='54'/>
+					<city name='53'/>
+					<city name='52'/>
+					<city name='51'/>
+					<city name='50'/>
+					<city name='49'/>
+					<city name='48'/>
+					<city name='47'/>
+					<city name='46'/>
+					<city name='45'/>
+					<city name='44'/>
+					<city name='43'/>
+					<city name='42'/>
+					<city name='41'/>
+					<city name='40'/>
+					<city name='39'/>
+					<city name='38'/>
+					<city name='37'/>
+					<city name='36'/>
+					<city name='35'/>
+					<city name='34'/>
+					<city name='33'/>
+					<city name='32'/>
+					<city name='31'/>
+					<city name='30'/>
+					<city name='29'/>
+					<city name='28'/>
+					<city name='27'/>
+					<city name='26'/>
+					<city name='25'/>
+					<city name='24'/>
+					<city name='23'/>
+					<city name='22'/>
+					<city name='21'/>
+					<city name='20'/>
+					<city name='19'/>
+					<city name='18'/>
+					<city name='17'/>
+					<city name='16'/>
+					<city name='15'/>
+					<city name='14'/>
+					<city name='13'/>
+					<city name='12'/>
+					<city name='11'/>
+					<city name='10'/>
+					<city name='9'/>
+					<city name='8'/>
+					<city name='7'/>
+					<city name='6'/>
+					<city name='5'/>
+					<city name='4'/>
+					<city name='3'/>
+					<city name='2'/>
+					<city name='1'/>
+				</cities>
+				<cities-distro/>
+			</state>
+		</state-info>
 		<campaign-info>
 			<search-url/>
 			<tweet-content>
-				<voter-info/>
+				<voter-info>
+					<entry><![CDATA['{" ".join(cities)}']]></entry>
+				</voter-info>
 				<socialize>
 					<entry><![CDATA["""@{screen_name}
 Hi - ..."""]]></entry>

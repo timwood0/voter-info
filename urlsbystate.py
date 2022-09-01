@@ -129,7 +129,6 @@ URLS_BY_STATE = {
 				# but does not display in a Twitter card
 				# ABS: "https://www.vote411.org/georgia#absentee-ballot-process",
 				# REGDL: "https://sos.ga.gov/admin/files/2020%20Revised%20Short%20Calendar.pdf",
-				REGDL: "December 7, 2020",
 				REG: "https://www.mvp.sos.ga.gov/",
 				POLLS: "https://www.mvp.sos.ga.gov/MVP/mvp.do"},
 	"Guam": {CODE: "GU",

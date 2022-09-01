@@ -3,7 +3,7 @@ import os
 import argparse
 
 import render
-from campaign import campaigns, FOLLOW
+from campaign import campaigns
 from transport import api, post_tweet
 
 
@@ -36,7 +36,7 @@ def main():
 		# Ensure user not opted-out
 		if (user_id not in process_do_not_call()) and (user_id in process_opt_in()):
 			ret_status = post_tweet(render.build_socialize, campaign, user_id)
-			if FOLLOW in campaign.campaign_info:
+			if campaign.FOLLOW in campaign.campaign_info:
 				res = api.follow_user(user_id)
 				if 'following' not in res.data or not res.data['following']:
 					print(f"Warning: Failed to follow {user_id}.")
@@ -56,7 +56,7 @@ def main():
 			  f"Tweeps: {len_tweeps}, Tweeps - DNC: {len(tweeps)}")
 		for user_id in tweeps:
 			ret_status = post_tweet(render.build_socialize, campaign, user_id)
-			if FOLLOW in campaign.campaign_info:
+			if campaign.FOLLOW in campaign.campaign_info:
 				res = api.follow_user(user_id)
 				if 'following' not in res.data or not res.data['following']:
 					print(f"Warning: Failed to follow {user_id}.")

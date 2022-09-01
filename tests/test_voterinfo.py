@@ -7,10 +7,11 @@ import requests
 
 from tweepy import User
 
+import campaign
 import voterinfo, socialize
 from render import *
 from urlsbystate import URLS_BY_STATE, CODE, CITIES, REGDL, REG, POLLS, ABS
-from campaign import campaigns, SEARCH_URL
+from campaign import campaigns
 
 
 MY_TWITTER_UID = 16230307
@@ -114,6 +115,19 @@ class TestVoterInfo(unittest.TestCase):
 
 		self.assertRaises(KeyError, build_voterinfo, campaigns['2020_cerfvqragvny'], ("Arcadia",))
 
+		distro_campaign = campaigns['2022_ggp_enzc_hc']
+		_call_build_voterinfo(distro_campaign, 0)
+
+		# Do some crude checking on the distribution selection
+		set_size = len(distro_campaign.info_by_state['Georgia'][CITIES])
+		sum_idx = 0
+		for i in range(set_size >> 2):
+			sum_idx += select_city(distro_campaign, distro_campaign.info_by_state['Georgia'], set_size)
+		avg_idx = int(sum_idx / (set_size >> 2))
+		print(f"Avg. index: {avg_idx}")
+		self.assertTrue(60 < avg_idx < 70, "Avg. index out of range.")
+
+
 	@mock.patch("tweepy.Client.follow_user")
 	@mock.patch("tweepy.Client.get_users")
 	@mock.patch("tweepy.Client.get_users_followers")
@@ -205,8 +219,9 @@ class TestVoterInfo(unittest.TestCase):
 			effective_length, tweet_text = build_socialize(campaign, MY_TWITTER_UID)
 			print(effective_length)
 			print(tweet_text)
-			if SEARCH_URL in campaign.campaign_info and campaign.campaign_info[SEARCH_URL] is not None:
-				self.assertIn(campaign.campaign_info[SEARCH_URL], tweet_text,
+			if campaign.SEARCH_URL in campaign.campaign_info \
+				and campaign.campaign_info[campaign.SEARCH_URL] is not None:
+				self.assertIn(campaign.campaign_info[campaign.SEARCH_URL], tweet_text,
 							  "Search URL not found in tweet.")
 
 	@mock.patch("tweepy.Client.get_users")

@@ -9,23 +9,6 @@ from urlsbystate import (
 from render import hashtag  # NOTE: Used in eval()
 
 
-PREAMBLE = auto()
-SEARCH_URL = auto()
-TWEET_CONTENT = auto()
-VOTER_INFO = auto()
-SOCIALIZE = auto()
-HEADER = auto()
-SEARCH = auto()
-PER_STATE = auto()
-RT = auto()
-BE_SURE = auto()
-VOTE_MSG = auto()
-ELECTION_DAY = auto()
-USPO = auto()
-MAILBOX = auto()
-FOLLOW = auto()
-
-
 def tweet_entry(*text):
 	# Add an entry to the tweet suitable for input to eval().
 	# Multi-line string and variable expansion with f"... is automatic.
@@ -39,6 +22,25 @@ def tweet_entry(*text):
 # Class to model a tweeting campaign, generally in the context of elections taking place in
 # one or more states.
 class Campaign:
+	PREAMBLE = auto()
+	SEARCH_URL = auto()
+	TWEET_CONTENT = auto()
+	VOTER_INFO = auto()
+	SOCIALIZE = auto()
+	HEADER = auto()
+	SEARCH = auto()
+	PER_STATE = auto()
+	RT = auto()
+	BE_SURE = auto()
+	VOTE_MSG = auto()
+	ELECTION_DAY = auto()
+	USPO = auto()
+	MAILBOX = auto()
+	FOLLOW = auto()
+	# This key specifies the mean and s.d. for a normal distribution applied to the indices of a cities list.
+	# The cities list entries appear with the cities meant to have the highest probability of inclusion in a tweet
+	# clustered around the mean (middle) index of the list.  To de-emphasize a city move it toward either end of the list.
+	CITIES_DISTRO = auto()
 
 	@property
 	def campaign_info(self):
@@ -56,9 +58,9 @@ class Campaign:
 		"""
 
 		if screen_name:
-			template = SOCIALIZE
+			template = Campaign.SOCIALIZE
 		else:
-			template = VOTER_INFO
+			template = Campaign.VOTER_INFO
 		if not self._tweet_content or not self._tweet_content[template]:
 			return []
 
@@ -85,7 +87,7 @@ class Campaign:
 
 		# Configure which URL fields we're using
 		self._campaign_info = campaign_info if campaign_info else {}
-		self._tweet_content = self._campaign_info.get(TWEET_CONTENT, None)
+		self._tweet_content = self._campaign_info.get(Campaign.TWEET_CONTENT, None)
 
 
 # Campaigns data, loaded at initialization
@@ -143,7 +145,9 @@ class CampaignXmlHandler(object):
 		elif name == "entry":
 			self.cur_data = None
 		elif name == "follow":
-			self.campaign_info[FOLLOW] = True
+			self.campaign_info[Campaign.FOLLOW] = True
+		elif name == "cities-distro":
+			self.state[Campaign.CITIES_DISTRO] = True
 
 	def end(self, name):
 		if name == "campaign":
@@ -152,17 +156,17 @@ class CampaignXmlHandler(object):
 		elif name == "cities":
 			self.state[CITIES] = self.cities
 		elif name == "vote-msg":
-			self.state[VOTE_MSG] = self.cur_data
+			self.state[Campaign.VOTE_MSG] = self.cur_data
 		elif name == "reg-deadline":
 			self.state[REGDL] = self.cur_data
 		elif name == "search-url":
-			self.campaign_info[SEARCH_URL] = self.cur_data
+			self.campaign_info[Campaign.SEARCH_URL] = self.cur_data
 		elif name == "tweet-content":
-			self.campaign_info[TWEET_CONTENT] = self.tweet_content
+			self.campaign_info[Campaign.TWEET_CONTENT] = self.tweet_content
 		elif name == "voter-info":
-			self.tweet_content[VOTER_INFO] = self.voter_info
+			self.tweet_content[Campaign.VOTER_INFO] = self.voter_info
 		elif name == "socialize":
-			self.tweet_content[SOCIALIZE] = self.socialize
+			self.tweet_content[Campaign.SOCIALIZE] = self.socialize
 		elif name == "entry":
 			self.entry_target.append(eval(f"tweet_entry({self.cur_data})"))
 
