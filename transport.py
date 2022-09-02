@@ -24,8 +24,9 @@ def post_tweet(post_func, *post_args):
 		try:
 			post_result = api.create_tweet(text=tweet_text)
 			print(post_result, file=sys.stderr)
-		except tweepy.errors.TweepyException as e:
+		except tweepy.errors.HTTPException as e:
 			print(f"Failed to send tweet: {str(e)}", file=sys.stderr)
+			print(e.api_errors, file=sys.stderr)
 			ret_status = 1
 	else:
 		print("Error: Failed to generate tweet (most likely exceeded size limit).")

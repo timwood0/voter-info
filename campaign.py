@@ -61,7 +61,7 @@ class Campaign:
 			template = Campaign.SOCIALIZE
 		else:
 			template = Campaign.VOTER_INFO
-		if not self._tweet_content or not self._tweet_content[template]:
+		if not self._tweet_content or template not in self._tweet_content or not self._tweet_content[template]:
 			return []
 
 		ret_tweet = [0, 0]

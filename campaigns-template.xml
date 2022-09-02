@@ -728,7 +728,13 @@
 				</cities>
 			</state>
 		</state-info>
-		<campaign-info/>
+		<campaign-info>
+			<tweet-content>
+				<voter-info>
+					<entry><![CDATA['{" ".join(cities)}']]></entry>
+				</voter-info>
+			</tweet-content>
+		</campaign-info>
 	</campaign>
 
 	<campaign name="2021_pnyvsbeavn_erpnyy">

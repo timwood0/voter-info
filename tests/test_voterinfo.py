@@ -4,6 +4,7 @@ import sys
 import os
 import importlib
 import requests
+import tweepy
 
 from tweepy import User
 
@@ -39,10 +40,9 @@ class TestVoterInfo(unittest.TestCase):
 		resp.data = users
 		return resp
 
-	@mock.patch("transport.post_tweet")
-	def test_01voterinfo_main(self, mock_post):
-		mock_post.return_value = 0
-		importlib.reload(voterinfo)
+	@mock.patch("tweepy.Client.create_tweet")
+	def test_01voterinfo_main(self, mock_create_tweet):
+		mock_create_tweet.return_value = 0
 		arg0 = sys.argv[0]
 		sys.argv = [arg0, '2020_cerfvqragvny', 'Puerto Rico']
 		self.assertEqual(voterinfo.main(), 0)
@@ -56,7 +56,10 @@ class TestVoterInfo(unittest.TestCase):
 
 		sys.argv = [arg0, '2021_trbetvn_ehabss']
 		self.assertEqual(voterinfo.main(), 0)
-		# XXX Set & check a fake JSON return value for _mock_api.return_value.PostUpdate.return_value
+
+		mock_create_tweet.side_effect = tweepy.errors.HTTPException(requests.Response())
+		sys.argv = [arg0, '2021_trbetvn_ehabss']
+		self.assertEqual(voterinfo.main(), 1)
 
 		# MUST come last
 		sys.argv = [arg0]
