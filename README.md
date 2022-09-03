@@ -10,7 +10,7 @@ Socialize facet:
 `python socialize.py [-l limit] campaign [tweep]`
 
 Driver:
-`./tweet_vi [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] { [-S tweep_file] | [-s state] } campaign`
+`./tweet_vi [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign`
 
 Run tests:
 `pytest`
@@ -57,9 +57,11 @@ The `keys.py` file requires a `keys.xml` file in the top-level directory with th
 ```
 with the _consumer keys_ and _access tokens_ for the developer account under
 whose user ID the tweets will be posted. The user of the package must set the element contents in `keys.xml`
-to valid values issued by Twitter.
+to valid values issued by Twitter.  The -k argument to `tweet_vi` will symlink `keys.xml` to the given keys file,
+first removing `keys.xml` if it is a symlink.  If `keys.xml` exists and is not a symlink, `-k` will make `tweet_vi`
+exit with an error message.
 
-The script will exit with non-zero status if it cannot compose a tweet in its standard format
+The program will exit with non-zero status if it cannot compose a tweet in its standard format
 that fits within Twitter's length limit for a tweet.  This is a rare occurrence, only happening when
 `voterinfo.py` cannot include at least one city in the state or territory in the tweet without exceeding the limit.
 

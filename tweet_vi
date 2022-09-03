@@ -11,7 +11,7 @@ exec=
 usage() {
 	echo "Usage:
 $0 -h
-$0 [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] { [-S tweep_file] | [-s state] } campaign"
+$0 [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign"
 }
 exclu_msg="-s and -S are mutually exclusive."
 
@@ -120,7 +120,7 @@ socialize_tweet() {
 Action_fn=voterinfo_tweet
 Build_step_seq=build_voterinfo_seq
 Base_wait=600
-while getopts hs:q:w:S:b: option; do
+while getopts hs:q:w:S:b:k: option; do
 	case $option in
 	h) usage
 		exit 0
@@ -141,6 +141,10 @@ while getopts hs:q:w:S:b: option; do
 		;;
 	b) Base_wait="$OPTARG"
 		;;
+	k)
+		[ -e keys.xml -a ! -L keys.xml ] && { echo "keys.xml is not a symlink; exiting."; exit 1; }
+		Key_file="$OPTARG"
+		;;
 	?) usage
 		exit 1
 	esac
@@ -150,6 +154,7 @@ args=("$@")
 OPTIND=$(($OPTIND - 1))
 Campaign="${args[$OPTIND]}"
 [ -n "$Campaign" ] || { usage; exit 1; }
+[ -n "$Key_file" ] && { rm -f keys.xml; ln -s "$OPTARG" keys.xml; }
 
 eval $Build_step_seq
 
