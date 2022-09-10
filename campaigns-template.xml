@@ -1057,6 +1057,7 @@
 					<city name="Chiefs"/>
 
 				</cities>
+				<cities-distro/>
 				<vote-msg>VOTE</vote-msg>
 				<reg-deadline>July 13, 2022</reg-deadline>
 			</state>
@@ -1220,7 +1221,7 @@ Otherwise this will be the last contact on this topic. Thank you!"""]]></entry>
 					<city name='2'/>
 					<city name='1'/>
 				</cities>
-				<cities-distro/>
+				<cities-distro>0.08</cities-distro>
 			</state>
 		</state-info>
 		<campaign-info>

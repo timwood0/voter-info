@@ -7,7 +7,6 @@ from transport import api
 
 TWITTER_SHORT_URL_LENGTH = len('https://t.co/XXXXXXXXXX?amp=1')  # XXX By observation only.
 CHARACTER_LIMIT = 280  # XXX Can't find a constant in tweepy.Client
-SD_FACTOR = 0.1  # Factor of list size for normal distribution s.d. on list indices of cities
 
 def hashtag(phrase, plain=False):
 	"""
@@ -62,9 +61,9 @@ def build_voterinfo(campaign, state_name):
 
 
 def select_city(campaign, state_info, num_cities):
-	# Simple function to pick a random index into the list of cities based on normal distribution of indexes
+	# Simple function to pick a random index into the list of cities based on normal distribution of indexes.
 	if campaign.CITIES_DISTRO in state_info:
-		city_idx = (num_cities >> 1) + int(round(random.gauss(0.0, SD_FACTOR * num_cities)))
+		city_idx = (num_cities >> 1) + int(round(random.gauss(0.0, state_info[campaign.CITIES_DISTRO] * num_cities)))
 		city_idx = min(max(0, city_idx), num_cities - 1)
 	else:
 		city_idx = random.randint(0, num_cities - 1)

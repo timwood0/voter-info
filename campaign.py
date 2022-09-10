@@ -41,6 +41,10 @@ class Campaign:
 	# The cities list entries appear with the cities meant to have the highest probability of inclusion in a tweet
 	# clustered around the mean (middle) index of the list.  To de-emphasize a city move it toward either end of the list.
 	CITIES_DISTRO = auto()
+	# Default factor of list size for normal distribution s.d. on list indices of cities.
+	# NOTE: Time for selection from distribution increases exponentially below this.  Test execution ETs:
+	# 500 ms. at 0.075, ~2 sec. at 0.0625, ~15 sec. at 0.056125, ~3 min. at 0.05, 20+ min. at 0.045! (AMD A10)
+	SD_FACTOR = 0.1
 
 	@property
 	def campaign_info(self):
@@ -147,7 +151,7 @@ class CampaignXmlHandler(object):
 		elif name == "follow":
 			self.campaign_info[Campaign.FOLLOW] = True
 		elif name == "cities-distro":
-			self.state[Campaign.CITIES_DISTRO] = True
+			self.cur_data = None
 
 	def end(self, name):
 		if name == "campaign":
@@ -169,6 +173,11 @@ class CampaignXmlHandler(object):
 			self.tweet_content[Campaign.SOCIALIZE] = self.socialize
 		elif name == "entry":
 			self.entry_target.append(eval(f"tweet_entry({self.cur_data})"))
+		elif name == "cities-distro":
+			if self.cur_data is None:
+				self.state[Campaign.CITIES_DISTRO] = Campaign.SD_FACTOR
+			else:
+				self.state[Campaign.CITIES_DISTRO] = float(self.cur_data)
 
 	def data(self, content):
 		self.cur_data = content
