@@ -11,7 +11,7 @@ exec=
 usage() {
 	echo "Usage:
 $0 -h
-$0 [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign"
+$0 [-q number-of-tweets] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign"
 }
 exclu_msg="-s and -S are mutually exclusive."
 
@@ -20,8 +20,8 @@ set_boundaries() {
 	# Calibration: minimum 10 min. interval.  Set of len(step_seq) intervals adds to "Elapsed:"
 	# hours, so all states will be tweeted within "waking hours" (approx. 16 hrs., e.g. 6AM-10PM).
 	# This algorithm applies for states as well as cities within a state.
-	[ "$Quanta" -ge 4 -a "$Quanta" -le ${#step_seq[@]} ] 2>- || Quanta=${#step_seq[@]}
-	[ "$Waking_hrs" -ge 0 -a "$Waking_hrs" -le 86400 ] 2>- || Waking_hrs=$((16 * 60 * 60))  # sec.
+	[ "$Quanta" -le ${#step_seq[@]} ] 2> /dev/null || Quanta=${#step_seq[@]}
+	[ "$Waking_hrs" -ge 0 -a "$Waking_hrs" -le 86400 ] 2> /dev/null || Waking_hrs=$((16 * 60 * 60))  # sec.
 }
 
 build_voterinfo_seq() {
@@ -51,18 +51,21 @@ build_tweep_seq() {
 build_interval_seq() {
 	# Generate a shuffled list of wait intervals spread over a time period.
 	# We have one Base_wait interval, then ($Quanta - 2) wait intervals occurring between steps.
-	local delta time_period
+	local delta time_period adj_quanta interval_sum
 
 	time_period=$1
-	delta=`exec 2>-; echo $(( ($time_period - (($Quanta - 2) * $Base_wait)) / (($Quanta - 2)**2 / 2) ))`
-	[ "$delta" -ge 0 ] 2>- || delta=0
+	adj_quanta=$(( $Quanta - 2 ))
+	delta=`exec 2> /dev/null; echo $(( ($time_period - ($adj_quanta * $Base_wait)) / (($adj_quanta**2 + $adj_quanta) / 2) ))`
+	[ "$delta" -ge 0 ] 2> /dev/null || delta=0
 	echo "quanta: $Quanta, delta: $delta"
+
 	interval_seq=( `count=1; time=$Base_wait;
 			while [ $count -lt $Quanta ]; do
 				echo $time; time=$(($time + $delta)); count=$(($count + 1));
 			done | shuf` )
 	interval_seq=( ${interval_seq[@]} 0 )	# Terminate interval list
-	echo "Elapsed:" $(((`echo ${interval_seq[*]} | sed 's/ /+/g'`) / 60)) "min."
+	interval_sum=$(( (`echo ${interval_seq[*]} | sed 's/ /+/g'`) ))
+	echo "Elapsed:" $(( $interval_sum )) "sec.," $(( $interval_sum / 60)) "min."
 }
 
 print_tweet_schedule() {
@@ -177,12 +180,14 @@ exit $?
 #	- Check interval (delay) list correctly computed.
 #	- Check "cities" items correctly selected.
 #	- Check resulting python commands correct as to form.
+# - Uncomment the below sub-shell block & execute.
 #(
 #run_case() {
-#	bash -x tweet_vi "$@" 2>&1 | less
+#	(set -x; bash -x tweet_vi "$@") 2>&1 | less
 #}
 #run_case 2022_xnafnf_pubvpr
 #run_case -s Kansas 2022_xnafnf_pubvpr
+#run_case -s Kansas -q 2 2022_xnafnf_pubvpr
 #run_case 2020_cerfvqragvny
 #run_case -q 14 -w 28800 2020_cerfvqragvny
 #run_case -s Ohio -S foo 2022_xnafnf_pubvpr
