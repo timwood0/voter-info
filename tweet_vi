@@ -98,8 +98,10 @@ tweet_loop() {
 			echo "Step $(($i + 1)), interval ${interval_seq[$i]}"
 		fi
 
+		[ $pre_delay -ne 0 ] && $exec sleep ${interval_seq[$i]}
 		eval $action $i
-		$exec sleep ${interval_seq[$i]}
+		[ $pre_delay -eq 0 ] && $exec sleep ${interval_seq[$i]}
+
 		i=$(($i + 1))
 	done
 }
@@ -123,11 +125,15 @@ socialize_tweet() {
 Action_fn=voterinfo_tweet
 Build_step_seq=build_voterinfo_seq
 Base_wait=600
-while getopts hs:q:w:S:b:k: option; do
+pre_delay=0
+while getopts hds:q:w:S:b:k: option; do
 	case $option in
 	h) usage
 		exit 0
 		;;
+	d) pre_delay=1
+		;;
+
 	s)
 		[ -n "$Tweep_file" ] && { echo "$exclu_msg"; usage; exit 1; }
 		State="$OPTARG"
