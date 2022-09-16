@@ -10,7 +10,7 @@ Socialize facet:
 `python socialize.py [-l limit] campaign [tweep]`
 
 Driver:
-`./tweet_vi [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign`
+`./tweet_vi [-d] [-q number-of-tweets(min 4)] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign`
 
 Run tests:
 `pytest`
@@ -18,7 +18,7 @@ Run tests:
 This tool contains two main facets, or executable entry-points, one to tweet voter info by U.S. states and territories,
 the other to tweet mutual followers asking them to search up and retweet the voter-info tweets.  It includes a
 driver script, `tweet_vi`, to automate tweeting to many states, or repeatedly to a single state, or to mutual followers,
-or to a list of users.
+or to a list of users, separated by computed delay intervals.  The delays can occur either before or after the tweets.
 
 The `campaign` argument refers to configurations of campaign-specific data found in `campaigns.xml` in the top-level
 directory, a resource file you create.  You can use `campaigns-template.xml` as a guideline to the configuration schema.

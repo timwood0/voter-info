@@ -11,7 +11,7 @@ exec=
 usage() {
 	echo "Usage:
 $0 -h
-$0 [-q number-of-tweets] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign"
+$0 [-d] [-q number-of-tweets] [-w time-period(max 86400 sec)] [-b base-interval(default 600)] [-k keys_file] { [-S tweep_file] | [-s state] } campaign"
 }
 exclu_msg="-s and -S are mutually exclusive."
 
