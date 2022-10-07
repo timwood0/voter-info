@@ -1,6 +1,6 @@
 import re
 import random
-import twitter
+import tweepy
 
 from urlsbystate import URLS_BY_STATE, CITIES
 from transport import api
@@ -84,7 +84,7 @@ def render_voterinfo(campaign, state_name, cities):
 	# Now try to guess the length of the resulting tweet.  Twitter imposes the
 	# length limit after it shortens the links.
 	effective_length = len(tweet_text) - tweet[0] + tweet[1] * TWITTER_SHORT_URL_LENGTH if tweet else 0
-	assert effective_length <= twitter.api.CHARACTER_LIMIT
+	assert effective_length <= CHARACTER_LIMIT
 	return effective_length, tweet_text
 
 
@@ -93,8 +93,8 @@ def build_socialize(campaign, user_id):
 	try:
 		screen_name = api.get_user(id=user_id).data.username
 		print(f"Socialize: {screen_name}")
-	except twitter.error.TwitterError:
-		print(f"Twitter user {user_id} not found.")
+	except tweepy.errors.HTTPException as e:
+		print(f"Twitter user {user_id} not found ({str(e)}).")
 		return 0, ""
 
 	tweet = campaign.build_tweet(screen_name=screen_name)
