@@ -7,6 +7,7 @@ CITIES = 'cities'  # XXX This should move to campaign.Campaign but it's disrupti
 ABS = 'abs'
 REGDL = 'regdl'
 ABROAD = 'abroad'
+VOTE_STATE = 'vote_state'
 
 
 class States:
@@ -79,6 +80,10 @@ def reg_deadline(state):
 
 def abroad(state):
 	return f"https://www.votefromabroad.org/states/{URLS_BY_STATE[state][CODE]}"
+
+
+def vote_state(state):
+	return VA + "/how-to-vote/" + state.lower().replace(' ', '-')
 
 
 # Static info, extended with initializers below.
@@ -274,3 +279,5 @@ for k, v in URLS_BY_STATE.items():
 		v[REGDL] = reg_deadline(k)
 	if ABROAD not in v:
 		v[ABROAD] = abroad(k)
+	if VOTE_STATE not in v:
+		v[VOTE_STATE] = vote_state(k)

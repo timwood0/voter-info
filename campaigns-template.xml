@@ -1002,7 +1002,7 @@
 				<voter-info>
 					<entry><![CDATA["{hashtag(state)} {hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG))}"]]></entry>
 					<entry><![CDATA['{" ".join(cities)}']]></entry>
-					<entry><![CDATA["Vote by mail: ", "{self.info_by_state[state][ABS]}"]]></entry>
+					<entry><![CDATA["Vote in your state: ", "{self.info_by_state[state][VOTE_STATE]}"]]></entry>
 					<entry><![CDATA["Find mailboxes: ", "https://tools.usps.com/find-location.htm?locationType=collectionbox"]]></entry>
 					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
 				</voter-info>
@@ -1070,7 +1070,7 @@
 					<entry><![CDATA["{hashtag(self.info_by_state[state].get(Campaign.VOTE_MSG))} {hashtag('VOTE!!!')}"]]></entry>
 					<entry><![CDATA['{" ".join(cities)}']]></entry>
 					<entry><![CDATA["Polling places: ", "{self.info_by_state[state][POLLS]}"]]></entry>
-					<entry><![CDATA["Vote by mail: ", "{self.info_by_state[state][ABS]}"]]></entry>
+					<entry><![CDATA["Vote in your state: ", "{self.info_by_state[state][VOTE_STATE]}"]]></entry>
 				</voter-info>
 				<socialize>
 					<entry><![CDATA["""@{screen_name}

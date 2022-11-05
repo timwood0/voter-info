@@ -4,7 +4,7 @@ from enum import auto
 from lxml import etree, sax
 
 from urlsbystate import (
-	States, URLS_BY_STATE, CITIES, REGDL, REG, POLLS, ABROAD, ABS, CODE
+	States, URLS_BY_STATE, CITIES, REGDL, REG, POLLS, ABROAD, ABS, CODE, VOTE_STATE
 )
 from render import hashtag  # NOTE: Used in eval()
 
